@@ -19,6 +19,10 @@
 #'  system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
 #'  header = TRUE, pathway_col = "Enriched.GO.names", gene_col = "ORF.ID"
 #')
+#' @import openxlsx
+#' @import tibble
+#' @importFrom stats aggregate
+#' @importFrom utils head read.delim tail
 #' @export
 readPathways <- function(pathway_file, header = TRUE, pathway_col, gene_col,
                          MIN_GENE = 10L, MAX_GENE = 500L) {
@@ -66,6 +70,3 @@ readPathways <- function(pathway_file, header = TRUE, pathway_col, gene_col,
   }
   return(pathways_sub)
 }
-
-pathways <- readPathways("inst/extdata/YeastDatabase_GO_gmt.gmt")
-pathways <- readPathways("inst/extdata/SAFE_terms.xlsx", pathway_col = "Enriched.GO.names", gene_col = "ORF.ID")

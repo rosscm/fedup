@@ -1,0 +1,26 @@
+{
+  "name": "fedup",
+  "version": "1.0.0",
+  "description": "FEDUP is an R package that tests for gene enrichment and depletion of user-defined pathways using a Fisher's exact test.",
+  "main": "index.js",
+  "directories": {
+    "man": "man"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rosscm/FEDUP.git"
+  },
+  "author": "Catherine Ross <catherinem.ross@mail.utoronto.ca>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/rosscm/FEDUP/issues"
+  },
+  "homepage": "https://github.com/rosscm/FEDUP#readme"
+}

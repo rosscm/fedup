@@ -1,4 +1,4 @@
-#' Returns a list of pathways from a file
+#' Returns a list of pathways from a file.
 #' Currently supports the following file format: GMT, TXT, XLSX
 #' @param pathway_file (char) path to file with pathway annotations
 #' @param header (logical) whether pathway_file has a header (default = TRUE)
@@ -63,8 +63,8 @@ readPathways <- function(pathway_file, header = TRUE, pathway_col, gene_col,
     # Print messages to console
     cat(sprintf(
      "* Input pathway file: %s
-      * number of pathways: %s
-      * final number after pathway size filtering (%s, %s): %s\n",
+      ** total pathways: %s
+      ** pathways after size filtering (min %s, max %s): %s\n",
      basename(pathway_file), length(pathways), MIN_GENE, MAX_GENE, length(pathways_sub)
     ))
   }

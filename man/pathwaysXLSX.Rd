@@ -3,7 +3,11 @@
 \docType{data}
 \name{pathwaysXLSX}
 \alias{pathwaysXLSX}
-\title{Example list of yeast SAFE terms obtained from a XLSX file.}
+\title{Example list of yeast SAFE terms obtained from a XLSX file.
+Script to generate example pathway list
+system.file("pathwaysXLSX.R", package = "FEDUP")}
 \description{
 Example list of yeast SAFE terms obtained from a XLSX file.
+Script to generate example pathway list
+system.file("pathwaysXLSX.R", package = "FEDUP")
 }

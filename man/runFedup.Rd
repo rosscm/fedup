@@ -4,24 +4,42 @@
 \alias{runFedup}
 \title{Runs gene enrichment and depletion analysis for a list of pathways.}
 \usage{
-runFedup(test_genes, background_genes, pathways)
+runFedup(test_gene, background_gene, pathways)
 }
 \arguments{
-\item{test_genes}{(char)}
+\item{test_gene}{(char) vector of genes to test for enrichment}
 
-\item{background_genes}{(char)}
+\item{background_gene}{(char) vector of genes to use as background for enrichment}
 
-\item{pathways}{(char) list of gene sets to test for enrichment}
+\item{pathways}{(list) list of vectors with pathway annotations}
 }
 \value{
 table of gene enrichment and depletion results. Rows represent tested
 pathways. Columns represent:
 \itemize{
-   \item pathway --
-   \item
-   \item
+   \item pathway -- name of the pathway, corresponds to names(pathways);
+   \item size -- size of the pathway;
+   \item real_total -- number of genes in `test_gene`;
+   \item real_pathway -- number of `test_gene` members in pathway;
+   \item real_pathway_frac -- fraction of `test_gene` members in pathway,
+           evaluates as (`real_pathawy` / `real_total`) * 100;
+   \item expected_total -- number of genes in 'background_gene';
+   \item expected_pathway -- number of `background_gene` members in pathway;
+   \item expected_pathway_frac -- fraction of `background_gene` members in
+           pathway, evaluates as (`expected_pathway` / `expected_total`) * 100;
+   \item enrichment -- indicator that pathway is enriched or depleted for
+          `test_gene` members;
+   \item real_pathway_gene -- vector of `real_pathway` genes;
+   \item pval -- enrichment p-value calculated via Fisher's exact test;
+   \item fdr -- BH-adjusted p-value;
 }
 }
 \description{
 Runs gene enrichment and depletion analysis for a list of pathways.
+}
+\examples{
+data(testGene)
+data(backgroundGene)
+data(pathwaysGMT)
+fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
 }

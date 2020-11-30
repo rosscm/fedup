@@ -64,13 +64,11 @@ plotDotPlot <- function(df,
                fill = fill_lab,
                size = size_lab) +
           scale_fill_manual(values = fill_col) +
-          theme_few(base_size = 14) +
+          theme_clean(base_size = 14) +
           theme(plot.title = element_text(hjust = 0.5),
                 legend.title = element_text(size = 10),
                 legend.text = element_text(size = 10),
-                legend.key.size = unit(0.1, "line"),
-                panel.grid.major.y = element_line(linetype = "dotted", colour = "lightgrey"),
-                aspect.ratio = 16/9)
+                legend.key.size = unit(0.1, "line"))
 
   if (is.numeric(df[[x_var]])) {
     # Set x-axis limits so points are not cut off from plot window

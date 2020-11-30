@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.github$
+^README.Rmd$
+^README.html
+^.DS_Store
+^run_fedup.R

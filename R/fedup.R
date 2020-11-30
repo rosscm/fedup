@@ -20,7 +20,7 @@ inputObject <- function(test_gene, background_gene, pathways) {
 
   # Stop if length of test_gene is greater than background_gene
   if (length(test_gene) >= length(background_gene)) {
-    stop(paste("Test genes cannot be greater in size than the background.",
+    stop(paste("Background genes cannot be greater in size than the test genes.",
                "Please check your inputs."))
   }
 

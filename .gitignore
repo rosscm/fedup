@@ -1,3 +1,6 @@
 .github
 .Rproj.user
+README.rmd
+README.html
+.DS_Store
 run_fedup.R

@@ -68,7 +68,8 @@ plotDotPlot <- function(df,
           theme(plot.title = element_text(hjust = 0.5),
                 legend.title = element_text(size = 10),
                 legend.text = element_text(size = 10),
-                legend.key.size = unit(0.1, "line"))
+                legend.key.size = unit(0.1, "line"),
+                panel.background = element_blank())
 
   if (is.numeric(df[[x_var]])) {
     # Set x-axis limits so points are not cut off from plot window

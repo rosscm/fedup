@@ -210,7 +210,7 @@ plotDotPlot(df = fedup_plot,
             size_lab = "Gene fraction")
 ```
 
-![](man/figures/README-fedup_dotplot-1.png)<!-- -->
+![](man/figures/README-fedup_plotDotPlot-1.png)<!-- -->
 
 ## Versioning
 

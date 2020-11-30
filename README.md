@@ -8,8 +8,10 @@ user-defined pathways using a Fisher’s exact test.
 
 R version &gt; 3.5.0
 
-R packages: - **CRAN**: openxlsx, tibble, data.table, ggplot2, ggthemes,
-forcats, and RColorBrewer - **Bioconductor**: RCy3
+R packages:  
+- **CRAN**: openxlsx, tibble, data.table, ggplot2, ggthemes, forcats,
+and RColorBrewer  
+- **Bioconductor**: RCy3
 
 ## Getting started
 

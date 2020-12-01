@@ -1,4 +1,4 @@
-#' Example list of yeast GO pathways obtained from a GMT file.
+#' Example list of human pathway annotations obtained from a GMT file.
 #' Script to generate example pathway list
 #' system.file("pathwaysGMT.R", package = "FEDUP")
 #' @docType data
@@ -12,14 +12,14 @@ NULL
 #' @name pathwaysXLSX
 NULL
 
-#' Example vector of yeast genes to use as test set for enrichment.
+#' Example vector of human genes to use as test set for enrichment.
 #' Script to generate example test gene vector
 #' system.file("genes.R", package = "FEDUP")
 #' @docType data
 #' @name testGene
 NULL
 
-#' Example vector of yeast genes to use as background set for enrichment.
+#' Example vector of human genes to use as background set for enrichment.
 #' Script to generate example background gene vector
 #' system.file("genes.R", package = "FEDUP")
 #' @docType data

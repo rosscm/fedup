@@ -3,11 +3,11 @@
 \docType{data}
 \name{backgroundGene}
 \alias{backgroundGene}
-\title{Example vector of yeast genes to use as background set for enrichment.
+\title{Example vector of human genes to use as background set for enrichment.
 Script to generate example background gene vector
 system.file("genes.R", package = "FEDUP")}
 \description{
-Example vector of yeast genes to use as background set for enrichment.
+Example vector of human genes to use as background set for enrichment.
 Script to generate example background gene vector
 system.file("genes.R", package = "FEDUP")
 }

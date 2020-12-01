@@ -1,25 +1,20 @@
 library(biomaRt)
 library(dplyr)
 
-# Query S.cerevisiae GO terms and associated gene symbols
-ensembl <- useMart(biomart = "ensembl", dataset = "scerevisiae_gene_ensembl")
-go_gene <- getBM(attributes = c("go_id", "external_gene_name"), mart = ensembl)
-go_gene[go_gene == ""] <- NA
-go_gene <- na.omit(go_gene)
+# Read in example pathway GMT file
+pathway_file <- system.file("extdata", "Human_GOBP_AllPathways_no_GO_iea_November_17_2020_symbol.gmt", package = "FEDUP")
 
-# Select random GO term and grab all genes in term to use as test genes
-set.seed(10)
-go_rand <- sample(go_gene$go_id, 1)
-testGene <- go_gene %>%
-  filter(go_id == go_rand) %>%
-  select(external_gene_name) %>%
-  na.omit %>%
-  unlist %>%
-  as.character
+# Use FEDUP::writePathways() to convert to list
+pathwaysGMT <- writePathways(pathway_file,
+                             MIN_GENE = 10,
+                             MAX_GENE = 500)
+
+# Select olfactory signalling pathway genes to use as test genes
+testGene <- pathwaysGMT[[grep("381753", names(pathwaysGMT))]]
 
 # Grab all unique genes to use as background genes
-backgroundGene <- as.character(unique(go_gene$external_gene_name))
+backgroundGene <- unique(unlist(pathwaysGMT))
 
 # Compress and save
-save(testGene, file = file.path("..", "data", "testGene.rda"), compress = "xz")
-save(backgroundGene, file = file.path("..", "data", "backgroundGene.rda"), compress = "xz")
+save(testGene, file = file.path("data", "testGene.rda"), compress = "xz")
+save(backgroundGene, file = file.path("data", "backgroundGene.rda"), compress = "xz")

@@ -3,11 +3,11 @@
 \docType{data}
 \name{pathwaysGMT}
 \alias{pathwaysGMT}
-\title{Example list of yeast GO pathways obtained from a GMT file.
+\title{Example list of human pathway annotations obtained from a GMT file.
 Script to generate example pathway list
 system.file("pathwaysGMT.R", package = "FEDUP")}
 \description{
-Example list of yeast GO pathways obtained from a GMT file.
+Example list of human pathway annotations obtained from a GMT file.
 Script to generate example pathway list
 system.file("pathwaysGMT.R", package = "FEDUP")
 }

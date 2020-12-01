@@ -3,11 +3,11 @@
 \docType{data}
 \name{testGene}
 \alias{testGene}
-\title{Example vector of yeast genes to use as test set for enrichment.
+\title{Example vector of human genes to use as test set for enrichment.
 Script to generate example test gene vector
 system.file("genes.R", package = "FEDUP")}
 \description{
-Example vector of yeast genes to use as test set for enrichment.
+Example vector of human genes to use as test set for enrichment.
 Script to generate example test gene vector
 system.file("genes.R", package = "FEDUP")
 }

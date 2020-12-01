@@ -13,4 +13,4 @@ pathwaysXLSX <- writePathways(pathway_file,
                               MAX_GENE = 500)
 
 # Compress and save
-save(pathwaysXLSX, file = file.path("..", "data", "pathwaysXLSX.rda"), compress = "xz")
+save(pathwaysXLSX, file = file.path("data", "pathwaysXLSX.rda"), compress = "xz")

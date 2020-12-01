@@ -41,7 +41,7 @@ library(RCy3)
 ### Input data
 
 Load example test genes, background genes, and pathways  
-&gt;To note, the test genes comprise solely of the **olfactory
+&gt; To note, the test genes comprise solely of the **olfactory
 signalling** pathway. As such, we would expect to see strong
 *enrichment* for olfactory-associated pathways and *depletion* for
 pathways not associated with olfactory signalling.

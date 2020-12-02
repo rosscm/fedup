@@ -1,11 +1,12 @@
 FEDUP
 ================
-Catherine Ross
 
 `FEDUP` is an R package for gene enrichment and depletion analysis on
 user-defined pathways using a Fisher’s exact test.
 
-## Prerequisites
+## Getting started
+
+### System prerequisites
 
 R version &gt; 3.5.0
 
@@ -14,7 +15,7 @@ R packages:
 and RColorBrewer  
 - **Bioconductor**: RCy3
 
-## Getting started
+### Installation
 
 Install FEDUP via devtools
 
@@ -39,14 +40,14 @@ library(RCy3)
 
 ## Quick run
 
-### Input data
+### Data input
 
 Load example test genes, background genes, and pathways
 
-> To note, the test genes comprise solely of the **olfactory
-> signalling** pathway. As such, we would expect to see strong
-> *enrichment* for olfactory-associated pathways and *depletion* for
-> pathways not associated with olfactory signalling.
+> To note, the test genes comprise solely of the **olfactory signaling**
+> pathway. As such, we would expect to see strong *enrichment* for
+> olfactory-associated pathways and *depletion* for pathways not
+> associated with olfactory signaling.
 
 ``` r
 data(testGene)
@@ -175,7 +176,7 @@ View of output results table sorted by p-value
 
 ``` r
 print(fedup_res)
-#>                                                                     pathways
+#>                                                                      pathway
 #>    1:     OLFACTORY SIGNALING PATHWAY%REACTOME DATABASE ID RELEASE 74%381753
 #>    2:                            SENSORY PERCEPTION OF SMELL%GOBP%GO:0007608
 #>    3:                SENSORY PERCEPTION OF CHEMICAL STIMULUS%GOBP%GO:0007606
@@ -234,10 +235,10 @@ fedup_enr <- head(fedup_res[with(fedup_res, which(enrichment == "enriched")),], 
 fedup_dep <- head(fedup_res[with(fedup_res, which(enrichment == "depleted")),], 10)
 fedup_plot <- rbind(fedup_enr, fedup_dep)
 fedup_plot$log10fdr <- -log10(fedup_plot$fdr + 1e-10) # log10-transform FDR for plotting
-fedup_plot$pathways <- gsub("\\%.*", "", fedup_plot$pathways) # clean pathway names
+fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
 plotDotPlot(df = fedup_plot,
             x_var = "log10fdr",
-            y_var = "pathways",
+            y_var = "pathway",
             x_lab = "-log10(FDR)",
             fill_var = "enrichment",
             fill_lab = "Enrichment",

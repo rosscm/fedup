@@ -1,6 +1,3 @@
-library(biomaRt)
-library(dplyr)
-
 # Read in example pathway GMT file
 pathway_file <- system.file("extdata", "Human_GOBP_AllPathways_no_GO_iea_November_17_2020_symbol.gmt", package = "FEDUP")
 

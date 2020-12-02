@@ -114,7 +114,7 @@ runFedup <- function(test_gene,
   }
 
   # Results table
-  res <- data.table(pathways = pathways_name, size = pathways_size)
+  res <- data.table(pathway = pathways_name, size = pathways_size)
   res_stats <- sapply(pathways, function(x) {
     # Number of test/background genes
     a_n <- length(test)

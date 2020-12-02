@@ -23,7 +23,7 @@ writePathways(
 \item{pathway_col}{(char) column name with pathway identifiers, one pathway per row
 use for non-GMT input (eg "Pathway.ID", default = NULL)}
 
-\item{gene_col}{(char) column name with gene identifiers, one gene per row
+\item{gene_col}{(char) column name with gene identifiers
 use for non-GMT input (eg "Gene.ID", default = NULL)}
 
 \item{MIN_GENE}{(integer) minimum number of genes to be considered in a pathway

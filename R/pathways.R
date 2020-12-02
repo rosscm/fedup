@@ -4,7 +4,7 @@
 #' @param header (logical) whether pathway_file has a header (default = TRUE)
 #' @param pathway_col (char) column name with pathway identifiers, one pathway per row
 #'  use for non-GMT input (eg "Pathway.ID", default = NULL)
-#' @param gene_col (char) column name with gene identifiers, one gene per row
+#' @param gene_col (char) column name with gene identifiers
 #'  use for non-GMT input (eg "Gene.ID", default = NULL)
 #' @param MIN_GENE (integer) minimum number of genes to be considered in a pathway
 #'  (default = 1)
@@ -70,6 +70,7 @@ writePathways <- function(pathway_file,
         gene = pathway_in[,gene_col]
       )
       pathway_df <- aggregate(gene ~ pathway, data = pathway_df, FUN = paste)
+      pathway_df$gene <- strsplit(pathway_df$gene, "[[:punct:]] ", perl = TRUE)
       pathways <- deframe(pathway_df)
     }
 

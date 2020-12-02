@@ -1,0 +1,103 @@
+---
+title: "FEDUP manual"
+author: "Catherine Ross"
+package: FEDUP
+output:
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{FEDUP manual}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+`FEDUP` is an R package for gene enrichment and depletion analysis on
+user-defined pathways using a Fisher's exact test.
+
+## Getting started
+### System prerequisites
+
+R version > 3.5.0
+
+R packages:  
+- **CRAN**: openxlsx, tibble, data.table, ggplot2, ggthemes, forcats, and RColorBrewer  
+- **Bioconductor**: RCy3
+
+### Installation
+
+Install FEDUP via devtools
+
+```{r, install_FEDUP, message = FALSE}
+library(devtools)
+#install_github("rosscm/FEDUP")
+devtools::load_all()
+```
+
+Load libraries
+
+```{r, load_libraries, message = FALSE}
+library(openxlsx)
+library(tibble)
+library(data.table)
+library(ggplot2)
+library(ggthemes)
+library(forcats)
+library(RColorBrewer)
+library(RCy3)
+```
+
+## Quick run
+### Input data
+
+Load example test genes, background genes, and pathways
+
+To note, the test genes comprise solely of the **olfactory signaling** pathway. As such, we would expect to see strong *enrichment* for olfactory-associated pathways and *depletion* for pathways not associated with olfactory signaling.
+
+```{r, load_data}
+data(testGene)
+data(backgroundGene)
+data(pathwaysGMT)
+```
+
+Take a look at the data structure
+
+```{r, data_structure}
+str(testGene)
+str(backgroundGene)
+str(pathwaysGMT)
+```
+
+Run FEDUP on sample data
+
+```{r, run_FEDUP}
+fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
+```
+
+View of output results table sorted by p-value
+
+```{r, view_FEDUP}
+print(fedup_res)
+```
+
+### Visualization
+
+Plot top pathway enrichment/depletion results
+
+```{r, plot_FEDUP, fig.width = 10, fig.height = 7}
+fedup_enr <- head(fedup_res[with(fedup_res, which(enrichment == "enriched")),], 10)
+fedup_dep <- head(fedup_res[with(fedup_res, which(enrichment == "depleted")),], 10)
+fedup_plot <- rbind(fedup_enr, fedup_dep)
+fedup_plot$log10fdr <- -log10(fedup_plot$fdr + 1e-10) # log10-transform FDR for plotting
+fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
+plotDotPlot(df = fedup_plot,
+            x_var = "log10fdr",
+            y_var = "pathway",
+            x_lab = "-log10(FDR)",
+            fill_var = "enrichment",
+            fill_lab = "Enrichment",
+            size_var = "real_pathway_frac",
+            size_lab = "Gene fraction")
+```
+
+## Versioning
+
+For the versions available, see the [tags on this repo](https://github.com/rosscm/FEDUP/tags).

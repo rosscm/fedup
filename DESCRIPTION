@@ -20,10 +20,14 @@ Imports:
 Suggests:
   utils,
   stats,
-  testthat
+  testthat,
+  knitr,
+  rmarkdown,
+  BiocStyle
 LazyData: true
 Encoding: UTF-8
 Language: en-US
 License: MIT + file LICENSE
+VignetteBuilder: knitr
 URL: https://github.com/rosscm/FEDUP
 RoxygenNote: 7.1.1

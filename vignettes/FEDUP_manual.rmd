@@ -46,7 +46,7 @@ library(RCy3)
 ```
 
 ## Quick run
-### Input data
+### Data input
 
 Load example test genes, background genes, and pathways
 

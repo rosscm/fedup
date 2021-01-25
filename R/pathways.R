@@ -15,8 +15,8 @@
 #' @return a list of vectors with pathway annotations
 #' @examples
 #' pathways <- writePathways(
-#'  system.file("extdata", "YeastDatabase_GO_gmt.gmt", package = "FEDUP"),
-#'  MIN_GENE = 10, MAX_GENE = 500, GO_class = "BP"
+#'  system.file("extdata", "Human_GOBP_AllPathways_no_GO_iea_November_17_2020_symbol.gmt", package = "FEDUP"),
+#'  MIN_GENE = 10, MAX_GENE = 500,
 #')
 #' pathways <- writePathways(
 #'  system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
@@ -70,7 +70,7 @@ writePathways <- function(pathway_file,
         gene = pathway_in[,gene_col]
       )
       pathway_df <- aggregate(gene ~ pathway, data = pathway_df, FUN = paste)
-      pathway_df$gene <- strsplit(pathway_df$gene, "[[:punct:]] ", perl = TRUE)
+      #pathway_df$gene <- strsplit(pathway_df$gene, "[[:punct:]] ", perl = TRUE)
       pathways <- deframe(pathway_df)
     }
 
@@ -80,9 +80,9 @@ writePathways <- function(pathway_file,
 
     # Print messages to console
     cat(sprintf(
-     "* Input pathway file: %s
-      ** total pathways: %s
-      ** pathways after size filtering (min %s, max %s): %s\n",
+     "Input pathway file: %s
+      => total pathways: %s
+      => pathways after size filtering (min %s, max %s): %s\n",
      basename(pathway_file), length(pathways), MIN_GENE, MAX_GENE, length(pathways_sub)
     ))
 
@@ -91,7 +91,7 @@ writePathways <- function(pathway_file,
       go_keep <- paste(GO_class, collapse = "|")
       int_keep <- grep(go_keep, names(pathways_sub))
       pathways_sub <- pathways_sub[int_keep]
-      cat(sprintf("      ** pathways after GO class filtering (%s): %s\n",
+      cat(sprintf("==> pathways after GO class filtering (%s): %s\n",
         paste(GO_class, sep = ", "), length(pathways_sub)))
     }
 
@@ -99,7 +99,7 @@ writePathways <- function(pathway_file,
     pathways_dup <- which(duplicated(names(pathways_sub)))
     if (length(pathways_dup)) {
       pathways_sub <- pathways_sub[-pathways_dup]
-      cat(sprintf("      ** pathways after filtering out duplicated annotations: %s\n",
+      cat(sprintf("==> pathways after filtering out duplicated annotations: %s\n",
         length(pathways_sub)))
     }
 

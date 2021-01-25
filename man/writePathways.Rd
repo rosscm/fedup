@@ -44,8 +44,8 @@ Currently supports the following file format: GMT, TXT, XLSX
 }
 \examples{
 pathways <- writePathways(
- system.file("extdata", "YeastDatabase_GO_gmt.gmt", package = "FEDUP"),
- MIN_GENE = 10, MAX_GENE = 500, GO_class = "BP"
+ system.file("extdata", "Human_GOBP_AllPathways_no_GO_iea_November_17_2020_symbol.gmt", package = "FEDUP"),
+ MIN_GENE = 10, MAX_GENE = 500,
 )
 pathways <- writePathways(
  system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),

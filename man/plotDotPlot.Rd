@@ -52,12 +52,16 @@ data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
 fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-fedup_res$log10fdr <- -log10(fedup_res$fdr) # log10-transform FDR
-fedup_plot <- fedup_res[head(order(fdr, real_pathway_frac), 20),]
+fedup_res$log10fdr <- -log10(fedup_res$fdr) # log10-transform FDR for plotting
+fedup_enr <- head(fedup_res[with(fedup_res, which(enrichment == "enriched")),], 10)
+fedup_dep <- head(fedup_res[with(fedup_res, which(enrichment == "depleted")),], 10)
+fedup_plot <- rbind(fedup_enr, fedup_dep)
+fedup_plot$log10fdr <- -log10(fedup_plot$fdr + 1e-10) # log10-transform FDR for plotting
+fedup_plot$pathway <- gsub("\\\\\%.*", "", fedup_plot$pathway) # clean pathway names
 \dontrun{
 plotDotPlot(df = fedup_plot,
             x_var = "log10fdr",
-            y_var = "pathways",
+            y_var = "pathway",
             x_lab = "-log10(FDR)",
             fill_var = "enrichment",
             fill_lab = "Enrichment",

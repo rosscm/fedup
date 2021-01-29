@@ -1,7 +1,3 @@
-#load(system.file("data", "testGene.rda", package = "FEDUP"))
-#load(system.file("data", "backgroundGene.rda", package = "FEDUP"))
-#load(system.file("data", "pathwaysGMT.rda", package = "FEDUP"))
-
 inputObject <- function(test_gene, background_gene, pathways) {
   # Stop if test_gene is empty
   if (is.null(test_gene)) {
@@ -77,13 +73,13 @@ inputObject <- function(test_gene, background_gene, pathways) {
 #'    \item real_pathway_gene -- vector of `real_pathway` genes;
 #'    \item pval -- enrichment p-value calculated via Fisher's exact test;
 #'    \item fdr -- BH-adjusted p-value;
-#'}
+#' }
 #' @examples
 #' data(testGene)
 #' data(backgroundGene)
 #' data(pathwaysGMT)
 #' fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-#' @import data.table
+#' @importFrom data.table data.table :=
 #' @importFrom utils head read.delim tail
 #' @importFrom stats fisher.test p.adjust
 #' @export

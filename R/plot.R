@@ -11,32 +11,29 @@
 #' @param size_var (char) point size variable (default NULL)
 #' @param size_lab (char) point size label (default `size_var`)
 #' @return ggplot object with the enrichment dot plot
-#' @import ggplot2
-#' @import ggthemes
-#' @import forcats
-#' @import RColorBrewer
-#' @export
 #' @examples
 #' data(testGene)
 #' data(backgroundGene)
 #' data(pathwaysGMT)
 #' fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-#' fedup_res$log10fdr <- -log10(fedup_res$fdr) # log10-transform FDR for plotting
-#' fedup_enr <- head(fedup_res[with(fedup_res, which(enrichment == "enriched")),], 10)
-#' fedup_dep <- head(fedup_res[with(fedup_res, which(enrichment == "depleted")),], 10)
-#' fedup_plot <- rbind(fedup_enr, fedup_dep)
+#' fedup_plot <- fedup_res[which(fedup_res$fdr < 0.05),]
 #' fedup_plot$log10fdr <- -log10(fedup_plot$fdr + 1e-10) # log10-transform FDR for plotting
 #' fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
-#' \dontrun{
-#' plotDotPlot(df = fedup_plot,
-#'             x_var = "log10fdr",
-#'             y_var = "pathway",
-#'             x_lab = "-log10(FDR)",
-#'             fill_var = "enrichment",
-#'             fill_lab = "Enrichment",
-#'             size_var = "real_pathway_frac",
-#'             size_lab = "Gene fraction")
-#' }
+#' plotDotPlot(
+#'    df = fedup_plot,
+#'    x_var = "log10fdr",
+#'    y_var = "pathway",
+#'    x_lab = "-log10(FDR)",
+#'    fill_var = "enrichment",
+#'    fill_lab = "Enrichment",
+#'    size_var = "real_pathway_frac",
+#'    size_lab = "Gene fraction"
+#' )
+#' @import ggplot2
+#' @importFrom ggthemes theme_clean
+#' @importFrom forcats fct_reorder
+#' @importFrom RColorBrewer brewer.pal
+#' @export
 plotDotPlot <- function(df,
                         x_var,
                         y_var,
@@ -53,7 +50,12 @@ plotDotPlot <- function(df,
   if (!is.null(fill_var) && is.null(fill_col)) {
     fill_n <- length(unique(df[[fill_var]]))
     pal_n <- ifelse(fill_n >= 3, fill_n, 3)
-    fill_col <- brewer.pal(pal_n, "Pastel2")
+    fill_col <- brewer.pal(pal_n, "Set1")
+  }
+
+  # Set factor level if `fill_var` is set to `enrichment`
+  if (fill_var == "enrichment") {
+    df[[fill_var]] <- factor(df[[fill_var]], levels = c("enriched", "depleted"))
   }
 
   # Plot dot plot with specified parameters

@@ -2,54 +2,27 @@
 % Please edit documentation in R/pathways.R
 \name{writePathways}
 \alias{writePathways}
-\title{Returns a list of pathways from a file.
-Currently supports the following file format: GMT, TXT, XLSX}
+\title{Writes a set of pathways (list of vectors) to a GMT file}
 \usage{
-writePathways(
-  pathway_file,
-  header = TRUE,
-  pathway_col,
-  gene_col,
-  MIN_GENE = 1L,
-  MAX_GENE = Inf,
-  GO_class = NULL
-)
+writePathways(pathways, gmt_file)
 }
 \arguments{
-\item{pathway_file}{(char) path to file with pathway annotations}
+\item{pathways}{(list) named list of vectors}
 
-\item{header}{(logical) whether pathway_file has a header (default = TRUE)}
-
-\item{pathway_col}{(char) column name with pathway identifiers, one pathway per row
-use for non-GMT input (eg "Pathway.ID", default = NULL)}
-
-\item{gene_col}{(char) column name with gene identifiers
-use for non-GMT input (eg "Gene.ID", default = NULL)}
-
-\item{MIN_GENE}{(integer) minimum number of genes to be considered in a pathway
-(default = 1)}
-
-\item{MAX_GENE}{(integer) maximum number of genes to be considered in a pathway
-(default = Inf)}
-
-\item{GO_class}{(char) if GO terms are present in 'pathway_file', which class(es)
-should be used (i.e., BP, MF, CC) (default = NULL)}
+\item{gmt_file}{(char) name of output GMT file}
 }
 \value{
-a list of vectors with pathway annotations
+GMT formatted file. Rows represent gene sets. Columns represent:
+\itemize{
+   \item gene set name;
+   \item description;
+   \item a list of tab-delimited genes
+}
 }
 \description{
-Returns a list of pathways from a file.
-Currently supports the following file format: GMT, TXT, XLSX
+Writes a set of pathways (list of vectors) to a GMT file
 }
 \examples{
-pathways <- writePathways(
- system.file("extdata", "Human_GOBP_AllPathways_no_GO_iea_November_17_2020_symbol.gmt", package = "FEDUP"),
- MIN_GENE = 10, MAX_GENE = 500,
-)
-pathways <- writePathways(
- system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
- header = TRUE, pathway_col = "Enriched.GO.names", gene_col = "Gene.ID",
- MIN_GENE = 10, MAX_GENE = 500
-)
+data(pathwaysXLSX)
+writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext = ".gmt"))
 }

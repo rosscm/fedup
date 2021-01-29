@@ -12,18 +12,20 @@ Depends:
 Imports:
   openxlsx,
   tibble,
+  dplyr,
   data.table,
   ggplot2,
   ggthemes,
   forcats,
-  RColorBrewer
+  RColorBrewer,
+  RCy3
 Suggests:
   utils,
   stats,
   testthat,
   knitr,
   rmarkdown,
-  BiocStyle
+  devtools
 LazyData: true
 Encoding: UTF-8
 Language: en-US

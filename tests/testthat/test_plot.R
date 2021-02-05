@@ -1,12 +1,12 @@
-context("Plot")
+context("Enrichment dotplot")
 
 test_that("Test that plotDotPlot works", {
   data(testGene)
   data(backgroundGene)
   data(pathwaysGMT)
   fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-  fedup_enr <- head(fedup_res[with(fedup_res, which(enrichment == "enriched")),], 10)
-  fedup_dep <- head(fedup_res[with(fedup_res, which(enrichment == "depleted")),], 10)
+  fedup_enr <- head(fedup_res[with(fedup_res, which(enrichment == "Enriched")),], 10)
+  fedup_dep <- head(fedup_res[with(fedup_res, which(enrichment == "Depleted")),], 10)
   fedup_plot <- rbind(fedup_enr, fedup_dep)
   fedup_plot$log10fdr <- -log10(fedup_plot$fdr + 1e-10) # log10-transform FDR for plotting
   fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names

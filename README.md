@@ -1,18 +1,14 @@
----
-title: "FEDUP"
-output: rmarkdown::github_document
----
 
+# FEDUP
 
-
-`FEDUP` is an R package for gene enrichment and depletion analysis on user-defined
-pathways using a Fisher's exact test. The package also gives the option to view
-results in the form of a Cytoscape EnrichmentMap.
+FEDUP is an R package for enrichment and depletion analysis on user-defined
+pathways using a Fisher's exact test. This package also gives the option to draw
+a network representation of pathway overlaps using EnrichmentMap.
 
 ## Getting started
 ### System prerequisites
 
-R version > 3.5.0  
+R version >= 4.0  
 R packages:
 
 * **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes, forcats, RColorBrewer  
@@ -20,7 +16,7 @@ R packages:
 
 ### Installation
 
-Install FEDUP via devtools
+Install FEDUP via devtools:
 
 
 ```r
@@ -31,7 +27,7 @@ devtools::load_all()
 ## Quick run
 ### Data input
 
-Load example test genes, background genes, and pathways
+Load example test genes, background genes, and pathways:
 
 To note, the test genes comprise solely of a **muscle contraction** pathway (Reactome ID 397014).
 So we would expect to see strong *enrichment* for pathways related to muscle contraction and
@@ -44,7 +40,7 @@ data(backgroundGene)
 data(pathwaysGMT)
 ```
 
-Take a look at the data structure
+Take a look at the data structure:
 
 
 ```r
@@ -64,7 +60,7 @@ str(head(pathwaysGMT))
 
 ### Pathway analysis
 
-Now run FEDUP on sample data
+Now run FEDUP on sample data:
 
 
 ```r
@@ -76,7 +72,7 @@ fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
 #> You did it! FEDUP ran successfully, feeling pretty good huh?
 ```
 
-View output results table sorted by p-value
+View output results table sorted by pvalue:
 
 
 ```r
@@ -133,7 +129,7 @@ print(fedup_res)
 
 ### Visualization
 
-Plot significant enrichment and depletion results in the form of a dot plot
+Plot enriched and depleted pathways (qvalue < 5%) in the form of a dot plot:
 
 
 ```r
@@ -160,7 +156,7 @@ the plot, and depletion for olfactory and amino acid metabolism pathways at the
 bottom of the plot. Nice!
 
 We can also facet the plot by enrichment status to clearly separate
-the enriched and depleted pathways
+the enriched and depleted pathways:
 
 
 ```r
@@ -179,29 +175,29 @@ even more? Oh I know... let's use an Enrichment Map!
 First, make sure to have [Cytoscape](https://cytoscape.org/download.html) downloaded
 and and open on your computer. You'll also need to install the
 [EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
-[AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps
+[AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
-Then format FEDUP results for compatibility with EnrichmentMap
+Then format FEDUP results for compatibility with EnrichmentMap:
 
 
 ```r
 results_file <- tempfile("fedup_res", fileext = ".txt")
 writeFemap(fedup_res, results_file)
-#> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpUva5Ms/fedup_res102ab31b2cac8.txt
+#> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpLDDCxq/fedup_res110d12456e4f1.txt
 ```
 
 Prepare a pathway annotation file (GMT format) from the pathway list you passed
 to FEDUP (you don't need to run this function if your pathway annotations are
-already in GMT format, but it doesn't hurt to make sure)
+already in GMT format, but it doesn't hurt to make sure):
 
 
 ```r
 gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmt_file)
-#> Wrote GMT file with 1436 pathway entries to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpUva5Ms/pathwaysGMT102ab54fbbd6e.gmt
+#> Wrote GMT file with 1436 pathway entries to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpLDDCxq/pathwaysGMT110d15be9cf81.gmt
 ```
 
-Cytoscape is open right? If so, uncomment these lines and let the magic happen
+Cytoscape is open right? If so, let the magic happen:
 
 
 ```r
@@ -213,13 +209,7 @@ plotFemap(
   net_name = "FEDUP_EM",
   net_file = net_file
 )
-#> Building the network
-#> Setting network chart data
-#> Annotating the network using AutoAnnotate
-#> Applying a force-directed network layout
-#> Drawing out network to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpUva5Ms/FEDUP_EM102ab4f09f43e.png
-#>                                                                                    file 
-#> "/var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T/RtmpUva5Ms/FEDUP_EM102ab4f09f43e.png"
+#> Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused
 ```
 
 ## Versioning

@@ -1,32 +1,31 @@
 ---
-title: "FEDUP manual"
-author: "Catherine Ross"
+title: "FEDUP: User Manual"
 package: FEDUP
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{FEDUP manual}
+  %\VignetteIndexEntry{FEDUP: User Manual}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-`FEDUP` is an R package for gene enrichment and depletion analysis on
-user-defined pathways using a Fisher's exact test.
+`FEDUP` is an R package for enrichment and depletion analysis on user-defined
+pathways using a Fisher's exact test. This package also gives the option to draw
+a network representation of pathway overlaps using EnrichmentMap.
 
 ## Getting started
 ### System prerequisites
 
-R version > 3.5.0
-
+R version >= 4.0  
 R packages:
 
-* **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes, forcats,
-            RColorBrewer  
+* **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes, forcats, RColorBrewer  
 * **Bioconductor**: RCy3
 
 ### Installation
 
-Install FEDUP via devtools
+Install FEDUP via devtools:
 
-```{r, install_FEDUP, message = FALSE, warning = FALSE}
+```{r, FEDUP_install, message = FALSE, warning = FALSE}
 #devtools::install_github("rosscm/FEDUP")
 devtools::load_all()
 ```
@@ -34,54 +33,111 @@ devtools::load_all()
 ## Quick run
 ### Data input
 
-Load example test genes, background genes, and pathways
+Load example test genes, background genes, and pathways:
 
-To note, the test genes comprise solely of the **olfactory signaling** pathway. As such, we would expect to see strong *enrichment* for olfactory-associated pathways and *depletion* for pathways not associated with olfactory signaling.
+To note, the test genes comprise solely of a **muscle contraction** pathway (Reactome ID 397014).
+So we would expect to see strong *enrichment* for pathways related to muscle contraction and
+*depletion* for pathways not associated with muscle contraction. Let's see!
 
-```{r, load_input}
+```{r, FEDUP_input}
 data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
 ```
 
-Take a look at the input data structure
+Take a look at the data structure:
 
-```{r, input_structure}
+```{r, FEDUP_data_str}
 str(testGene)
 str(backgroundGene)
-str(pathwaysGMT)
+str(head(pathwaysGMT))
 ```
 
-Run FEDUP on sample data
+### Pathway analysis
 
-```{r, run_FEDUP}
+Now run FEDUP on sample data:
+
+```{r, FEDUP_run}
 fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
 ```
 
-View of output results table sorted by p-value
+View output results table sorted by pvalue:
 
-```{r, view_FEDUP}
+```{r, FEDUP_results}
 print(fedup_res)
 ```
 
 ### Visualization
 
-Plot top pathway enrichment/depletion results
+Plot enriched and depleted pathways (qvalue < 5%) in the form of a dot plot:
 
-```{r, plot_FEDUP, fig.width = 10, fig.height = 7}
-fedup_plot <- fedup_res[which(fedup_res$fdr < 0.05),]
-fedup_plot$log10fdr <- -log10(fedup_plot$fdr + 1e-10) # log10-transform FDR for plotting
+```{r, FEDUP_dotplot, fig.width = 9, fig.height = 9.5}
+fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
+fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10) # log10-transform qvalue for plotting
 fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
-plotDotPlot(
-   df = fedup_plot,
-   x_var = "log10fdr",
-   y_var = "pathway",
-   x_lab = "-log10(FDR)",
-   fill_var = "enrichment",
-   fill_lab = "Enrichment",
-   size_var = "real_pathway_frac",
-   size_lab = "Gene fraction"
+p <- plotDotPlot(
+  df = fedup_plot,
+  x_var = "log10qvalue",
+  y_var = "pathway",
+  x_lab = "-log10(Qvalue)",
+  fill_var = "enrichment",
+  fill_lab = "Enrichment\nstatus",
+  size_var = "real_pathway_frac",
+  size_lab = "Gene fraction"
 )
+print(p)
+```
+
+As expected, we see strong enrichment for muscle-related pathways at the top of
+the plot, and depletion for olfactory and amino acid metabolism pathways at the
+bottom of the plot. Nice!
+
+We can also facet the plot by enrichment status to clearly separate
+the enriched and depleted pathways:
+
+```{r, FEDUP_dotplot_facet, fig.width = 9, fig.height = 9.5}
+p <- p +
+  facet_grid("enrichment", scales = "free", space = "free") +
+  theme(strip.text.y = element_blank())
+print(p)
+```
+
+Look at all those chick... enrichments! This is a bit overwhelming, no? What if we
+could see all these pathways in a summarised way that doesn't hurt our tired brains
+even more? Oh I know... let's use an Enrichment Map!  
+
+First, make sure to have [Cytoscape](https://cytoscape.org/download.html) downloaded
+and and open on your computer. You'll also need to install the
+[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
+[AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
+
+Then format FEDUP results for compatibility with EnrichmentMap:
+
+```{r, EM_prepare_results}
+results_file <- tempfile("fedup_res", fileext = ".txt")
+writeFemap(fedup_res, results_file)
+```
+
+Prepare a pathway annotation file (GMT format) from the pathway list you passed
+to FEDUP (you don't need to run this function if your pathway annotations are
+already in GMT format, but it doesn't hurt to make sure):
+
+```{r, EM_prepare_gmt}
+gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
+writePathways(pathwaysGMT, gmt_file)
+```
+
+Cytoscape is open right? If so, uncomment these lines and let the magic happen:
+
+```{r, EM_FEDUP}
+#net_file <- tempfile("FEDUP_EM", fileext = ".png")
+#plotFemap(
+#  gmt_file = gmt_file,
+#  results_file = results_file,
+#  qvalue = 0.05,
+#  net_name = "FEDUP_EM",
+#  net_file = net_file
+#)
 ```
 
 ## Versioning

@@ -1,14 +1,15 @@
 Package: FEDUP
 Title: Fisher's test for Enrichment and Depletion of User-defined Pathways
-Version: 0.1
+Version: 0.99.0
 Date: 2020-10-08
 Authors@R: person("Catherine", "Ross",
            email = "catherinem.ross@mail.utoronto.ca",
            role = c("aut", "cre"))
-Description: FEDUP is an R package that tests for gene enrichment and depletion
+Description: FEDUP is an R package that tests for enrichment and depletion
              of user-defined pathways using a Fisher's exact test.
+biocViews: GeneSetEnrichment, Pathways
 Depends:
-  R (>= 3.5.0)
+  R (>= 4.0)
 Imports:
   openxlsx,
   tibble,
@@ -18,10 +19,10 @@ Imports:
   ggthemes,
   forcats,
   RColorBrewer,
-  RCy3
-Suggests:
+  RCy3,
   utils,
-  stats,
+  stats
+Suggests:
   testthat,
   knitr,
   rmarkdown,

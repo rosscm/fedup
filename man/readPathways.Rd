@@ -2,55 +2,52 @@
 % Please edit documentation in R/pathways.R
 \name{readPathways}
 \alias{readPathways}
-\title{Returns a list of pathways from a variety of file formats.
-Currently supports the following file format: GMT, TXT, XLSX}
+\title{Returns a list of pathways from various file formats.
+Currently supports the following file format: GMT, TXT, XLSX.}
 \usage{
 readPathways(
   pathway_file,
   header = TRUE,
-  pathway_col,
-  gene_col,
+  pathway_col = NULL,
+  gene_col = NULL,
   MIN_GENE = 1L,
   MAX_GENE = Inf,
   GO_class = NULL
 )
 }
 \arguments{
-\item{pathway_file}{(char) path to file with pathway annotations}
+\item{pathway_file}{(char) path to file with pathway annotations.}
 
-\item{header}{(logical) whether pathway_file has a header (default = TRUE)}
+\item{header}{(logical) whether pathway_file has a header (default TRUE).}
 
-\item{pathway_col}{(char) column name with pathway identifiers, one pathway per row
-use for non-GMT input (eg "Pathway.ID", default = NULL)}
+\item{pathway_col}{(char) column name with pathway identifiers.
+For use with for non-GMT input files (eg "Pathway.ID"; default NULL).}
 
-\item{gene_col}{(char) column name with gene identifiers
-use for non-GMT input (eg "Gene.ID", default = NULL)}
+\item{gene_col}{(char) column name with gene identifiers.
+For use with for non-GMT input files (eg "Gene.ID"; default NULL).}
 
-\item{MIN_GENE}{(integer) minimum number of genes to be considered in a pathway
-(default = 1)}
+\item{MIN_GENE}{(integer) minimum number of genes to be considered
+in a pathway (default = 1).}
 
-\item{MAX_GENE}{(integer) maximum number of genes to be considered in a pathway
-(default = Inf)}
+\item{MAX_GENE}{(integer) maximum number of genes to be considered
+in a pathway (default = Inf).}
 
-\item{GO_class}{(char) if GO terms are present in 'pathway_file', which
-class(es) should be subsetted (i.e., BP, MF, CC)
-(default = NULL)}
+\item{GO_class}{(char) if GO terms are present in `pathway_file`, which
+class(es) should be subsetted (BP, MF and/or CC, default NULL).}
 }
 \value{
-a list of vectors with pathway annotations
+a list of vectors with pathway annotations.
 }
 \description{
-Returns a list of pathways from a variety of file formats.
-Currently supports the following file format: GMT, TXT, XLSX
+Returns a list of pathways from various file formats.
+Currently supports the following file format: GMT, TXT, XLSX.
 }
 \examples{
 pathways <- readPathways(
  system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
- package = "FEDUP"), MIN_GENE = 10, MAX_GENE = 500
-)
+ package = "FEDUP"), MIN_GENE = 10, MAX_GENE = 500)
 pathways <- readPathways(
  system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
  header = TRUE, pathway_col = "Enriched.GO.names", gene_col = "Gene.ID",
- MIN_GENE = 10, MAX_GENE = 500
-)
+ MIN_GENE = 10, MAX_GENE = 500)
 }

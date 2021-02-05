@@ -2,25 +2,25 @@
 % Please edit documentation in R/pathways.R
 \name{writePathways}
 \alias{writePathways}
-\title{Writes a set of pathways (list of vectors) to a GMT file}
+\title{Writes a set of pathways (list of vectors) to a GMT file.}
 \usage{
 writePathways(pathways, gmt_file)
 }
 \arguments{
-\item{pathways}{(list) named list of vectors}
+\item{pathways}{(list) named list of vectors.}
 
-\item{gmt_file}{(char) name of output GMT file}
+\item{gmt_file}{(char) name of output GMT file.}
 }
 \value{
-GMT formatted file. Rows represent gene sets. Columns represent:
+GMT-formatted file. Rows represent pathways. Columns represent:
 \itemize{
-   \item gene set name;
-   \item description;
-   \item a list of tab-delimited genes
+ \item pathway ID;
+ \item description;
+ \item a list of tab-delimited genes
 }
 }
 \description{
-Writes a set of pathways (list of vectors) to a GMT file
+Writes a set of pathways (list of vectors) to a GMT file.
 }
 \examples{
 data(pathwaysXLSX)

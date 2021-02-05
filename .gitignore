@@ -1,6 +1,8 @@
-.github
+.DS_Store
+*.Rproj
 .Rproj.user
+.git
+.github
 README.rmd
 README.html
-.DS_Store
 run_fedup*.R

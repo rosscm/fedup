@@ -2,31 +2,31 @@
 % Please edit documentation in R/femap.R
 \name{writeFemap}
 \alias{writeFemap}
-\title{Writes an enrichment dataset file for use in Cytoscape EnrichmentMap}
+\title{Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.}
 \usage{
 writeFemap(df, results_file)
 }
 \arguments{
-\item{df}{(data.frame) table with FEDUP enrichment results
-(see ?runFedup() for column descriptions)}
+\item{df}{(data.frame) table with FEDUP enrichment results.
+(see runFedup() for column descriptions)}
 
-\item{results_file}{(char) name of output results file}
+\item{results_file}{(char) name of output results file.}
 }
 \value{
 table of gene enrichment and depletion results formatted as a
 'Generic results file'. Rows represent tested pathways. Columns represent:
 \itemize{
-   \item geneset -- gene-set ID (must match the gene-set ID in the GMT file);
+   \item pathway -- pathway ID (must match pathway IDs in the GMT file provided to plotFemap());
    \item description -- gene-set name or description;
    \item pvalue -- enrichment pvalue;
-   \item qvalue -- FDR correction value;
+   \item qvalue -- BH-corrected pvalue;
    \item phenotype -- +1 or -1, to identify enrichment in up- and down-regulation,
-            or, more in general in either of the two phenotypes being compared
-            in the two-class analysis (+1 maps to red, -1 maps to blue)
+           or, more in general in either of the two phenotypes being compared
+           in the two-class analysis (+1 maps to red, -1 maps to blue)
 }
 }
 \description{
-Writes an enrichment dataset file for use in Cytoscape EnrichmentMap
+Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.
 }
 \examples{
 data(testGene)

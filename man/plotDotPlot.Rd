@@ -19,30 +19,30 @@ plotDotPlot(
 )
 }
 \arguments{
-\item{df}{(data.frame) table with FEDUP enrichment results to plot}
+\item{df}{(data.frame) table with FEDUP enrichment results to plot.}
 
-\item{x_var}{(char) x-axis variable (must be a column value in `df`)}
+\item{x_var}{(char) x-axis variable (must be a column value in `df`).}
 
-\item{y_var}{(char) y-axis variable (must be a column value in `df`)}
+\item{y_var}{(char) y-axis variable (must be a column value in `df`).}
 
-\item{x_lab}{(char) x-axis label (default `x_var`)}
+\item{x_lab}{(char) x-axis label (default `x_var` value).}
 
-\item{y_lab}{(char) y-axis label (default NULL)}
+\item{y_lab}{(char) y-axis label (default NULL).}
 
-\item{p_title}{(char) plot title (default NULL)}
+\item{p_title}{(char) plot title (default NULL).}
 
-\item{fill_var}{(char) point fill variable (default NULL)}
+\item{fill_var}{(char) point fill variable (default NULL).}
 
-\item{fill_col}{(char) point fill colours (default NULL)}
+\item{fill_col}{(char) point fill colours (default NULL).}
 
-\item{fill_lab}{(char) point fill label (default `fill_var`)}
+\item{fill_lab}{(char) point fill label (default `fill_var` value).}
 
-\item{size_var}{(char) point size variable (default NULL)}
+\item{size_var}{(char) point size variable (default NULL).}
 
-\item{size_lab}{(char) point size label (default `size_var`)}
+\item{size_lab}{(char) point size label (default `size_var` value).}
 }
 \value{
-ggplot object with the enrichment dot plot
+object returned from ggplot with the enrichment dot plot.
 }
 \description{
 Visualizes pathway enrichment and depletion using ggplot.
@@ -52,17 +52,16 @@ data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
 fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-fedup_plot <- fedup_res[which(fedup_res$fdr < 0.05),]
-fedup_plot$log10fdr <- -log10(fedup_plot$fdr + 1e-10) # log10-transform FDR for plotting
-fedup_plot$pathway <- gsub("\\\\\%.*", "", fedup_plot$pathway) # clean pathway names
- plotDotPlot(
-    df = fedup_plot,
-    x_var = "log10fdr",
-    y_var = "pathway",
-    x_lab = "-log10(FDR)",
-    fill_var = "enrichment",
-    fill_lab = "Enrichment",
-    size_var = "real_pathway_frac",
-    size_lab = "Gene fraction"
- )
+fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
+fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10)
+fedup_plot$pathway <- gsub("\\\\\%.*", "", fedup_plot$pathway)
+plotDotPlot(
+     df = fedup_plot,
+     x_var = "log10qvalue",
+     y_var = "pathway",
+     x_lab = "-log10(Qvalue)",
+     fill_var = "enrichment",
+     fill_lab = "Enrichment\nstatus",
+     size_var = "real_pathway_frac",
+     size_lab = "Gene fraction")
 }

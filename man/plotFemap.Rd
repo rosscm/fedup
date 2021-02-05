@@ -2,47 +2,59 @@
 % Please edit documentation in R/femap.R
 \name{plotFemap}
 \alias{plotFemap}
-\title{Plots an EnrichmentMap (EM) in Cytoscape to visualize enriched and depleted gene sets.}
+\title{Draws a network representation of overlaps among enriched and depleted
+pathways using EnrichmentMap (EM) in Cytoscape.}
 \usage{
-plotFemap(gmt_file, results_file, pvalue = 1, qvalue = 1, net_name = "generic")
+plotFemap(
+  gmt_file,
+  results_file,
+  pvalue = 1,
+  qvalue = 1,
+  net_name = "generic",
+  net_file = "png"
+)
 }
 \arguments{
-\item{gmt_file}{(char) path to GMT file (must be absolute path)}
+\item{gmt_file}{(char) path to GMT file (must be an absolute path).}
 
-\item{results_file}{(char) path to file with enrichment results (must be absolute path)}
+\item{results_file}{(char) path to file with FEDUP results
+(must be an absolute path).}
 
-\item{pvalue}{(numeric) pvalue cutoff (value between 0 and 1). Gene set
-nodes with a p-value lower than the given value will not be included
-   in the network. (default = 1)}
+\item{pvalue}{(numeric) pvalue cutoff. Pathways with a higher pvalue
+will not be included in the EM (value between 0 and 1; default 1).}
 
-\item{qvalue}{(numeric) FDR qvalue cutoff (value between 0 and 1). Gene set
-nodes with a p-value lower than the given value will not be included
-in the network. (default = 1)}
+\item{qvalue}{(numeric) qvalue cutoff. Pathways with a higher qvalue
+will not be included in the EM (value between 0 and 1; default 1).}
 
-\item{net_name}{(char) name for network in Cytoscape}
+\item{net_name}{(char) name for EM in Cytoscape (default generic).}
+
+\item{net_file}{(char) name of output image. Supports png, pdf, svg,
+jpeg image formats.}
 }
 \value{
-filename of image to which EM is exported. Also side effect of
- plotting the EM in an open session of Cytoscape.
+file name of image to which the network is exported. Also side
+ effect of plotting the EM in an open session of Cytoscape.
 }
 \description{
-Plots an EnrichmentMap (EM) in Cytoscape to visualize enriched and depleted gene sets.
+Draws a network representation of overlaps among enriched and depleted
+pathways using EnrichmentMap (EM) in Cytoscape.
 }
 \examples{
 \dontrun{
-# not run because this function requires Cytoscape to be installed and open
-data(testGene)
-data(backgroundGene)
-data(pathwaysGMT)
-gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
-writePathways(pathwaysGMT, gmt_file)
-fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-results_file <- tempfile("fedup_res", fileext = ".txt")
-writeFemap(fedup_res, results_file)
-plotFemap(
-	gmt_file = gmt_file,
-	results_file = results_file,
-	qvalue = 0.05,
-	net_name = "FEDUP_EM"
-)}
+ # not run because Cytoscape needs to be installed and open
+ data(testGene)
+ data(backgroundGene)
+ data(pathwaysGMT)
+ gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
+ fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
+ results_file <- tempfile("fedup_res", fileext = ".txt")
+ net_file <- tempfile("FEDUP_EM", fileext = ".png")
+ writePathways(pathwaysGMT, gmt_file)
+ writeFemap(fedup_res, results_file)
+ plotFemap(
+   gmt_file = gmt_file,
+   results_file = results_file,
+   qvalue = 0.05,
+   net_name = "FEDUP_EM",
+   net_file = net_file)}
 }

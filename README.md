@@ -1,55 +1,44 @@
-FEDUP
-================
+---
+title: "FEDUP"
+output: rmarkdown::github_document
+---
 
-`FEDUP` is an R package for gene enrichment and depletion analysis on
-user-defined pathways using a Fisher’s exact test.
+
+
+`FEDUP` is an R package for gene enrichment and depletion analysis on user-defined
+pathways using a Fisher's exact test. The package also gives the option to view
+results in the form of a Cytoscape EnrichmentMap.
 
 ## Getting started
-
 ### System prerequisites
 
-R version &gt; 3.5.0
+R version > 3.5.0  
+R packages:
 
-R packages:  
-- **CRAN**: openxlsx, tibble, data.table, ggplot2, ggthemes, forcats,
-and RColorBrewer  
-- **Bioconductor**: RCy3
+* **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes, forcats, RColorBrewer  
+* **Bioconductor**: RCy3
 
 ### Installation
 
 Install FEDUP via devtools
 
-``` r
-library(devtools)
-#install_github("rosscm/FEDUP")
+
+```r
+#devtools::install_github("rosscm/FEDUP")
 devtools::load_all()
 ```
 
-Load libraries
-
-``` r
-library(openxlsx)
-library(tibble)
-library(data.table)
-library(ggplot2)
-library(ggthemes)
-library(forcats)
-library(RColorBrewer)
-library(RCy3)
-```
-
 ## Quick run
-
 ### Data input
 
 Load example test genes, background genes, and pathways
 
-> To note, the test genes comprise solely of the **olfactory signaling**
-> pathway. As such, we would expect to see strong *enrichment* for
-> olfactory-associated pathways and *depletion* for pathways not
-> associated with olfactory signaling.
+To note, the test genes comprise solely of a **muscle contraction** pathway (Reactome ID 397014).
+So we would expect to see strong *enrichment* for pathways related to muscle contraction and
+*depletion* for pathways not associated with muscle contraction. Let's see!
 
-``` r
+
+```r
 data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
@@ -57,201 +46,185 @@ data(pathwaysGMT)
 
 Take a look at the data structure
 
-``` r
+
+```r
 str(testGene)
-#>  chr [1:396] "OR11A1" "OR8A1" "OR8I2" "OR52N1" "OR52N5" "OR52N4" "OR52N2" ...
+#>  chr [1:190] "NKX2-5" "SCN4A" "ITGB5" "SCN4B" "PAK2" "GATA4" "AKAP9" ...
 str(backgroundGene)
-#>  chr [1:15965] "ELOVL1" "ACOT7" "ACSL1" "ACSL5" "ACSL4" "ELOVL6" "ACSL3" ...
-str(pathwaysGMT)
-#> List of 8080
-#>  $ STEARATE BIOSYNTHESIS I (ANIMALS)%HUMANCYC%PWY-5972                                                                                                                                                           : chr [1:13] "ELOVL1" "ACOT7" "ACSL1" "ACSL5" ...
-#>  $ SUPERPATHWAY OF INOSITOL PHOSPHATE COMPOUNDS%HUMANCYC%PWY-6371                                                                                                                                                : chr [1:67] "PI4K2B" "MTMR14" "PTEN" "INPPL1" ...
-#>  $ PUTRESCINE DEGRADATION III%HUMANCYC%PWY-0                                                                                                                                                                     : chr [1:10] "ALDH3B1" "SAT2" "SAT1" "ALDH3A2" ...
-#>  $ TRYPTOPHAN DEGRADATION III (EUKARYOTIC)%HUMANCYC%TRYPTOPHAN-DEGRADATION-1                                                                                                                                     : chr [1:11] "KYNU" "AFMID" "ACAA1" "KMO" ...
-#>  $ MEVALONATE PATHWAY I%HUMANCYC%PWY-922                                                                                                                                                                         : chr [1:12] "IDI1" "MVK" "ACAA1" "HMGCS1" ...
-#>  $ D-<I>MYO< I>-INOSITOL-5-PHOSPHATE METABOLISM%HUMANCYC%PWY-6367                                                                                                                                                : chr [1:19] "PLCE1" "PLCG2" "PIP4K2A" "PIP4K2C" ...
-#>  $ PURINE NUCLEOTIDES DEGRADATION II (AEROBIC)%HUMANCYC%PWY-6353                                                                                                                                                 : chr [1:11] "NT5C3A" "NT5C3B" "NT5E" "GDA" ...
-#>  $ PHOSPHATIDYLGLYCEROL BIOSYNTHESIS II (NON-PLASTIDIC)%HUMANCYC%PWY4FS-8                                                                                                                                        : chr [1:18] "GPD2" "LPCAT3" "GPAT2" "CDS2" ...
-#>  $ FATTY ACID &ALPHA;-OXIDATION II%HUMANCYC%PWY66-387                                                                                                                                                            : chr [1:10] "ACSBG1" "ACSBG2" "SLC27A2" "ACSL1" ...
-#>  $ TRNA CHARGING%HUMANCYC%TRNA-CHARGING-PWY                                                                                                                                                                      : chr [1:37] "CARS" "AARS2" "VARS" "TARSL2" ...
-#>  $ SUPERPATHWAY OF D-<I>MYO< I>-INOSITOL (1,4,5)-TRISPHOSPHATE METABOLISM%HUMANCYC%PWY-6358                                                                                                                      : chr [1:20] "INPP5J" "INPP5K" "IPMK" "OCRL" ...
-#>  $ TRIACYLGLYCEROL DEGRADATION%HUMANCYC%LIPAS-PWY                                                                                                                                                                : chr [1:12] "MGLL" "PNLIPRP3" "PNLIP" "PNPLA2" ...
-#>  $ CHOLESTEROL BIOSYNTHESIS I%HUMANCYC%PWY66-341                                                                                                                                                                 : chr [1:13] "NSDHL" "CYP51A1" "MSMO1" "HSD17B7" ...
-#>  $ NORADRENALINE AND ADRENALINE DEGRADATION%HUMANCYC%PWY-6342                                                                                                                                                    : chr [1:10] "COMT" "PNMT" "ADH4" "LRTOMT" ...
-#>  $ PHOSPHOLIPASES%HUMANCYC%LIPASYN-PWY                                                                                                                                                                           : chr [1:36] "PLA2G16" "PLCG2" "PLA2G10" "PLCG1" ...
-#>  $ D-<I>MYO< I>-INOSITOL (1,4,5)-TRISPHOSPHATE DEGRADATION%HUMANCYC%PWY-6363                                                                                                                                     : chr [1:13] "INPP5J" "INPP5K" "OCRL" "INPP1" ...
-#>  $ 3-PHOSPHOINOSITIDE DEGRADATION%HUMANCYC%PWY-6368                                                                                                                                                              : chr [1:21] "INPP5J" "INPP5K" "SACM1L" "OCRL" ...
-#>  $ PENTOSE PHOSPHATE PATHWAY%HUMANCYC%PENTOSE-P-PWY                                                                                                                                                              : chr [1:10] "RPIA" "TKTL2" "TKTL1" "G6PD" ...
-#>  $ D-<I>MYO< I>-INOSITOL (1,4,5)-TRISPHOSPHATE BIOSYNTHESIS%HUMANCYC%PWY-6351                                                                                                                                    : chr [1:24] "PLCE1" "PLCG2" "PIP4K2A" "PIP5K1A" ...
-#>  $ GLUTATHIONE-MEDIATED DETOXIFICATION I%HUMANCYC%PWY-4061                                                                                                                                                       : chr [1:23] "GSTM4" "GSTK1" "GSTM3" "GSTM2" ...
-#>  $ FATTY ACID &BETA;-OXIDATION I%HUMANCYC%FAO-PWY                                                                                                                                                                : chr [1:18] "ACSL1" "ACSL5" "HADHB" "ACSL4" ...
-#>  $ CDP-DIACYLGLYCEROL BIOSYNTHESIS I%HUMANCYC%PWY-5667                                                                                                                                                           : chr [1:17] "GPD2" "LPCAT3" "GPAT2" "CDS2" ...
-#>  $ COLANIC ACID BUILDING BLOCKS BIOSYNTHESIS%HUMANCYC%COLANSYN-PWY                                                                                                                                               : chr [1:13] "MPI" "GALE" "GPI" "TSTA3" ...
-#>  $ GLUCONEOGENESIS I%HUMANCYC%GLUCONEO-PWY                                                                                                                                                                       : chr [1:22] "FBP2" "GAPDH" "ALDOB" "ALDOA" ...
-#>  $ GLYCOLYSIS I%HUMANCYC%GLYCOLYSIS                                                                                                                                                                              : chr [1:22] "FBP2" "PKLR" "PFKL" "PKM" ...
-#>  $ 3-PHOSPHOINOSITIDE BIOSYNTHESIS%HUMANCYC%PWY-6352                                                                                                                                                             : chr [1:26] "PIP5K1A" "PIP5K1B" "PIP5K1C" "CDIPT" ...
-#>  $ SUPERPATHWAY OF GERANYLGERANYLDIPHOSPHATE BIOSYNTHESIS I (VIA MEVALONATE)%HUMANCYC%PWY-5910                                                                                                                   : chr [1:14] "IDI1" "MVK" "HMGCS1" "IDI2" ...
-#>  $ NAD SALVAGE PATHWAY II%HUMANCYC%NAD-BIOSYNTHESIS-II                                                                                                                                                           : chr [1:12] "NMNAT1" "NMRK2" "NMRK1" "NT5C3B" ...
-#>  $ CHOLESTEROL BIOSYNTHESIS III (VIA DESMOSTEROL)%HUMANCYC%PWY66-4                                                                                                                                               : chr [1:13] "NSDHL" "CYP51A1" "MSMO1" "HSD17B7" ...
-#>  $ D-<I>MYO< I>-INOSITOL (1,3,4)-TRISPHOSPHATE BIOSYNTHESIS%HUMANCYC%PWY-6364                                                                                                                                    : chr [1:15] "INPP5J" "INPP5K" "IPMK" "OCRL" ...
-#>  $ NAD BIOSYNTHESIS II (FROM TRYPTOPHAN)%HUMANCYC%NADSYN-PWY                                                                                                                                                     : chr [1:10] "KYNU" "AFMID" "KMO" "NMNAT1" ...
-#>  $ PURINE NUCLEOTIDES <I>DE NOVO< I> BIOSYNTHESIS II%HUMANCYC%PWY-841                                                                                                                                            : chr [1:11] "ADSSL1" "GMPS" "ADSS" "PPAT" ...
-#>  $ TRIACYLGLYCEROL BIOSYNTHESIS%HUMANCYC%TRIGLSYN-PWY                                                                                                                                                            : chr [1:22] "LPCAT3" "GPAT2" "DGAT2" "MOGAT3" ...
-#>  $ PYRIMIDINE RIBONUCLEOTIDES <I>DE NOVO< I> BIOSYNTHESIS%HUMANCYC%PWY0-162                                                                                                                                      : chr [1:14] "UMPS" "CANT1" "NME2" "CTPS2" ...
-#>  $ SALVAGE PATHWAYS OF PYRIMIDINE RIBONUCLEOTIDES%HUMANCYC%PWY0-163                                                                                                                                              : chr [1:15] "UPP2" "UPP1" "CDA" "AICDA" ...
-#>  $ SUPERPATHWAY OF CHOLESTEROL BIOSYNTHESIS%HUMANCYC%PWY66-5                                                                                                                                                     : chr [1:27] "HADHB" "NSDHL" "CYP51A1" "MSMO1" ...
-#>  $ &GAMMA;-GLUTAMYL CYCLE%HUMANCYC%PWY-4041                                                                                                                                                                      : chr [1:12] "GGT2" "GGCT" "GCLC" "DPP8" ...
-#>  $ PYRIMIDINE RIBONUCLEOTIDES INTERCONVERSION%HUMANCYC%PWY-5687                                                                                                                                                  : chr [1:12] "NME5" "NME1" "NME6" "NME7" ...
-#>  $ 1D-<I>MYO< I>-INOSITOL HEXAKISPHOSPHATE BIOSYNTHESIS II (MAMMALIAN)%HUMANCYC%PWY-6362                                                                                                                         : chr [1:15] "INPP5J" "INPP5K" "ITPK1" "IPMK" ...
-#>  $ CHOLESTEROL BIOSYNTHESIS II (VIA 24,25-DIHYDROLANOSTEROL)%HUMANCYC%PWY66-3                                                                                                                                    : chr [1:13] "NSDHL" "CYP51A1" "MSMO1" "HSD17B7" ...
-#>  $ ALPHA6BETA4INTEGRIN%IOB%ALPHA6BETA4INTEGRIN                                                                                                                                                                   : chr [1:68] "LAMB1" "PTPN11" "PTK2" "MTOR" ...
-#>  $ ANDROGENRECEPTOR%IOB%ANDROGENRECEPTOR                                                                                                                                                                         : chr [1:136] "PAK6" "SRY" "SPDEF" "SVIL" ...
-#>  $ BDNF%IOB%BDNF                                                                                                                                                                                                 : chr [1:47] "IGF2BP1" "AKT1" "PTK2B" "MAPK1" ...
-#>  $ CCR1%IOB%CCR1                                                                                                                                                                                                 : chr [1:30] "CCL14" "SRC" "CCL3L3" "PXN" ...
-#>  $ CCR7%IOB%CCR7                                                                                                                                                                                                 : chr [1:22] "MAPK9" "MAPK8" "RPS6KB1" "CFL1" ...
-#>  $ CCR9%IOB%CCR9                                                                                                                                                                                                 : chr [1:19] "MADCAM1" "CD226" "ITGB7" "EZR" ...
-#>  $ CD40%IOB%CD40                                                                                                                                                                                                 : chr [1:26] "PIK3R1" "IKBKB" "MAPK9" "MAPK8" ...
-#>  $ CXCR4%IOB%CXCR4                                                                                                                                                                                               : chr [1:95] "VAV2" "ZAP70" "DOK1" "CREB1" ...
-#>  $ EGFR1%IOB%EGFR1                                                                                                                                                                                               : chr [1:464] "ATF1" "ITSN2" "USP6NL" "RPL30" ...
-#>  $ EPO%IOB%EPO                                                                                                                                                                                                   : chr [1:52] "GSK3B" "GSK3A" "IRS2" "CRKL" ...
-#>  $ FAS%IOB%FAS                                                                                                                                                                                                   : chr [1:115] "PDCD6" "PARK2" "IGF1R" "TIAL1" ...
-#>  $ FLK2 FLT3%IOB%FLK2 FLT3                                                                                                                                                                                       : chr [1:23] "SHC1" "STAT3" "GAB1" "PTPN11" ...
-#>  $ G-CSF%IOB%G-CSF                                                                                                                                                                                               : chr [1:45] "MAPK3" "JAK1" "LYN" "STAT5A" ...
-#>  $ GDNF%IOB%GDNF                                                                                                                                                                                                 : chr [1:37] "TH" "DOK4" "RPS6KB1" "DOK5" ...
-#>  $ GM-CSF%IOB%GM-CSF                                                                                                                                                                                             : chr [1:81] "CSF2RA" "PRDX3" "MAPK9" "GANAB" ...
-#>  $ HEDGEHOG%IOB%HEDGEHOG                                                                                                                                                                                         : chr [1:39] "SMAD1" "CREBBP" "PTCH1" "PTCH2" ...
-#>  $ ID%IOB%ID                                                                                                                                                                                                     : chr [1:27] "RB1" "ELK1" "ELK3" "ELK4" ...
-#>  $ IFN-ALPHA%IOB%IFN-ALPHA                                                                                                                                                                                       : chr [1:37] "MTOR" "VAV1" "TNFRSF10D" "NFKBIA" ...
-#>  $ IFN-GAMMA%IOB%IFN-GAMMA                                                                                                                                                                                       : chr [1:41] "IFNGR1" "PRKCE" "STAT2" "RPS6" ...
-#>  $ KITRECEPTOR%IOB%KITRECEPTOR                                                                                                                                                                                   : chr [1:91] "SOS1" "RAF1" "CRK" "GRB7" ...
-#>  $ LEPTIN%IOB%LEPTIN                                                                                                                                                                                             : chr [1:50] "ATF2" "GSK3B" "GSK3A" "ITGB5" ...
-#>  $ M-CSF%IOB%M-CSF                                                                                                                                                                                               : chr [1:62] "CSF1" "ITGB3" "INPPL1" "SLA2" ...
-#>  $ NGF%IOB%NGF                                                                                                                                                                                                   : chr [1:21] "CREB1" "IRAK1" "SP1" "DNAJA3" ...
-#>  $ NOTCH%IOB%NOTCH                                                                                                                                                                                               : chr [1:78] "PSEN1" "ASCL1" "DLL1" "RELA" ...
-#>  $ TGF_BETA_RECEPTOR%IOB%TGF_BETA_RECEPTOR                                                                                                                                                                       : chr [1:191] "NEDD4L" "PIK3R2" "FOXO4" "PIK3R1" ...
-#>  $ THROMBOPOIETIN%IOB%THROMBOPOIETIN                                                                                                                                                                             : chr [1:11] "GAB1" "MPL" "MAPK1" "JAK2" ...
-#>  $ TIE1 TEK%IOB%TIE1 TEK                                                                                                                                                                                         : chr [1:23] "BMX" "MAPK14" "ELK1" "FOXO1" ...
-#>  $ TNFALPHA%IOB%TNFALPHA                                                                                                                                                                                         : chr [1:215] "RPL4" "RB1" "RPL30" "SMARCB1" ...
-#>  $ TNFSF1%IOB%TNFSF1                                                                                                                                                                                             : chr [1:17] "LTBR" "LTB" "JUN" "TNFRSF19" ...
-#>  $ TNFSF3%IOB%TNFSF3                                                                                                                                                                                             : chr [1:14] "JUN" "TRAF2" "TNFRSF1B" "RELA" ...
-#>  $ TNFSF8%IOB%TNFSF8                                                                                                                                                                                             : chr [1:20] "TRAF5" "REL" "TNFRSF8" "AKT1" ...
-#>  $ TRAIL%IOB%TRAIL                                                                                                                                                                                               : chr [1:55] "TRADD" "CASP7" "CASP8" "AIFM1" ...
-#>  $ WNT%IOB%WNT                                                                                                                                                                                                   : chr [1:117] "DIXDC1" "FZD10" "FRAT1" "FRAT2" ...
-#>  $ PID_IL2_PI3K_PATHWAY%MSIGDB_C2%PID_IL2_PI3K_PATHWAY                                                                                                                                                           : chr [1:34] "PTPN11" "GAB2" "NFKB1" "MTOR" ...
-#>  $ NABA_BASEMENT_MEMBRANES%MSIGDB_C2%NABA_BASEMENT_MEMBRANES                                                                                                                                                     : chr [1:40] "LAMC2" "LAMC1" "NID1" "NID2" ...
-#>  $ PID_E2F_PATHWAY%MSIGDB_C2%PID_E2F_PATHWAY                                                                                                                                                                     : chr [1:74] "RB1" "CDKN1A" "CDKN1B" "TRRAP" ...
-#>  $ PID_P53_DOWNSTREAM_PATHWAY%MSIGDB_C2%PID_P53_DOWNSTREAM_PATHWAY                                                                                                                                               : chr [1:137] "BCL2" "BCL2L1" "FOXA1" "CCNK" ...
-#>  $ PID_FANCONI_PATHWAY%MSIGDB_C2%PID_FANCONI_PATHWAY                                                                                                                                                             : chr [1:47] "BLM" "WDR48" "FAAP24" "BRCA2" ...
-#>  $ BIOCARTA_MEF2D_PATHWAY%MSIGDB_C2%BIOCARTA_MEF2D_PATHWAY                                                                                                                                                       : chr [1:18] "PPP3CA" "PPP3CB" "PPP3CC" "CAPNS1" ...
-#>  $ PID_TGFBR_PATHWAY%MSIGDB_C2%PID_TGFBR_PATHWAY                                                                                                                                                                 : chr [1:55] "DAXX" "PDPK1" "AXIN1" "RHOA" ...
-#>  $ PID_SYNDECAN_4_PATHWAY%MSIGDB_C2%PID_SYNDECAN_4_PATHWAY                                                                                                                                                       : chr [1:32] "RHOA" "ITGB1" "SDC4" "TNFRSF13B" ...
-#>  $ PID_LPA4_PATHWAY%MSIGDB_C2%PID_LPA4_PATHWAY                                                                                                                                                                   : chr [1:15] "PRKCE" "ADCY4" "ADCY3" "ADCY2" ...
-#>  $ PID_NECTIN_PATHWAY%MSIGDB_C2%PID_NECTIN_PATHWAY                                                                                                                                                               : chr [1:30] "RAPGEF1" "TLN1" "PVRL3" "CRK" ...
-#>  $ PID_AURORA_B_PATHWAY%MSIGDB_C2%PID_AURORA_B_PATHWAY                                                                                                                                                           : chr [1:39] "KIF2C" "TACC1" "VIM" "RHOA" ...
-#>  $ PID_ARF6_TRAFFICKING_PATHWAY%MSIGDB_C2%PID_ARF6_TRAFFICKING_PATHWAY                                                                                                                                           : chr [1:49] "IL2RA" "CTNNB1" "CTNND1" "CLTC" ...
-#>  $ BIOCARTA_TGFB_PATHWAY%MSIGDB_C2%BIOCARTA_TGFB_PATHWAY                                                                                                                                                         : chr [1:19] "TGFBR1" "APC" "TGFBR2" "TAB1" ...
-#>  $ PID_A6B1_A6B4_INTEGRIN_PATHWAY%MSIGDB_C2%PID_A6B1_A6B4_INTEGRIN_PATHWAY                                                                                                                                       : chr [1:46] "ITGB4" "LAMC2" "YWHAB" "LAMC1" ...
-#>  $ PID_EPHB_FWD_PATHWAY%MSIGDB_C2%PID_EPHB_FWD_PATHWAY                                                                                                                                                           : chr [1:40] "CRK" "PIK3CA" "HRAS" "GRB2" ...
-#>  $ PID_MYC_PATHWAY%MSIGDB_C2%PID_MYC_PATHWAY                                                                                                                                                                     : chr [1:25] "CDKN2A" "AXIN1" "PML" "TRRAP" ...
-#>  $ BIOCARTA_PLCE_PATHWAY%MSIGDB_C2%BIOCARTA_PLCE_PATHWAY                                                                                                                                                         : chr [1:12] "ADCY1" "RAP2B" "PRKAR1B" "PRKAR2B" ...
-#>  $ PID_HIF1_TFPATHWAY%MSIGDB_C2%PID_HIF1_TFPATHWAY                                                                                                                                                               : chr [1:66] "SERPINE1" "EP300" "SMAD4" "SMAD3" ...
-#>  $ PID_NFKAPPAB_ATYPICAL_PATHWAY%MSIGDB_C2%PID_NFKAPPAB_ATYPICAL_PATHWAY                                                                                                                                         : chr [1:17] "NFKB1" "PIK3CA" "LCK" "SSPO" ...
-#>  $ BIOCARTA_EPHA4_PATHWAY%MSIGDB_C2%BIOCARTA_EPHA4_PATHWAY                                                                                                                                                       : chr [1:10] "EPHA4" "FYN" "L1CAM" "ITGA1" ...
-#>  $ PID_ERBB_NETWORK_PATHWAY%MSIGDB_C2%PID_ERBB_NETWORK_PATHWAY                                                                                                                                                   : chr [1:15] "BTC" "ERBB3" "ERBB2" "NRG1" ...
-#>  $ PID_ENDOTHELIN_PATHWAY%MSIGDB_C2%PID_ENDOTHELIN_PATHWAY                                                                                                                                                       : chr [1:63] "RHOA" "HRAS" "PRKCE" "ADCY4" ...
-#>  $ BIOCARTA_FREE_PATHWAY%MSIGDB_C2%BIOCARTA_FREE_PATHWAY                                                                                                                                                         : chr [1:10] "TNF" "NFKB1" "CXCL8" "RELA" ...
-#>  $ BIOCARTA_CYTOKINE_PATHWAY%MSIGDB_C2%BIOCARTA_CYTOKINE_PATHWAY                                                                                                                                                 : chr [1:21] "TNF" "IL6" "IL5" "IL2" ...
-#>  $ BIOCARTA_STRESS_PATHWAY%MSIGDB_C2%BIOCARTA_STRESS_PATHWAY                                                                                                                                                     : chr [1:25] "TNF" "NFKB1" "LTA" "ATF1" ...
-#>  $ NABA_ECM_REGULATORS%MSIGDB_C2%NABA_ECM_REGULATORS                                                                                                                                                             : chr [1:237] "TIMP2" "TIMP3" "TIMP1" "TIMP4" ...
-#>   [list output truncated]
+#>  chr [1:10208] "PCYT1B" "PCYT1A" "PLA2G4D" "PLA2G4B" "PLA2G4C" "PLA2G4A" ...
+str(head(pathwaysGMT))
+#> List of 6
+#>  $ GLYCEROPHOSPHOLIPID BIOSYNTHESIS%REACTOME%R-HSA-1483206.4                        : chr [1:126] "PCYT1B" "PCYT1A" "PLA2G4D" "PLA2G4B" ...
+#>  $ MITOTIC PROPHASE%REACTOME DATABASE ID RELEASE 74%68875                           : chr [1:134] "SETD8" "NUMA1" "NCAPG2" "LMNB1" ...
+#>  $ ACTIVATION OF NF-KAPPAB IN B CELLS%REACTOME%R-HSA-1169091.1                      : chr [1:67] "PSMA6" "PSMA3" "PSMA4" "PSMA1" ...
+#>  $ CD28 DEPENDENT PI3K AKT SIGNALING%REACTOME DATABASE ID RELEASE 74%389357         : chr [1:22] "CD28" "THEM4" "AKT1" "TRIB3" ...
+#>  $ UBIQUITIN-DEPENDENT DEGRADATION OF CYCLIN D%REACTOME DATABASE ID RELEASE 74%75815: chr [1:52] "PSMA6" "PSMA3" "PSMA4" "PSMA1" ...
+#>  $ DEGRADATION OF THE EXTRACELLULAR MATRIX%REACTOME%R-HSA-1474228.4                 : chr [1:110] "PRSS1" "COL16A1" "COL12A1" "CAPN15" ...
 ```
 
-Run FEDUP on sample data
+### Pathway analysis
 
-``` r
+Now run FEDUP on sample data
+
+
+```r
 fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
+#> Data input:
+#>  => 190 test genes
+#>  => 10208 background genes
+#>  => 1436 pathawys
+#> You did it! FEDUP ran successfully, feeling pretty good huh?
 ```
 
-View of output results table sorted by p-value
+View output results table sorted by p-value
 
-``` r
+
+```r
 print(fedup_res)
-#>                                                                      pathway
-#>    1:     OLFACTORY SIGNALING PATHWAY%REACTOME DATABASE ID RELEASE 74%381753
-#>    2:                            SENSORY PERCEPTION OF SMELL%GOBP%GO:0007608
-#>    3:                SENSORY PERCEPTION OF CHEMICAL STIMULUS%GOBP%GO:0007606
-#>    4:                                     SENSORY PERCEPTION%GOBP%GO:0007600
-#>    5: GPCRS, CLASS A RHODOPSIN-LIKE%WIKIPATHWAYS_20201110%WP455%HOMO SAPIENS
-#>   ---                                                                       
-#> 8076:                      KERATAN SULFATE METABOLIC PROCESS%GOBP%GO:0042339
-#> 8077:                                 CELLULAR EXTRAVASATION%GOBP%GO:0045123
-#> 8078:                                  MACROPHAGE ACTIVATION%GOBP%GO:0042116
-#> 8079:              APOPTOTIC PROCESS INVOLVED IN DEVELOPMENT%GOBP%GO:1902742
-#> 8080:                  POSITIVE REGULATION OF PROTEIN IMPORT%GOBP%GO:1904591
+#>                                                                                                                      pathway
+#>    1:                                                              MUSCLE CONTRACTION%REACTOME DATABASE ID RELEASE 74%397014
+#>    2:                                                             CARDIAC CONDUCTION%REACTOME DATABASE ID RELEASE 74%5576891
+#>    3:                                                                               ION HOMEOSTASIS%REACTOME%R-HSA-5578775.2
+#>    4:                                                       SMOOTH MUSCLE CONTRACTION%REACTOME DATABASE ID RELEASE 74%445355
+#>    5:                                                                    STRIATED MUSCLE CONTRACTION%REACTOME%R-HSA-390522.1
+#>   ---                                                                                                                       
+#> 1432:                                                       G BETA:GAMMA SIGNALLING THROUGH PLC BETA%REACTOME%R-HSA-418217.3
+#> 1433:                                          SIGNALING BY NOTCH1 HD+PEST DOMAIN MUTANTS IN CANCER%REACTOME%R-HSA-2894858.1
+#> 1434:                                                                     IRAK4 DEFICIENCY (TLR2 4)%REACTOME%R-HSA-5603041.1
+#> 1435: TNF RECEPTOR SUPERFAMILY (TNFSF) MEMBERS MEDIATING NON-CANONICAL NF-KB PATHWAY%REACTOME DATABASE ID RELEASE 74%5676594
+#> 1436:                                                                     RHO GTPASES ACTIVATE KTN1%REACTOME%R-HSA-5625970.1
 #>       size real_total real_pathway real_pathway_frac expected_total
-#>    1:  396        396          396         100.00000          15965
-#>    2:   85        396           74          18.68687          15965
-#>    3:  142        396           84          21.21212          15965
-#>    4:  356        396           85          21.46465          15965
-#>    5:  257        396           51          12.87879          15965
+#>    1:  190        190          190       100.0000000          10208
+#>    2:  124        190          124        65.2631579          10208
+#>    3:   51        190           51        26.8421053          10208
+#>    4:   37        190           37        19.4736842          10208
+#>    5:   34        190           34        17.8947368          10208
 #>   ---                                                              
-#> 8076:   32        396            0           0.00000          15965
-#> 8077:   34        396            0           0.00000          15965
-#> 8078:   35        396            0           0.00000          15965
-#> 8079:   14        396            0           0.00000          15965
-#> 8080:   30        396            0           0.00000          15965
+#> 1432:   20        190            0         0.0000000          10208
+#> 1433:   57        190            1         0.5263158          10208
+#> 1434:   11        190            0         0.0000000          10208
+#> 1435:   16        190            0         0.0000000          10208
+#> 1436:   11        190            0         0.0000000          10208
 #>       expected_pathway expected_pathway_frac enrichment
-#>    1:              396            2.48042593   enriched
-#>    2:               85            0.53241466   enriched
-#>    3:              142            0.88944566   enriched
-#>    4:              356            2.22987786   enriched
-#>    5:              257            1.60977137   enriched
+#>    1:              190             1.8612853   Enriched
+#>    2:              124             1.2147335   Enriched
+#>    3:               51             0.4996082   Enriched
+#>    4:               37             0.3624608   Enriched
+#>    5:               34             0.3330721   Enriched
 #>   ---                                                  
-#> 8076:               32            0.20043846   depleted
-#> 8077:               34            0.21296586   depleted
-#> 8078:               35            0.21922956   depleted
-#> 8079:               14            0.08769183   depleted
-#> 8080:               30            0.18791106   depleted
-#>                                 real_pathway_gene       pvalue          fdr
-#>    1: OR11A1,OR8A1,OR8I2,OR52N1,OR52N5,OR52N4,... 0.000000e+00 0.000000e+00
-#>    2: OR8A1,OR8I2,OR5D18,OR5D16,OR5D14,OR5D13,... 4.433425e-72 1.791104e-68
-#>    3: OR8A1,OR8I2,OR5D18,OR5D16,OR5D14,OR5D13,... 3.293839e-71 8.871406e-68
-#>    4: OR8A1,OR8I2,OR5D18,OR5D16,OR5D14,OR5D13,... 2.245400e-46 4.535708e-43
-#>    5:    OR11A1,OR6B1,OR6A2,OR2D2,OR2C1,OR2B6,... 5.717512e-26 9.239499e-23
+#> 1432:               20             0.1959248   Depleted
+#> 1433:               57             0.5583856   Depleted
+#> 1434:               11             0.1077586   Depleted
+#> 1435:               16             0.1567398   Depleted
+#> 1436:               11             0.1077586   Depleted
+#>                               real_pathway_gene        pvalue        qvalue
+#>    1:   NKX2-5,SCN4A,ITGB5,SCN4B,PAK2,GATA4,... 1.091522e-189 1.567426e-186
+#>    2: NKX2-5,SCN4A,SCN4B,GATA4,AKAP9,KCNJ14,... 4.477692e-130 3.214983e-127
+#>    3:    SLN,STIM1,ORAI2,ORAI1,ABCC9,KCNJ11,...  1.513045e-57  7.242444e-55
+#>    4:      ITGB5,PAK2,ACTA2,VCL,MYL12B,MYL6,...  1.161897e-42  4.171211e-40
+#>    5:          VIM,TNNI3,DMD,TPM4,TPM3,TPM2,...  2.009234e-39  5.770521e-37
 #>   ---                                                                      
-#> 8076:                                             1.000000e+00 1.000000e+00
-#> 8077:                                             1.000000e+00 1.000000e+00
-#> 8078:                                             1.000000e+00 1.000000e+00
-#> 8079:                                             1.000000e+00 1.000000e+00
-#> 8080:                                             1.000000e+00 1.000000e+00
+#> 1432:                                            1.000000e+00  1.000000e+00
+#> 1433:                                     KAT2B  1.000000e+00  1.000000e+00
+#> 1434:                                            1.000000e+00  1.000000e+00
+#> 1435:                                            1.000000e+00  1.000000e+00
+#> 1436:                                            1.000000e+00  1.000000e+00
 ```
 
 ### Visualization
 
-Plot top pathway enrichment/depletion results
+Plot significant enrichment and depletion results in the form of a dot plot
 
-``` r
-fedup_enr <- head(fedup_res[with(fedup_res, which(enrichment == "enriched")),], 10)
-fedup_dep <- head(fedup_res[with(fedup_res, which(enrichment == "depleted")),], 10)
-fedup_plot <- rbind(fedup_enr, fedup_dep)
-fedup_plot$log10fdr <- -log10(fedup_plot$fdr + 1e-10) # log10-transform FDR for plotting
+
+```r
+fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
+fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10) # log10-transform qvalue for plotting
 fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
-plotDotPlot(df = fedup_plot,
-            x_var = "log10fdr",
-            y_var = "pathway",
-            x_lab = "-log10(FDR)",
-            fill_var = "enrichment",
-            fill_lab = "Enrichment",
-            size_var = "real_pathway_frac",
-            size_lab = "Gene fraction")
+p <- plotDotPlot(
+  df = fedup_plot,
+  x_var = "log10qvalue",
+  y_var = "pathway",
+  x_lab = "-log10(Qvalue)",
+  fill_var = "enrichment",
+  fill_lab = "Enrichment\nstatus",
+  size_var = "real_pathway_frac",
+  size_lab = "Gene fraction"
+)
+print(p)
 ```
 
-![](man/figures/README-plot_FEDUP-1.png)<!-- -->
+![plot of chunk FEDUP_dotplot](man/figures/README_FEDUP_dotplot-1.png)
+
+As expected, we see strong enrichment for muscle-related pathways at the top of
+the plot, and depletion for olfactory and amino acid metabolism pathways at the
+bottom of the plot. Nice!
+
+We can also facet the plot by enrichment status to clearly separate
+the enriched and depleted pathways
+
+
+```r
+p <- p +
+  facet_grid("enrichment", scales = "free", space = "free") +
+  theme(strip.text.y = element_blank())
+print(p)
+```
+
+![plot of chunk FEDUP_dotplot_facet](man/figures/README_FEDUP_dotplot_facet-1.png)
+
+Look at all those chick... enrichments! This is a bit overwhelming, no? What if we
+could see all these pathways in a summarised way that doesn't hurt our tired brains
+even more? Oh I know... let's use an Enrichment Map!  
+
+First, make sure to have [Cytoscape](https://cytoscape.org/download.html) downloaded
+and and open on your computer. You'll also need to install the
+[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
+[AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps
+
+Then format FEDUP results for compatibility with EnrichmentMap
+
+
+```r
+results_file <- tempfile("fedup_res", fileext = ".txt")
+writeFemap(fedup_res, results_file)
+#> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpUva5Ms/fedup_res102ab31b2cac8.txt
+```
+
+Prepare a pathway annotation file (GMT format) from the pathway list you passed
+to FEDUP (you don't need to run this function if your pathway annotations are
+already in GMT format, but it doesn't hurt to make sure)
+
+
+```r
+gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
+writePathways(pathwaysGMT, gmt_file)
+#> Wrote GMT file with 1436 pathway entries to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpUva5Ms/pathwaysGMT102ab54fbbd6e.gmt
+```
+
+Cytoscape is open right? If so, uncomment these lines and let the magic happen
+
+
+```r
+net_file <- tempfile("FEDUP_EM", fileext = ".png")
+plotFemap(
+  gmt_file = gmt_file,
+  results_file = results_file,
+  qvalue = 0.05,
+  net_name = "FEDUP_EM",
+  net_file = net_file
+)
+#> Building the network
+#> Setting network chart data
+#> Annotating the network using AutoAnnotate
+#> Applying a force-directed network layout
+#> Drawing out network to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpUva5Ms/FEDUP_EM102ab4f09f43e.png
+#>                                                                                    file 
+#> "/var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T/RtmpUva5Ms/FEDUP_EM102ab4f09f43e.png"
+```
 
 ## Versioning
 
-For the versions available, see the [tags on this
-repo](https://github.com/rosscm/FEDUP/tags).
+For the versions available, see the [tags on this repo](https://github.com/rosscm/FEDUP/tags).
 
 ## Shoutouts
 

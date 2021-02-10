@@ -5,7 +5,7 @@
 \alias{backgroundGene}
 \title{Example vector of human genes to use as background set for enrichment.}
 \format{
-a character vector with 15965 elements (gene IDs)
+a character vector with 10208 elements (gene IDs)
 }
 \usage{
 backgroundGene

@@ -1,16 +1,19 @@
 ---
 title: "FEDUP: User Manual"
 package: FEDUP
-output: rmarkdown::html_vignette
+output: prettydoc::html_pretty
 vignette: >
-  %\VignetteIndexEntry{FEDUP: User Manual}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{FEDUP: User Manual}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
-`FEDUP` is an R package for enrichment and depletion analysis on user-defined
-pathways using a Fisher's exact test. This package also gives the option to draw
-a network representation of pathway overlaps using EnrichmentMap.
+`FEDUP` is an R package that tests for enrichment and depletion
+of user-defined pathways using a Fisher's exact test. This package is
+designed for versatile pathway annotation formats (eg. gmt, txt, xlsx) to
+allow the user to run pathway analysis on their annotations of choice.
+FEDUP is also integrated with Cytoscape to provide network-based pathway
+visualization that enhances the interpretability of enrichment results.
 
 ## Getting started
 ### System prerequisites
@@ -57,7 +60,7 @@ str(head(pathwaysGMT))
 
 ### Pathway analysis
 
-Now run FEDUP on sample data:
+Now run `FEDUP` on sample data:
 
 ```{r, FEDUP_run}
 fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
@@ -66,17 +69,22 @@ fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
 View output results table sorted by pvalue:
 
 ```{r, FEDUP_results}
-print(fedup_res)
+print(head(fedup_res[which(fedup_res$status == "Enriched"),]))
+print(head(fedup_res[which(fedup_res$status == "Depleted"),]))
 ```
+
+As expected, we see strong enrichment for muscle-related pathways and depletion
+for functions not associated with muscle contraction, such as olfactory
+signalling and amino acid metabolism). Nice!
 
 ### Visualization
 
-Plot enriched and depleted pathways (qvalue < 5%) in the form of a dot plot:
+Plot enriched and depleted pathways (qvalue < 0.05) in the form of a dot plot:
 
 ```{r, FEDUP_dotplot, fig.width = 9, fig.height = 9.5}
 fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
-fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10)
-fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway)
+fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10) # log10-transform qvalue for plotting
+fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
 p <- plotDotPlot(
   df = fedup_plot,
   x_var = "log10qvalue",
@@ -85,62 +93,60 @@ p <- plotDotPlot(
   fill_var = "status",
   fill_lab = "Enrichment\nstatus",
   size_var = "fold_enrichment",
-  size_lab = "Fold enrichment"
-)
-print(p)
-```
-
-As expected, we see strong enrichment for muscle-related pathways at the top of
-the plot, and depletion for olfactory and amino acid metabolism pathways at the
-bottom of the plot. Nice!
-
-We can also facet the plot by enrichment status to clearly separate
-the enriched and depleted pathways:
-
-```{r, FEDUP_dotplot_facet, fig.width = 9, fig.height = 9.5}
-p <- p +
+  size_lab = "Fold enrichment")
+p <- p + # facet by status to separate enriched and depleted pathways
   facet_grid("status", scales = "free", space = "free") +
   theme(strip.text.y = element_blank())
 print(p)
 ```
 
-Look at all those chick... enrichments! This is a bit overwhelming, no? What if
-we could see all these pathways in a summarised way that doesn't hurt our tired
-brains even more? Oh I know... let's use an Enrichment Map!  
+Look at all those chick... enrichments! This is a bit overwhelming, no? How do
+we interpret these *76* different pathways? What if we could visualize them
+in a way that doesn't hurt our tired brains even more? Oh I know...
+let's use an Enrichment Map!  
 
 First, make sure to have [Cytoscape](https://cytoscape.org/download.html)
 downloaded and and open on your computer. You'll also need to install the
 [EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
 [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
-Then format FEDUP results for compatibility with EnrichmentMap:
+Then format `FEDUP` results for compatibility with EnrichmentMap:
 
-```{r, EM_prepare_results}
+```{r, FEDUP_EM_prepare_results}
 results_file <- tempfile("fedup_res", fileext = ".txt")
 writeFemap(fedup_res, results_file)
 ```
 
 Prepare a pathway annotation file (GMT format) from the pathway list you passed
-to FEDUP (you don't need to run this function if your pathway annotations are
+to `FEDUP` (you don't need to run this function if your pathway annotations are
 already in GMT format, but it doesn't hurt to make sure):
 
-```{r, EM_prepare_gmt}
+```{r, FEDUP_EM_prepare_gmt}
 gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmt_file)
 ```
 
 Cytoscape is open right? If so, uncomment these lines and let the magic happen:
 
-```{r, EM_FEDUP}
+```{r, FEDUP_EM}
 #net_file <- tempfile("FEDUP_EM", fileext = ".png")
 #plotFemap(
 #  gmt_file = gmt_file,
 #  results_file = results_file,
 #  qvalue = 0.05,
 #  net_name = "FEDUP_EM",
-#  net_file = net_file
-#)
+#  net_file = net_file)
 ```
+
+![](figures/FEDUP_EM-1.png)
+
+After some manual rearrangement of the annotated pathway clusters, this is the
+resulting Enrichment Map we get from our `FEDUP` results. Much better :)
+
+This has effectively summarized the 76 pathways in our dot plot into 14 unique
+biological themes (including 4 unclustered pathways). We can now see clear
+themes in the data pertaining to muscle contraction, such as NMDA receptor
+function, calcium homeostasis, and ATPase transport.
 
 ## Versioning
 

@@ -10,7 +10,7 @@ test_that("Test that writeFemap works", {
   femap_res <- read.delim(results_file)
 
   expect_equal(nrow(fedup_res), nrow(femap_res))
-  expect_true("phenotype" %in% colnames(femap_res))
-  expect_true(fedup_res[1,"enrichment"] == "Enriched" && femap_res[1,"phenotype"] == 1)
-  expect_true(fedup_res[1436,"enrichment"] == "Depleted" && femap_res[1436,"phenotype"] == -1)
+  expect_true("status" %in% colnames(femap_res))
+  expect_true(fedup_res[1,"status"] == "Enriched" && femap_res[1,"status"] == 1)
+  expect_true(fedup_res[1436,"status"] == "Depleted" && femap_res[1436,"status"] == -1)
 })

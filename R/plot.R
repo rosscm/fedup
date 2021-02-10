@@ -1,16 +1,16 @@
 #' Visualizes pathway enrichment and depletion using ggplot.
 #'
 #' @param df (data.frame) table with FEDUP enrichment results to plot.
-#' @param x_var (char) x-axis variable (must be a column value in `df`).
-#' @param y_var (char) y-axis variable (must be a column value in `df`).
-#' @param x_lab (char) x-axis label (default `x_var` value).
+#' @param x_var (char) x-axis variable (must be a column value in \code{df}).
+#' @param y_var (char) y-axis variable (must be a column value in \code{df}).
+#' @param x_lab (char) x-axis label (default \code{x_var} value).
 #' @param y_lab (char) y-axis label (default NULL).
 #' @param p_title (char) plot title (default NULL).
 #' @param fill_var (char) point fill variable (default NULL).
 #' @param fill_col (char) point fill colours (default NULL).
-#' @param fill_lab (char) point fill label (default `fill_var` value).
+#' @param fill_lab (char) point fill label (default \code{fill_var} value).
 #' @param size_var (char) point size variable (default NULL).
-#' @param size_lab (char) point size label (default `size_var` value).
+#' @param size_lab (char) point size label (default \code{size_var} value).
 #' @return object returned from ggplot with the enrichment dot plot.
 #' @examples
 #' data(testGene)
@@ -21,14 +21,14 @@
 #' fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10)
 #' fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway)
 #' plotDotPlot(
-#'      df = fedup_plot,
-#'      x_var = "log10qvalue",
-#'      y_var = "pathway",
-#'      x_lab = "-log10(Qvalue)",
-#'      fill_var = "enrichment",
-#'      fill_lab = "Enrichment\nstatus",
-#'      size_var = "real_pathway_frac",
-#'      size_lab = "Gene fraction")
+#'     df = fedup_plot,
+#'     x_var = "log10qvalue",
+#'     y_var = "pathway",
+#'     x_lab = "-log10(Qvalue)",
+#'     fill_var = "status",
+#'     fill_lab = "Enrichment\nstatus",
+#'     size_var = "fold_enrichment",
+#'     size_lab = "Fold enrichment")
 #' @import ggplot2
 #' @importFrom ggthemes theme_clean
 #' @importFrom forcats fct_reorder
@@ -38,22 +38,19 @@ plotDotPlot <- function(df, x_var, y_var,
                         x_lab = x_var, y_lab = NULL, p_title = NULL,
                         fill_var = NULL, fill_col = NULL, fill_lab = fill_var,
                         size_var = NULL, size_lab = size_var) {
-    # Set point fill if `fill_var` is specified but `fill_col` is not
+
     if (!is.null(fill_var) && is.null(fill_col)) {
         fill_n <- length(unique(df[[fill_var]]))
         pal_n <- ifelse(fill_n >= 3, fill_n, 3)
         fill_col <- brewer.pal(pal_n, "Set1")
     }
 
-    # Set factor level if `fill_var` is set to `enrichment`
-    if (fill_var == "enrichment") {
+    if (fill_var == "status") {
         df[[fill_var]] <- factor(
             df[[fill_var]],
-            levels = c("Enriched", "Depleted")
-        )
+            levels = c("Enriched", "Depleted"))
     }
 
-    # Plot dot plot with specified parameters
     p <- ggplot(df, aes_string(
                 x = x_var,
                 y = fct_reorder(df[[y_var]], df[[x_var]]),
@@ -71,9 +68,8 @@ plotDotPlot <- function(df, x_var, y_var,
             plot.background = element_blank())
 
     if (is.numeric(df[[x_var]])) {
-        # Set x-axis limits so points are not cut off from plot window
-        xmin <- floor(min(df[[x_var]]))
-        xmax <- ceiling(max(df[[x_var]]))
+        xmin <- floor(min(df[[x_var]])) # set x-axis limits to avoid points
+        xmax <- ceiling(max(df[[x_var]])) # being cut off from plot window
         p <- p + xlim(xmin, xmax)
     }
     return(p)

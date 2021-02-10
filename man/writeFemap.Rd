@@ -16,13 +16,14 @@ writeFemap(df, results_file)
 table of gene enrichment and depletion results formatted as a
 'Generic results file'. Rows represent tested pathways. Columns represent:
 \itemize{
-   \item pathway -- pathway ID (must match pathway IDs in the GMT file provided to plotFemap());
-   \item description -- gene-set name or description;
-   \item pvalue -- enrichment pvalue;
-   \item qvalue -- BH-corrected pvalue;
-   \item phenotype -- +1 or -1, to identify enrichment in up- and down-regulation,
-           or, more in general in either of the two phenotypes being compared
-           in the two-class analysis (+1 maps to red, -1 maps to blue)
+    \item pathway -- pathway ID (must match pathway IDs in the GMT file
+        provided to plotFemap());
+    \item description -- pathway name or description;
+    \item pvalue -- enrichment pvalue;
+    \item qvalue -- BH-corrected pvalue;
+    \item status -- +1 or -1, to identify enrichment in either of the two
+        phenotypes being compared in the two-class analysis
+        (+1 maps to red, -1 maps to blue)
 }
 }
 \description{

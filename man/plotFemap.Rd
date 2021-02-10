@@ -41,20 +41,20 @@ pathways using EnrichmentMap (EM) in Cytoscape.
 }
 \examples{
 \dontrun{
- # not run because Cytoscape needs to be installed and open
- data(testGene)
- data(backgroundGene)
- data(pathwaysGMT)
- gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
- fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
- results_file <- tempfile("fedup_res", fileext = ".txt")
- net_file <- tempfile("FEDUP_EM", fileext = ".png")
- writePathways(pathwaysGMT, gmt_file)
- writeFemap(fedup_res, results_file)
- plotFemap(
-   gmt_file = gmt_file,
-   results_file = results_file,
-   qvalue = 0.05,
-   net_name = "FEDUP_EM",
-   net_file = net_file)}
+    # not run because Cytoscape needs to be installed and open
+    data(testGene)
+    data(backgroundGene)
+    data(pathwaysGMT)
+    gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
+    fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
+    results_file <- tempfile("fedup_res", fileext = ".txt")
+    net_file <- tempfile("FEDUP_EM", fileext = ".png")
+    writePathways(pathwaysGMT, gmt_file)
+    writeFemap(fedup_res, results_file)
+    plotFemap(
+        gmt_file = gmt_file,
+        results_file = results_file,
+        qvalue = 0.05,
+        net_name = "FEDUP_EM",
+        net_file = net_file)}
 }

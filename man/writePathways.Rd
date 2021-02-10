@@ -14,9 +14,9 @@ writePathways(pathways, gmt_file)
 \value{
 GMT-formatted file. Rows represent pathways. Columns represent:
 \itemize{
- \item pathway ID;
- \item description;
- \item a list of tab-delimited genes
+    \item pathway ID;
+    \item description;
+    \item a list of tab-delimited genes
 }
 }
 \description{

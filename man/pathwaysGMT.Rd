@@ -5,19 +5,20 @@
 \alias{pathwaysGMT}
 \title{Named list of human pathway annotations obtained from a GMT file.}
 \format{
-a named list of 8080 vectors
+a named list of 1437 vectors
 }
 \usage{
 pathwaysGMT
 }
 \description{
 Raw GMT file is available from
-\url{http://download.baderlab.org/EM_Genesets/November_17_2020/Human/symbol/Pathways/Human_Reactome_November_17_2020_symbol.gmt}
+\url{http://download.baderlab.org/EM_Genesets/November_17_2020/Human
+    /symbol/Pathways/Human_Reactome_November_17_2020_symbol.gmt}
 }
 \details{
 Raw data location
-system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt", package = "FEDUP")
-
+system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
+    package = "FEDUP")
 Script to prepare data
 system.file("data-raw", "pathwaysGMT.R", package = "FEDUP")
 }

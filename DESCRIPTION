@@ -2,31 +2,40 @@ Package: FEDUP
 Title: Fisher's test for Enrichment and Depletion of User-defined Pathways
 Version: 0.99.0
 Date: 2020-10-08
-Authors@R: person("Catherine", "Ross",
-           email = "catherinem.ross@mail.utoronto.ca",
-           role = c("aut", "cre"))
-Description: FEDUP is an R package that tests for enrichment and depletion
-             of user-defined pathways using a Fisher's exact test.
-biocViews: GeneSetEnrichment, Pathways
-Depends:
-  R (>= 4.0)
+Depends: R (>= 4.0)
+Authors@R:
+    person("Catherine", "Ross",
+        email = "catherinem.ross@mail.utoronto.ca",
+        role = c("aut", "cre"))
+Description:
+    FEDUP is an R package that tests for enrichment and depletion
+    of user-defined pathways using a Fisher's exact test. This package is
+    designed for versatile pathway annotation formats (eg. gmt, txt, xlsx) to
+    allow the user to run pathway analysis on their annotations of choice.
+    FEDUP is also integrated with Cytoscape to provide network-based pathway
+    visualization that enhances the interpretability of enrichment results.
+biocViews:
+    GeneSetEnrichment,
+    Pathways,
+    NetworkEnrichment,
+    Network
 Imports:
-  openxlsx,
-  tibble,
-  dplyr,
-  data.table,
-  ggplot2,
-  ggthemes,
-  forcats,
-  RColorBrewer,
-  RCy3,
-  utils,
-  stats
+    openxlsx,
+    tibble,
+    dplyr,
+    data.table,
+    ggplot2,
+    ggthemes,
+    forcats,
+    RColorBrewer,
+    RCy3,
+    utils,
+    stats
 Suggests:
-  testthat,
-  knitr,
-  rmarkdown,
-  devtools
+    testthat,
+    knitr,
+    rmarkdown,
+    devtools
 LazyData: true
 Encoding: UTF-8
 Language: en-US

@@ -18,7 +18,8 @@ a network representation of pathway overlaps using EnrichmentMap.
 R version >= 4.0  
 R packages:
 
-* **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes, forcats, RColorBrewer  
+* **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes, forcats,
+            RColorBrewer  
 * **Bioconductor**: RCy3
 
 ### Installation
@@ -35,9 +36,10 @@ devtools::load_all()
 
 Load example test genes, background genes, and pathways:
 
-To note, the test genes comprise solely of a **muscle contraction** pathway (Reactome ID 397014).
-So we would expect to see strong *enrichment* for pathways related to muscle contraction and
-*depletion* for pathways not associated with muscle contraction. Let's see!
+To note, the test genes comprise solely of a **muscle contraction** pathway
+(Reactome ID 397014). So we would expect to see strong *enrichment* for pathways
+related to muscle contraction and *depletion* for pathways not associated with
+muscle contraction. Let's see!
 
 ```{r, FEDUP_input}
 data(testGene)
@@ -73,17 +75,17 @@ Plot enriched and depleted pathways (qvalue < 5%) in the form of a dot plot:
 
 ```{r, FEDUP_dotplot, fig.width = 9, fig.height = 9.5}
 fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
-fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10) # log10-transform qvalue for plotting
-fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
+fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10)
+fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway)
 p <- plotDotPlot(
   df = fedup_plot,
   x_var = "log10qvalue",
   y_var = "pathway",
   x_lab = "-log10(Qvalue)",
-  fill_var = "enrichment",
+  fill_var = "status",
   fill_lab = "Enrichment\nstatus",
-  size_var = "real_pathway_frac",
-  size_lab = "Gene fraction"
+  size_var = "fold_enrichment",
+  size_lab = "Fold enrichment"
 )
 print(p)
 ```
@@ -97,17 +99,17 @@ the enriched and depleted pathways:
 
 ```{r, FEDUP_dotplot_facet, fig.width = 9, fig.height = 9.5}
 p <- p +
-  facet_grid("enrichment", scales = "free", space = "free") +
+  facet_grid("status", scales = "free", space = "free") +
   theme(strip.text.y = element_blank())
 print(p)
 ```
 
-Look at all those chick... enrichments! This is a bit overwhelming, no? What if we
-could see all these pathways in a summarised way that doesn't hurt our tired brains
-even more? Oh I know... let's use an Enrichment Map!  
+Look at all those chick... enrichments! This is a bit overwhelming, no? What if
+we could see all these pathways in a summarised way that doesn't hurt our tired
+brains even more? Oh I know... let's use an Enrichment Map!  
 
-First, make sure to have [Cytoscape](https://cytoscape.org/download.html) downloaded
-and and open on your computer. You'll also need to install the
+First, make sure to have [Cytoscape](https://cytoscape.org/download.html)
+downloaded and and open on your computer. You'll also need to install the
 [EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
 [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
@@ -142,4 +144,5 @@ Cytoscape is open right? If so, uncomment these lines and let the magic happen:
 
 ## Versioning
 
-For the versions available, see the [tags on this repo](https://github.com/rosscm/FEDUP/tags).
+For the versions available, see the
+[tags on this repo](https://github.com/rosscm/FEDUP/tags).

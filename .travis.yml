@@ -10,12 +10,10 @@ r_packages:
     - tibble
     - dplyr
     - data.table
-    - ggplot
+    - ggplot2
     - ggthemes
     - forcats
-    - RColorBrewr
-    - utils
-    - stats
+    - RColorBrewer
 bioc_required: true
 bioc_packages:
     - BiocCheck

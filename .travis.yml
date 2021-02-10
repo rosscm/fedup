@@ -1,4 +1,24 @@
 language: r
+# bioc-devel build fails on r version requirement
 r:
-  - bioc-devel
-  - bioc-release
+    - bioc-release
+os:
+    - linux
+    - osx
+r_packages:
+    - openxlsx
+    - tibble
+    - dplyr
+    - data.table
+    - ggplot
+    - ggthemes
+    - forcats
+    - RColorBrewr
+    - utils
+    - stats
+bioc_required: true
+bioc_packages:
+    - BiocCheck
+    - RCy3
+after_success:
+  - Rscript -e 'covr::codecov()'

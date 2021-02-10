@@ -3,6 +3,6 @@
 .Rproj.user
 .git
 .github
-README.rmd
-README.html
-run_fedup*.R
+README.Rmd
+*.html
+run_*.R

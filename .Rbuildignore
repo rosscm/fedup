@@ -3,6 +3,8 @@
 ^\.Rproj\.user$
 ^\.github$
 ^README.Rmd$
-^README.html$
-^run_fedup.*.R$
+^\.html$
+^run_.*.R$
 ^data-raw$
+^\.travis\.yml$
+^codecov\.yml$

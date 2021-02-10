@@ -1,9 +1,17 @@
+[![Build
+Status](https://travis-ci.com/rosscm/FEDUP.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/FEDUP)
+[![Codecov test
+coverage](https://codecov.io/gh/rosscm/FEDUP/branch/main/graph/badge.svg)](https://codecov.io/gh/rosscm/FEDUP?branch=main)
+
 # FEDUP
 
-FEDUP is an R package for enrichment and depletion analysis on
-user-defined pathways using a Fisher’s exact test. This package also
-gives the option to draw a network representation of pathway overlaps
-using EnrichmentMap.
+FEDUP is an R package that tests for enrichment and depletion of
+user-defined pathways using a Fisher’s exact test. This package is
+designed for versatile pathway annotation formats (eg. gmt, txt, xlsx)
+to allow the user to run pathway analysis on their annotations of
+choice. FEDUP is also integrated with Cytoscape to provide network-based
+pathway visualization that enhances the interpretability of enrichment
+results.
 
 ## Getting started
 
@@ -55,7 +63,7 @@ Take a look at the data structure:
 
 ### Pathway analysis
 
-Now run FEDUP on sample data:
+Now run `FEDUP` on sample data:
 
     fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
     #> Data input:
@@ -66,47 +74,58 @@ Now run FEDUP on sample data:
 
 View output results table sorted by pvalue:
 
-    print(fedup_res)
-    #>                                                                                                                      pathway
-    #>    1:                                                              MUSCLE CONTRACTION%REACTOME DATABASE ID RELEASE 74%397014
-    #>    2:                                                             CARDIAC CONDUCTION%REACTOME DATABASE ID RELEASE 74%5576891
-    #>    3:                                                                               ION HOMEOSTASIS%REACTOME%R-HSA-5578775.2
-    #>    4:                                                       SMOOTH MUSCLE CONTRACTION%REACTOME DATABASE ID RELEASE 74%445355
-    #>    5:                                                                    STRIATED MUSCLE CONTRACTION%REACTOME%R-HSA-390522.1
-    #>   ---                                                                                                                       
-    #> 1433:                                                                     IRAK4 DEFICIENCY (TLR2 4)%REACTOME%R-HSA-5603041.1
-    #> 1434:                          ACTIVATION OF KAINATE RECEPTORS UPON GLUTAMATE BINDING%REACTOME DATABASE ID RELEASE 74%451326
-    #> 1435: TNF RECEPTOR SUPERFAMILY (TNFSF) MEMBERS MEDIATING NON-CANONICAL NF-KB PATHWAY%REACTOME DATABASE ID RELEASE 74%5676594
-    #> 1436:                                                                     RHO GTPASES ACTIVATE KTN1%REACTOME%R-HSA-5625970.1
-    #> 1437:                                 TRANSPORT OF MATURE MRNA DERIVED FROM AN INTRONLESS TRANSCRIPT%REACTOME%R-HSA-159231.2
-    #>       size real_frac expected_frac fold_enrichment   status
-    #>    1:  190 100.00000     1.8612853        53.72632 Enriched
-    #>    2:  124  65.26316     1.2147335        53.72632 Enriched
-    #>    3:   51  26.84211     0.4996082        53.72632 Enriched
-    #>    4:   37  19.47368     0.3624608        53.72632 Enriched
-    #>    5:   34  17.89474     0.3330721        53.72632 Enriched
-    #>   ---                                                      
-    #> 1433:   11   0.00000     0.1077586         0.00000 Depleted
-    #> 1434:   29   0.00000     0.2840909         0.00000 Depleted
-    #> 1435:   16   0.00000     0.1567398         0.00000 Depleted
-    #> 1436:   11   0.00000     0.1077586         0.00000 Depleted
-    #> 1437:   37   0.00000     0.3624608         0.00000 Depleted
-    #>                                       real_gene        pvalue        qvalue
-    #>    1:   NKX2-5,SCN4A,ITGB5,SCN4B,PAK2,GATA4,... 1.091522e-189 1.568518e-186
-    #>    2: NKX2-5,SCN4A,SCN4B,GATA4,AKAP9,KCNJ14,... 4.477692e-130 3.217222e-127
-    #>    3:    SLN,STIM1,ORAI2,ORAI1,ABCC9,KCNJ11,...  1.513045e-57  7.247487e-55
-    #>    4:      ITGB5,PAK2,ACTA2,VCL,MYL12B,MYL6,...  1.161897e-42  4.174116e-40
-    #>    5:          VIM,TNNI3,DMD,TPM4,TPM3,TPM2,...  2.009234e-39  5.774540e-37
-    #>   ---                                                                      
-    #> 1433:                                            1.000000e+00  1.000000e+00
-    #> 1434:                                            1.000000e+00  1.000000e+00
-    #> 1435:                                            1.000000e+00  1.000000e+00
-    #> 1436:                                            1.000000e+00  1.000000e+00
-    #> 1437:                                            1.000000e+00  1.000000e+00
+    print(head(fedup_res[which(fedup_res$status == "Enriched"),]))
+    #>                                                             pathway size
+    #> 1:        MUSCLE CONTRACTION%REACTOME DATABASE ID RELEASE 74%397014  190
+    #> 2:       CARDIAC CONDUCTION%REACTOME DATABASE ID RELEASE 74%5576891  124
+    #> 3:                         ION HOMEOSTASIS%REACTOME%R-HSA-5578775.2   51
+    #> 4: SMOOTH MUSCLE CONTRACTION%REACTOME DATABASE ID RELEASE 74%445355   37
+    #> 5:              STRIATED MUSCLE CONTRACTION%REACTOME%R-HSA-390522.1   34
+    #> 6:          PHASE 0 - RAPID DEPOLARISATION%REACTOME%R-HSA-5576892.2   31
+    #>    real_frac expected_frac fold_enrichment   status
+    #> 1: 100.00000     1.8612853        53.72632 Enriched
+    #> 2:  65.26316     1.2147335        53.72632 Enriched
+    #> 3:  26.84211     0.4996082        53.72632 Enriched
+    #> 4:  19.47368     0.3624608        53.72632 Enriched
+    #> 5:  17.89474     0.3330721        53.72632 Enriched
+    #> 6:  16.31579     0.3036834        53.72632 Enriched
+    #>                                     real_gene        pvalue        qvalue
+    #> 1:    NKX2-5,SCN4A,ITGB5,SCN4B,PAK2,GATA4,... 1.091522e-189 1.568518e-186
+    #> 2:  NKX2-5,SCN4A,SCN4B,GATA4,AKAP9,KCNJ14,... 4.477692e-130 3.217222e-127
+    #> 3:     SLN,STIM1,ORAI2,ORAI1,ABCC9,KCNJ11,...  1.513045e-57  7.247487e-55
+    #> 4:       ITGB5,PAK2,ACTA2,VCL,MYL12B,MYL6,...  1.161897e-42  4.174116e-40
+    #> 5:           VIM,TNNI3,DMD,TPM4,TPM3,TPM2,...  2.009234e-39  5.774540e-37
+    #> 6: SCN4A,SCN4B,SCN7A,SCN11A,SCN10A,CACNG6,...  3.621270e-36  8.672941e-34
+    print(head(fedup_res[which(fedup_res$status == "Depleted"),]))
+    #>                                                                                               pathway
+    #> 1:                                 OLFACTORY SIGNALING PATHWAY%REACTOME DATABASE ID RELEASE 74%381753
+    #> 2:                         AMINO ACID AND DERIVATIVE METABOLISM%REACTOME DATABASE ID RELEASE 74%71291
+    #> 3:                                                                  DNA REPAIR%REACTOME%R-HSA-73894.3
+    #> 4:                                                        GPCR LIGAND BINDING%REACTOME%R-HSA-500792.3
+    #> 5: ANTIGEN PROCESSING: UBIQUITINATION & PROTEASOME DEGRADATION%REACTOME DATABASE ID RELEASE 74%983168
+    #> 6:                           ASPARAGINE N-LINKED GLYCOSYLATION%REACTOME DATABASE ID RELEASE 74%446203
+    #>    size real_frac expected_frac fold_enrichment   status real_gene      pvalue
+    #> 1:  396 0.0000000      3.879310       0.0000000 Depleted           0.001390230
+    #> 2:  368 0.0000000      3.605016       0.0000000 Depleted           0.002073172
+    #> 3:  329 0.0000000      3.222962       0.0000000 Depleted           0.004692174
+    #> 4:  454 0.5263158      4.447492       0.1183399 Depleted     ANXA1 0.005238539
+    #> 5:  308 0.0000000      3.017241       0.0000000 Depleted           0.007054720
+    #> 6:  286 0.0000000      2.801724       0.0000000 Depleted           0.010568697
+    #>        qvalue
+    #> 1: 0.02853944
+    #> 2: 0.04081024
+    #> 3: 0.08505496
+    #> 4: 0.09293556
+    #> 5: 0.11926627
+    #> 6: 0.17258203
+
+As expected, we see strong enrichment for muscle-related pathways and
+depletion for functions not associated with muscle contraction, such as
+olfactory signalling and amino acid metabolism). Nice!
 
 ### Visualization
 
-Plot enriched and depleted pathways (qvalue &lt; 5%) in the form of a
+Plot enriched and depleted pathways (qvalue &lt; 0.05) in the form of a
 dot plot:
 
     fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
@@ -120,29 +139,18 @@ dot plot:
       fill_var = "status",
       fill_lab = "Enrichment\nstatus",
       size_var = "fold_enrichment",
-      size_lab = "Fold enrichment"
-    )
-    print(p)
-
-![](man/figures/README_FEDUP_dotplot-1.png)
-
-As expected, we see strong enrichment for muscle-related pathways at the
-top of the plot, and depletion for olfactory and amino acid metabolism
-pathways at the bottom of the plot. Nice!
-
-We can also facet the plot by enrichment status to clearly separate the
-enriched and depleted pathways:
-
-    p <- p +
+      size_lab = "Fold enrichment")
+    p <- p + # facet by status to separate enriched and depleted pathways
       facet_grid("status", scales = "free", space = "free") +
       theme(strip.text.y = element_blank())
     print(p)
 
-![](man/figures/README_FEDUP_dotplot_facet-1.png)
+![](man/figures/FEDUP_dotplot-1.png)
 
 Look at all those chick… enrichments! This is a bit overwhelming, no?
-What if we could see all these pathways in a summarised way that doesn’t
-hurt our tired brains even more? Oh I know… let’s use an Enrichment Map!
+How do we interpret these *76* different pathways? What if we could
+visualize them in a way that doesn’t hurt our tired brains even more? Oh
+I know… let’s use an Enrichment Map!
 
 First, make sure to have
 [Cytoscape](https://cytoscape.org/download.html) downloaded and and open
@@ -150,20 +158,20 @@ on your computer. You’ll also need to install the
 [EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
 [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
-Then format FEDUP results for compatibility with EnrichmentMap:
+Then format `FEDUP` results for compatibility with EnrichmentMap:
 
     results_file <- tempfile("fedup_res", fileext = ".txt")
     writeFemap(fedup_res, results_file)
-    #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpSn19kM/fedup_rese720218febc2.txt
+    #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpzzRkxr/fedup_res10da225a55e4f.txt
 
 Prepare a pathway annotation file (GMT format) from the pathway list you
-passed to FEDUP (you don’t need to run this function if your pathway
+passed to `FEDUP` (you don’t need to run this function if your pathway
 annotations are already in GMT format, but it doesn’t hurt to make
 sure):
 
     gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
     writePathways(pathwaysGMT, gmt_file)
-    #> Wrote out GMT file with to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpSn19kM/pathwaysGMTe7206c7d0f2c.gmt
+    #> Wrote out GMT file with to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpzzRkxr/pathwaysGMT10da233095bf8.gmt
 
 Cytoscape is open right? If so, uncomment these lines and let the magic
 happen:
@@ -174,8 +182,17 @@ happen:
     #  results_file = results_file,
     #  qvalue = 0.05,
     #  net_name = "FEDUP_EM",
-    #  net_file = net_file
-    #)
+    #  net_file = net_file)
+
+![](man/figures/FEDUP_EM-1.png)
+
+After some manual rearrangement of the annotated pathway clusters, this
+is the resulting Enrichment Map we get from our `FEDUP` results. Much
+better :) This has effectively summarized the 76 pathways in our dot
+plot into 14 unique biological themes (including 4 unclustered
+pathways). We can now see clear themes in the data pertaining to muscle
+contraction, such as NMDA receptor function, calcium homeostasis, and
+ATPase transport.
 
 ## Versioning
 

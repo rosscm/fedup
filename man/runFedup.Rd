@@ -7,7 +7,7 @@
 runFedup(test_gene, background_gene, pathways)
 }
 \arguments{
-\item{test_gene}{(char) vector of genes to test set.}
+\item{test_gene}{(char) vector of genes to use as test set.}
 
 \item{background_gene}{(char) vector of genes to use as background set.}
 
@@ -17,21 +17,20 @@ runFedup(test_gene, background_gene, pathways)
 table of pathway enrichment and depletion results. Rows represent
 tested pathways. Columns represent:
 \itemize{
- \item pathway -- name of the pathway, corresponds to names(pathways);
- \item size -- size of the pathway;
- \item real_total -- number of genes in `test_gene`;
- \item real_pathway -- number of `test_gene` members in pathway;
- \item real_pathway_frac -- fraction of `test_gene` members in pathway,
-     evaluates as (`real_pathawy` / `real_total`) * 100;
- \item expected_total -- number of genes in 'background_gene';
- \item expected_pathway -- number of `background_gene` members in pathway;
- \item expected_pathway_frac -- fraction of `background_gene` members in
-     pathway, evaluates as (`expected_pathway` / `expected_total`) * 100;
- \item enrichment -- indicator that pathway is enriched or depleted for
-     `test_gene` members;
- \item real_pathway_gene -- vector of `real_pathway` genes;
- \item pvalue -- enrichment p-value calculated via Fisher's exact test;
- \item qvalue -- BH-adjusted p-value
+    \item pathway -- name of the pathway, corresponds to
+        names(\code{pathways});
+    \item size -- size of the pathway;
+    \item real_frac -- fraction of \code{test_gene} members in pathway;
+    \item expected_frac -- fraction of \code{background_gene} members in
+        pathway;
+    \item fold_enrichment -- fold enrichment measure,
+        evaluates as \code{real_frac} / \code{expected_frac};
+    \item status -- indicator that pathway is enriched or depleted for
+        \code{test_gene} members;
+    \item real_gene -- vector of \code{test_gene} gene members annotated
+        to \code{pathways};
+    \item pvalue -- enrichment p-value calculated via Fisher's exact test;
+    \item qvalue -- BH-adjusted p-value
 }
 }
 \description{

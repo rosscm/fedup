@@ -7,7 +7,7 @@ Currently supports the following file format: GMT, TXT, XLSX.}
 \usage{
 readPathways(
   pathway_file,
-  header = TRUE,
+  header = FALSE,
   pathway_col = NULL,
   gene_col = NULL,
   MIN_GENE = 1L,
@@ -18,13 +18,14 @@ readPathways(
 \arguments{
 \item{pathway_file}{(char) path to file with pathway annotations.}
 
-\item{header}{(logical) whether pathway_file has a header (default TRUE).}
+\item{header}{(logical) whether \code{pathway_file} has a header
+(default FALSE).}
 
 \item{pathway_col}{(char) column name with pathway identifiers.
-For use with for non-GMT input files (eg "Pathway.ID"; default NULL).}
+For use with non-GMT input files (eg "Pathway.ID"; default NULL).}
 
 \item{gene_col}{(char) column name with gene identifiers.
-For use with for non-GMT input files (eg "Gene.ID"; default NULL).}
+For use with non-GMT input files (eg "Gene.ID"; default NULL).}
 
 \item{MIN_GENE}{(integer) minimum number of genes to be considered
 in a pathway (default = 1).}
@@ -32,8 +33,8 @@ in a pathway (default = 1).}
 \item{MAX_GENE}{(integer) maximum number of genes to be considered
 in a pathway (default = Inf).}
 
-\item{GO_class}{(char) if GO terms are present in `pathway_file`, which
-class(es) should be subsetted (BP, MF and/or CC, default NULL).}
+\item{GO_class}{(char) if GO terms are present in \code{pathway_file},
+which class(es) should be subsetted (BP, MF and/or CC, default NULL).}
 }
 \value{
 a list of vectors with pathway annotations.
@@ -44,10 +45,9 @@ Currently supports the following file format: GMT, TXT, XLSX.
 }
 \examples{
 pathways <- readPathways(
- system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
- package = "FEDUP"), MIN_GENE = 10, MAX_GENE = 500)
+    system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
+    package = "FEDUP"), MIN_GENE = 10, MAX_GENE = 500)
 pathways <- readPathways(
- system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
- header = TRUE, pathway_col = "Enriched.GO.names", gene_col = "Gene.ID",
- MIN_GENE = 10, MAX_GENE = 500)
+    system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
+    header = TRUE, pathway_col = "Enriched.GO.names", gene_col = "Gene.ID")
 }

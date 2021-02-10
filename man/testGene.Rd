@@ -5,7 +5,7 @@
 \alias{testGene}
 \title{Example vector of human genes to use as test set for enrichment.}
 \format{
-a character vector with 396 elements (gene IDs)
+a character vector with 190 elements (gene IDs)
 }
 \usage{
 testGene

@@ -83,8 +83,8 @@ Plot enriched and depleted pathways (qvalue < 0.05) in the form of a dot plot:
 
 ```{r, FEDUP_dotplot, fig.width = 9, fig.height = 9.5}
 fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
-fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10) # log10-transform qvalue for plotting
-fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
+fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10) # log10(qvalue)
+fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean names
 p <- plotDotPlot(
   df = fedup_plot,
   x_var = "log10qvalue",
@@ -101,9 +101,9 @@ print(p)
 ```
 
 Look at all those chick... enrichments! This is a bit overwhelming, no? How do
-we interpret these *76* different pathways? What if we could visualize them
-in a way that doesn't hurt our tired brains even more? Oh I know...
-let's use an Enrichment Map!  
+we interpret these 76 fairly redundant pathways meaningfully? What if we could
+summarize them in a way that doesn't hurt our tired brains even more? Oh I know,
+let's use EnrichmentMap!
 
 First, make sure to have [Cytoscape](https://cytoscape.org/download.html)
 downloaded and and open on your computer. You'll also need to install the
@@ -141,9 +141,9 @@ Cytoscape is open right? If so, uncomment these lines and let the magic happen:
 ![](figures/FEDUP_EM-1.png)
 
 After some manual rearrangement of the annotated pathway clusters, this is the
-resulting Enrichment Map we get from our `FEDUP` results. Much better :)
+resulting Enrichment Map we get from our `FEDUP` results. Much better!
 
-This has effectively summarized the 76 pathways in our dot plot into 14 unique
+This has effectively summarized the 76 pathways from our dot plot into 14 unique
 biological themes (including 4 unclustered pathways). We can now see clear
 themes in the data pertaining to muscle contraction, such as NMDA receptor
 function, calcium homeostasis, and ATPase transport.

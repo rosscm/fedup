@@ -24,6 +24,17 @@
 #' @format a named list of 30 vectors
 "pathwaysXLSX"
 
+#' Example list of yeast SAFE terms obtained from a TXT file.
+#'
+#' Raw data location
+#' system.file("extdata", "SAFE_terms.txt", package = "FEDUP")
+#'
+#' Script to prepare data
+#' system.file("data-raw", "pathwaysTXT.R", package = "FEDUP")
+#'
+#' @format a named list of 30 vectors
+"pathwaysTXT"
+
 #' Example vector of human genes to use as test set for enrichment.
 #'
 #' Script to prepare data

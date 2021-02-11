@@ -162,7 +162,7 @@ Then format `FEDUP` results for compatibility with EnrichmentMap:
 
     results_file <- tempfile("fedup_res", fileext = ".txt")
     writeFemap(fedup_res, results_file)
-    #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprsUb9I/fedup_res12e5d77251e0d.txt
+    #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprsUb9I/fedup_res12e5dc160286.txt
 
 Prepare a pathway annotation file (GMT format) from the pathway list you
 passed to `FEDUP` (you don’t need to run this function if your pathway
@@ -171,7 +171,7 @@ sure):
 
     gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
     writePathways(pathwaysGMT, gmt_file)
-    #> Wrote out GMT file with to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprsUb9I/pathwaysGMT12e5d114a48ea.gmt
+    #> Wrote out GMT file with to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprsUb9I/pathwaysGMT12e5d5ae5b6d3.gmt
 
 Cytoscape is open right? If so, uncomment these lines and let the magic
 happen:

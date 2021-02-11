@@ -11,7 +11,12 @@ readPathways(
   pathway_col = NULL,
   gene_col = NULL,
   MIN_GENE = 1L,
+<<<<<<< HEAD
   MAX_GENE = Inf
+=======
+  MAX_GENE = Inf,
+  GO_class = NULL
+>>>>>>> 00991f87a2a7f1e9145a31acc65e1f9ed16d9363
 )
 }
 \arguments{
@@ -31,6 +36,12 @@ in a pathway (default = 1).}
 
 \item{MAX_GENE}{(integer) maximum number of genes to be considered
 in a pathway (default = Inf).}
+<<<<<<< HEAD
+=======
+
+\item{GO_class}{(char) if GO terms are present in \code{pathway_file},
+which class(es) should be subsetted (BP, MF and/or CC, default NULL).}
+>>>>>>> 00991f87a2a7f1e9145a31acc65e1f9ed16d9363
 }
 \value{
 a list of vectors with pathway annotations.

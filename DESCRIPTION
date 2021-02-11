@@ -42,6 +42,6 @@ LazyData: true
 Encoding: UTF-8
 Language: en-US
 License: MIT + file LICENSE
-VignetteBuilder: knitr, rmarkdown
+VignetteBuilder: knitr
 URL: https://github.com/rosscm/FEDUP
 RoxygenNote: 7.1.1

@@ -27,7 +27,7 @@
 #' @export
 readPathways <- function(pathway_file, header = FALSE,
                         pathway_col = NULL, gene_col = NULL,
-                        MIN_GENE = 1L, MAX_GENE = Inf, GO_class = NULL) {
+                        MIN_GENE = 1L, MAX_GENE = Inf) {
 
     message("Pathway file: ", basename(pathway_file))
     s <- c("gmt", "txt", "xlsx") # supported file extensions

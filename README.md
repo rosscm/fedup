@@ -148,9 +148,9 @@ dot plot:
 ![](man/figures/FEDUP_dotplot-1.png)
 
 Look at all those chick… enrichments! This is a bit overwhelming, no?
-How do we interpret these 76 fairly redundant pathways? What if we could
-summarize them in a way that doesn’t hurt our tired brains even more? Oh
-I know… let’s use an Enrichment Map!
+How do we interpret these 76 fairly redundant pathways meaningfully?
+What if we could summarize them in a way that doesn’t hurt our tired
+brains even more? Oh I know, let’s use EnrichmentMap!
 
 First, make sure to have
 [Cytoscape](https://cytoscape.org/download.html) downloaded and and open
@@ -162,7 +162,7 @@ Then format `FEDUP` results for compatibility with EnrichmentMap:
 
     results_file <- tempfile("fedup_res", fileext = ".txt")
     writeFemap(fedup_res, results_file)
-    #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprsUb9I/fedup_res12e5d7f80dbf6.txt
+    #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprsUb9I/fedup_res12e5d77251e0d.txt
 
 Prepare a pathway annotation file (GMT format) from the pathway list you
 passed to `FEDUP` (you don’t need to run this function if your pathway
@@ -171,7 +171,7 @@ sure):
 
     gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
     writePathways(pathwaysGMT, gmt_file)
-    #> Wrote out GMT file with to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprsUb9I/pathwaysGMT12e5da8e503b.gmt
+    #> Wrote out GMT file with to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprsUb9I/pathwaysGMT12e5d114a48ea.gmt
 
 Cytoscape is open right? If so, uncomment these lines and let the magic
 happen:
@@ -190,12 +190,13 @@ After some manual rearrangement of the annotated pathway clusters, this
 is the resulting Enrichment Map we get from our `FEDUP` results. Much
 better!
 
-This has effectively summarized the 76 pathways in our dot plot into 14
-unique biological themes (including 4 unclustered pathways). We can now
-see clear themes in the data pertaining to muscle contraction, such as
-NMDA receptor function, calcium homeostasis, and ATPase transport.
+This has effectively summarized the 76 pathways from our dot plot into
+14 unique biological themes (including 4 unclustered pathways). We can
+now see clear themes in the data pertaining to muscle contraction, such
+as NMDA receptor function, calcium homeostasis, and ATPase transport.
 
-Try this out! Hopefully this is the only `FEDUP` you achieve :grimacing:
+Try this out yourself! Hopefully it’s the only fedup you achieve
+:grimacing:
 
 ## Versioning
 

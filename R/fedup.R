@@ -1,38 +1,30 @@
 inputObject <- function(test_gene, background_gene, pathways) {
-    if (is.null(test_gene)) {
-        stop("Oops, argument 'test_gene' is empty. Supply a vector of genes
-        ...I promise this will work.")
-    }
-
-    if (is.null(background_gene)) {
-        stop("Oops, argument 'background_gene' is empty. Supply a vector of
-        genes ... I promise this will work")
-    }
-
-    if (!is.list(pathways)) {
-        stop("Oops, argument 'pathways' is not in a list format...
-        have you tried using readPathways() on your input pathway file?")
-    }
-
-    if (length(test_gene) >= length(background_gene)) {
-        stop("Oops, your test set can't have more genes than your background
-        set. Have you mixed up the 'test_gene' and 'background_gene' arguments?
-        You're so close... I can feel it.")
-    }
 
     pathway_genes <- unique(as.character(unlist(pathways)))
     test_gene_in_pathways <- which(test_gene %in% pathway_genes)
-    if (!length(test_gene_in_pathways)) {
+    back_gene_in_pathways <- which(background_gene %in% pathway_genes)
+
+    if (is.null(test_gene)) {
+        stop("Oops, argument 'test_gene' is empty. Supply a vector of
+         genes ... I promise this will work.")
+    } else if (is.null(background_gene)) {
+        stop("Oops, argument 'background_gene' is empty. Supply a vector of
+        genes ... I promise this will work")
+    } else if (!is.list(pathways)) {
+        stop("Oops, argument 'pathways' is not in a list format...
+        have you tried using readPathways() on your input pathway file?")
+    } else if (!length(test_gene_in_pathways)) {
         stop("Oops, none of the genes in 'test_gene' was found in 'pathways'.
         Make sure that you have some gene IDs in both inputs, otherwise how do
         you expect this works?")
-    }
-
-    back_gene_in_pathways <- length(which(background_gene %in% pathway_genes))
-    if (!length(back_gene_in_pathways)) {
+    } else if (!length(back_gene_in_pathways)) {
         stop("Oops, none of the genes in 'background_genes' was found in
         'pathways'. Make sure that you have some gene IDs in both inputs,
         otherwise how do you expect this works?")
+    } else if (length(test_gene) >= length(background_gene)) {
+        stop("Oops, your test set can't have more genes than your background
+        set. Have you mixed up the 'test_gene' and 'background_gene' arguments?
+        You're so close... I can feel it.")
     }
 
     test_gene <- unique(as.character(test_gene))
@@ -89,14 +81,6 @@ runFedup <- function(test_gene, background_gene, pathways) {
         length(test), " test genes\n => ",
         length(background), " background genes\n => ",
         length(pathways), " pathawys")
-
-    if (!length(pathways)) {
-    return(data.table(
-        pathway = character(), size = integer(),
-        real_frac = numeric(), expected_frac = numeric(),
-        fold_enrichment = numeric(), status = character(),
-        real_gene = list(), pvalue = numeric(), qvalue = numeric()))
-    }
 
     res <- data.table(pathway = pathways_name, size = pathways_size)
     res_stats <- vapply(pathways, function(x) {

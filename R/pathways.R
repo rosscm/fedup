@@ -12,8 +12,6 @@
 #'     in a pathway (default = 1).
 #' @param MAX_GENE (integer) maximum number of genes to be considered
 #'     in a pathway (default = Inf).
-#' @param GO_class (char) if GO terms are present in \code{pathway_file},
-#'     which class(es) should be subsetted (BP, MF and/or CC, default NULL).
 #' @return a list of vectors with pathway annotations.
 #' @examples
 #' pathways <- readPathways(
@@ -31,45 +29,45 @@ readPathways <- function(pathway_file, header = FALSE,
                         pathway_col = NULL, gene_col = NULL,
                         MIN_GENE = 1L, MAX_GENE = Inf, GO_class = NULL) {
 
+    message("Pathway file: ", basename(pathway_file))
     s <- c("gmt", "txt", "xlsx") # supported file extensions
     f <- sub(".*\\.", "", pathway_file) # pathway_file extension
     if (!f %in% s) {
         stop(paste0("Sorry, pathway file type (", f, ") is not supported. ",
             "Supported extensions: ", paste(s, collapse = ", "), "."))
     }
-    message("Pathway file: ", basename(pathway_file))
     if (f == "gmt") {
         pathway_in <- strsplit(readLines(pathway_file), "\t")
         if (header) { pathway_in <- pathway_in[-1] }
         pathways <- lapply(pathway_in, tail, -2)
         names(pathways) <- vapply(pathway_in, head, n = 1, character(1))
     } else {
-        if (f == "xlsx") { pathway_in <- read.xlsx(pathway_file) }
-        if (f == "txt")  { pathway_in <- read.delim(pathway_file, header) }
+        if (f == "xlsx") {
+            pathway_in <- read.xlsx(pathway_file)
+        } else if (f == "txt") {
+            pathway_in <- read.delim(pathway_file, header = header)
+        }
         if (missing(pathway_col)||!pathway_col %in% colnames(pathway_in)) {
             stop("Pathway ID column (", pathway_col, ") not in file")
-        }
-        if (missing(gene_col)||!gene_col %in% colnames(pathway_in)) {
+        } else if (missing(gene_col)||!gene_col %in% colnames(pathway_in)) {
             stop("Gene ID column (", gene_col, ") not in file")
+        } else {
+            pathway_df <- data.frame(
+                pathway = pathway_in[,pathway_col],
+                gene = pathway_in[,gene_col])
+            pathway_df[which(pathway_df$gene == ""), "gene"] <- NA
+            pathway_df <- na.omit(pathway_df) # ensure no NaNs
+            pathway_df <- aggregate(gene ~ pathway, pathway_df, paste)
+            pathways <- deframe(pathway_df) # transform df to list
         }
-        pathway_df <- data.frame(
-            pathway = pathway_in[,pathway_col],
-            gene = pathway_in[,gene_col])
-        pathway_df[which(pathway_df$gene == ""), "gene"] <- NA
-        pathway_df <- na.omit(pathway_df) # ensure no NaNs
-        pathway_df <- aggregate(gene ~ pathway, pathway_df, paste)
-        pathways <- deframe(pathway_df) # transform df to list
     }
+
     size <- lapply(pathways, length) # subset for pathways in [MIN:MAX] range
     pathways_s <- pathways[which(size >= MIN_GENE & size <= MAX_GENE)]
     pathways_s <- pathways_s[!duplicated(names(pathways_s))]
     message(" => n total pathways: ", length(pathways))
     message(" => n pathways (",MIN_GENE,"-",MAX_GENE, "): ", length(pathways_s))
-    if (!is.null(GO_class)) {
-        go_keep <- grep(paste(GO_class, collapse = "|"), names(pathways_s))
-        pathways_s <- pathways_s[go_keep]
-        message(" => n pathways in", GO_class, "GO class: ", length(pathways_s))
-    }
+
     if (!length(pathways_s)) {
         stop("Oops, no pathways left... try different filtering options.")
     }

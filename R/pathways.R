@@ -16,28 +16,35 @@
 #' @examples
 #' pathways <- readPathways(
 #'     system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
-#'     package="FEDUP"), minGene=10, maxGene=500)
+#'         package = "FEDUP"
+#'     ),
+#'     minGene = 10, maxGene = 500
+#' )
 #' pathways <- readPathways(
-#'     system.file("extdata", "SAFE_terms.xlsx", package="FEDUP"),
-#'     header=TRUE, pathwayCol="Enriched.GO.names", geneCol="Gene.ID")
+#'     system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
+#'     header = TRUE, pathwayCol = "Enriched.GO.names", geneCol = "Gene.ID"
+#' )
 #' @importFrom openxlsx read.xlsx
 #' @importFrom tibble deframe
 #' @importFrom stats aggregate na.omit
 #' @importFrom utils head read.delim tail
 #' @export
-readPathways <- function(pathwayFile, header=FALSE,
-                        pathwayCol=NULL, geneCol=NULL,
-                        minGene=1L, maxGene=Inf) {
-
+readPathways <- function(pathwayFile, header = FALSE,
+    pathwayCol = NULL, geneCol = NULL,
+    minGene = 1L, maxGene = Inf) {
     s <- c("gmt", "txt", "xlsx")
     f <- sub(".*\\.", "", pathwayFile)
     if (!f %in% s) {
-        stop(paste0("Sorry, pathway file type (", f, ") is not supported. ",
-            "Supported extensions: ", paste(s, collapse = ", "), "."))
+        stop(paste0(
+            "Sorry, pathway file type (", f, ") is not supported. ",
+            "Supported extensions: ", paste(s, collapse = ", "), "."
+        ))
     }
     if (f == "gmt") {
         pathway_in <- strsplit(readLines(pathwayFile), "\t")
-        if (header) { pathway_in <- pathway_in[-1] }
+        if (header) {
+            pathway_in <- pathway_in[-1]
+        }
         pathways <- lapply(pathway_in, tail, -2)
         names(pathways) <- vapply(pathway_in, head, n = 1, character(1))
     } else {
@@ -46,31 +53,30 @@ readPathways <- function(pathwayFile, header=FALSE,
         } else if (f == "txt") {
             pathway_in <- read.delim(pathwayFile, header = header)
         }
-        if (missing(pathwayCol)||!pathwayCol %in% colnames(pathway_in)) {
+        if (missing(pathwayCol) || !pathwayCol %in% colnames(pathway_in)) {
             stop("Pathway ID column (", pathwayCol, ") not in file")
-        } else if (missing(geneCol)||!geneCol %in% colnames(pathway_in)) {
+        } else if (missing(geneCol) || !geneCol %in% colnames(pathway_in)) {
             stop("Gene ID column (", geneCol, ") not in file")
         } else {
             pathway_df <- data.frame(
-                pathway = pathway_in[,pathwayCol],
-                gene = pathway_in[,geneCol])
+                pathway = pathway_in[, pathwayCol], gene = pathway_in[, geneCol]
+            )
             pathway_df[which(pathway_df$gene == ""), "gene"] <- NA
             pathway_df <- na.omit(pathway_df)
             pathway_df <- aggregate(gene ~ pathway, pathway_df, paste)
             pathways <- deframe(pathway_df)
         }
     }
-
     size <- lapply(pathways, length)
     pathways_s <- pathways[which(size >= minGene & size <= maxGene)]
-    pathways_s <- pathways_s[!duplicated(names(pathways_s))]
     if (!length(pathways_s)) {
         stop("Oops, no pathways left... try different filtering options.")
     }
-    message("Pathway file: ", basename(pathwayFile),
+    message(
+        "Pathway file: ", basename(pathwayFile),
         "\n => n total pathways: ", length(pathways),
-        "\n => n pathways (",minGene,"-",maxGene, "): ", length(pathways_s))
-
+        "\n => n pathways (", minGene, "-", maxGene, "): ", length(pathways_s)
+    )
     return(pathways_s)
 }
 
@@ -86,7 +92,7 @@ readPathways <- function(pathwayFile, header=FALSE,
 #' }
 #' @examples
 #' data(pathwaysXLSX)
-#' writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext=".gmt"))
+#' writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext = ".gmt"))
 #' @importFrom data.table fwrite
 #' @export
 writePathways <- function(pathways, gmtFile) {

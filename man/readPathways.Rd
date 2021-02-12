@@ -42,8 +42,12 @@ Currently supports the following file format: gmt, txt, xlsx.
 \examples{
 pathways <- readPathways(
     system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
-    package="FEDUP"), minGene=10, maxGene=500)
+        package = "FEDUP"
+    ),
+    minGene = 10, maxGene = 500
+)
 pathways <- readPathways(
-    system.file("extdata", "SAFE_terms.xlsx", package="FEDUP"),
-    header=TRUE, pathwayCol="Enriched.GO.names", geneCol="Gene.ID")
+    system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
+    header = TRUE, pathwayCol = "Enriched.GO.names", geneCol = "Gene.ID"
+)
 }

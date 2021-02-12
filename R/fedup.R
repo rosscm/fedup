@@ -1,5 +1,4 @@
 inputObject <- function(testGene, backgroundGene, pathways) {
-
     pathway_genes <- unique(as.character(unlist(pathways)))
     testGene_in_pathways <- which(testGene %in% pathway_genes)
     back_gene_in_pathways <- which(backgroundGene %in% pathway_genes)
@@ -35,7 +34,8 @@ inputObject <- function(testGene, backgroundGene, pathways) {
     testGene <- unique(as.character(testGene))
     backgroundGene <- unique(as.character(backgroundGene))
 
-    list(testGene = testGene,
+    list(
+        testGene = testGene,
         backgroundGene = backgroundGene,
         pathways = pathways,
         pathways_name = names(pathways),
@@ -82,10 +82,12 @@ runFedup <- function(testGene, backgroundGene, pathways) {
     pathways <- inputs$pathways
     pathways_name <- inputs$pathways_name
     pathways_size <- inputs$pathways_size
-    message("Data input:\n => ",
+    message(
+        "Data input:\n => ",
         length(test), " test genes\n => ",
         length(background), " background genes\n => ",
-        length(pathways), " pathawys")
+        length(pathways), " pathawys"
+    )
 
     res <- data.table(pathway = pathways_name, size = pathways_size)
     res_stats <- vapply(pathways, function(x) {
@@ -103,16 +105,17 @@ runFedup <- function(testGene, backgroundGene, pathways) {
         p <- fisher.test(m, alternative = "two.sided")$p.value
         return(c(
             real_frac = a_x, expected_frac = b_x, fold_enrich = f,
-            status = e, pvalue = p, real_gene = paste(a, collapse = "|")))
+            status = e, pvalue = p, real_gene = paste(a, collapse = "|")
+        ))
     }, character(6))
 
-    res[, "real_frac" := as.numeric(unlist(res_stats["real_frac",]))]
-    res[, "expected_frac" := as.numeric(unlist(res_stats["expected_frac",]))]
-    res[, "fold_enrichment" := as.numeric(unlist(res_stats["fold_enrich",]))]
-    res[, "status" := unlist(res_stats["status",])]
-    res[, "real_gene" := mapply("[", strsplit(res_stats["real_gene",], "\\|"))]
-    res[, "pvalue" := as.numeric(unlist(res_stats["pvalue",]))]
-    res <- res[order(res$pvalue),]
+    res[, "real_frac" := as.numeric(unlist(res_stats["real_frac", ]))]
+    res[, "expected_frac" := as.numeric(unlist(res_stats["expected_frac", ]))]
+    res[, "fold_enrichment" := as.numeric(unlist(res_stats["fold_enrich", ]))]
+    res[, "status" := unlist(res_stats["status", ])]
+    res[, "real_gene" := mapply("[", strsplit(res_stats["real_gene", ], "\\|"))]
+    res[, "pvalue" := as.numeric(unlist(res_stats["pvalue", ]))]
+    res <- res[order(res$pvalue), ]
     res$qvalue <- p.adjust(res$pvalue, method = "BH")
 
     message("You did it! FEDUP ran successfully, feeling pretty good huh?")

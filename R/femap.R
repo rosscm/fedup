@@ -19,7 +19,7 @@
 #' data(backgroundGene)
 #' data(pathwaysGMT)
 #' fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
-#' resultsFile <- tempfile("fedupRes", fileext=".txt")
+#' resultsFile <- tempfile("fedupRes", fileext = ".txt")
 #' writeFemap(fedupRes, resultsFile)
 #' @importFrom data.table fwrite
 #' @importFrom dplyr select mutate %>%
@@ -52,30 +52,34 @@ writeFemap <- function(df, resultsFile) {
 #'  effect of plotting the EM in an open session of Cytoscape.
 #' @examples
 #' \dontrun{
-#'     # not run because Cytoscape needs to be installed and open
-#'     data(testGene)
-#'     data(backgroundGene)
-#'     data(pathwaysGMT)
-#'     gmtFile <- tempfile("pathwaysGMT", fileext=".gmt")
-#'     fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
-#'     resultsFile <- tempfile("fedupRes", fileext=".txt")
-#'     netFile <- tempfile("FEDUP_EM", fileext=".png")
-#'     writePathways(pathwaysGMT, gmtFile)
-#'     writeFemap(fedupRes, resultsFile)
-#'     plotFemap(
-#'         gmtFile=gmtFile,
-#'         resultsFile=resultsFile,
-#'         qvalue=0.05,
-#'         netName="FEDUP_EM",
-#'         netFile=netFile)}
+#' # not run because Cytoscape needs to be installed and open
+#' data(testGene)
+#' data(backgroundGene)
+#' data(pathwaysGMT)
+#' gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
+#' fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
+#' resultsFile <- tempfile("fedupRes", fileext = ".txt")
+#' netFile <- tempfile("FEDUP_EM", fileext = ".png")
+#' writePathways(pathwaysGMT, gmtFile)
+#' writeFemap(fedupRes, resultsFile)
+#' plotFemap(
+#'     gmtFile = gmtFile,
+#'     resultsFile = resultsFile,
+#'     qvalue = 0.05,
+#'     netName = "FEDUP_EM",
+#'     netFile = netFile
+#' )
+#' }
 #' @import RCy3
 #' @export
-plotFemap <- function(gmtFile, resultsFile, pvalue=1, qvalue=1,
-                    netName="generic", netFile="png") {
+plotFemap <- function(gmtFile, resultsFile, pvalue = 1, qvalue = 1,
+    netName = "generic", netFile = "png") {
 
     # Confirm that Cytoscape is installed and opened
     cytoscapePing()
-    if (netName %in% getNetworkList()) { deleteNetwork(netName) }
+    if (netName %in% getNetworkList()) {
+        deleteNetwork(netName)
+    }
 
     message("Building the network")
     em_command <- paste(
@@ -86,35 +90,35 @@ plotFemap <- function(gmtFile, resultsFile, pvalue=1, qvalue=1,
         "qvalue=", qvalue,
         "similaritycutoff=", 0.375,
         "coefficients=", "COMBINED",
-        "combinedConstant=", 0.5)
+        "combinedConstant=", 0.5
+    )
     response <- commandsGET(em_command)
     renameNetwork(netName, getNetworkSuid())
 
-    # Node visualization (enriched = red nodes, depleted = blue nodes)
     message("Setting network chart data")
     ch_command <- paste(
         'enrichmentmap chart data="NES_VALUE"',
-        "colors=", "RD_BU_9")
+        "colors=", "RD_BU_9"
+    )
     response <- commandsGET(ch_command)
 
-    # Annotate similar pathways using AutoAnnotate
     message("Annotating the network using AutoAnnotate")
     aa_command <- paste(
         "autoannotate annotate-clusterBoosted",
         "clusterAlgorithm=MCL",
         "maxWords=3",
-        "network=", netName)
+        "network=", netName
+    )
     response <- commandsGET(aa_command)
 
-    # Network layout
     message("Applying a force-directed network layout")
     ln_command <- paste(
         "layout force-directed",
-        "network=", netName)
+        "network=", netName
+    )
     response <- commandsGET(ln_command)
     fitContent()
 
-    # Draw out network to file
     message("Drawing out network to ", netFile)
     exportImage(netFile)
 }

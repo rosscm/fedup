@@ -33,6 +33,6 @@ data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
 fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
-resultsFile <- tempfile("fedupRes", fileext=".txt")
+resultsFile <- tempfile("fedupRes", fileext = ".txt")
 writeFemap(fedupRes, resultsFile)
 }

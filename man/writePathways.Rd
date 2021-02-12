@@ -24,5 +24,5 @@ Writes a set of pathways (list of vectors) to a GMT file.
 }
 \examples{
 data(pathwaysXLSX)
-writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext=".gmt"))
+writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext = ".gmt"))
 }

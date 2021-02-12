@@ -52,16 +52,17 @@ data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
 fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
+fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05), ]
 fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10)
 fedup_plot$pathway <- gsub("\\\\\%.*", "", fedup_plot$pathway)
 plotDotPlot(
-    df=fedup_plot,
-    xVar="log10qvalue",
-    yVar="pathway",
-    xLab="-log10(Qvalue)",
-    fillVar="status",
-    fillLab="Enrichment\nstatus",
-    sizeVar="fold_enrichment",
-    sizeLab="Fold enrichment")
+    df = fedup_plot,
+    xVar = "log10qvalue",
+    yVar = "pathway",
+    xLab = "-log10(Qvalue)",
+    fillVar = "status",
+    fillLab = "Enrichment\nstatus",
+    sizeVar = "fold_enrichment",
+    sizeLab = "Fold enrichment"
+)
 }

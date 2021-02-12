@@ -1,23 +1,21 @@
-[![Build
-Status](https://travis-ci.com/rosscm/FEDUP.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/FEDUP)
-[![Codecov test
-coverage](https://codecov.io/gh/rosscm/FEDUP/branch/main/graph/badge.svg)](https://codecov.io/gh/rosscm/FEDUP?branch=main)
+[![Build Status](https://travis-ci.com/rosscm/FEDUP.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/FEDUP)
+![R-CMD-check](https://github.com/rosscm/FEDUP/workflows/R-CMD-check/badge.svg)
+[![Codecov test coverage](https://codecov.io/gh/rosscm/FEDUP/branch/main/graph/badge.svg)](https://codecov.io/gh/rosscm/FEDUP?branch=main)
 
 # FEDUP
 
 FEDUP is an R package that tests for enrichment and depletion of
 user-defined pathways using a Fisher’s exact test. This package is
 designed for versatile pathway annotation formats (eg. gmt, txt, xlsx)
-to allow the user to run pathway analysis on their annotations of
-choice. FEDUP is also integrated with Cytoscape to provide network-based
-pathway visualization that enhances the interpretability of enrichment
-results.
+to allow the user to run pathway analysis on custom annotations.
+FEDUP is also integrated with Cytoscape to provide network-based pathway
+visualization that enhances the interpretability of the results.
 
 ## Getting started
 
 ### System prerequisites
 
-R version &gt;= 4.0  
+R version >= 4.0  
 R packages:
 
 -   **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes,
@@ -65,7 +63,7 @@ Take a look at the data structure:
 
 Now run `FEDUP` on sample data:
 
-    fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
+    fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
     #> Data input:
     #>  => 190 test genes
     #>  => 10208 background genes
@@ -74,7 +72,7 @@ Now run `FEDUP` on sample data:
 
 View output results table sorted by pvalue:
 
-    print(head(fedup_res[which(fedup_res$status == "Enriched"),]))
+    print(head(fedupRes[which(fedupRes$status == "Enriched"),]))
     #>                                                             pathway size
     #> 1:        MUSCLE CONTRACTION%REACTOME DATABASE ID RELEASE 74%397014  190
     #> 2:       CARDIAC CONDUCTION%REACTOME DATABASE ID RELEASE 74%5576891  124
@@ -96,7 +94,7 @@ View output results table sorted by pvalue:
     #> 4:       ITGB5,PAK2,ACTA2,VCL,MYL12B,MYL6,...  1.161897e-42  4.174116e-40
     #> 5:           VIM,TNNI3,DMD,TPM4,TPM3,TPM2,...  2.009234e-39  5.774540e-37
     #> 6: SCN4A,SCN4B,SCN7A,SCN11A,SCN10A,CACNG6,...  3.621270e-36  8.672941e-34
-    print(head(fedup_res[which(fedup_res$status == "Depleted"),]))
+    print(head(fedupRes[which(fedupRes$status == "Depleted"),]))
     #>                                                                                               pathway
     #> 1:                                 OLFACTORY SIGNALING PATHWAY%REACTOME DATABASE ID RELEASE 74%381753
     #> 2:                         AMINO ACID AND DERIVATIVE METABOLISM%REACTOME DATABASE ID RELEASE 74%71291
@@ -128,21 +126,21 @@ olfactory signalling and amino acid metabolism). Nice!
 Plot enriched and depleted pathways (qvalue &lt; 0.05) in the form of a
 dot plot:
 
-    fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
-    fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10) # log10-transform qvalue for plotting
-    fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway) # clean pathway names
+    fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
+    fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # log10-transform qvalue for plotting
+    fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean pathway names
     p <- plotDotPlot(
-      df = fedup_plot,
-      x_var = "log10qvalue",
-      y_var = "pathway",
-      x_lab = "-log10(Qvalue)",
-      fill_var = "status",
-      fill_lab = "Enrichment\nstatus",
-      size_var = "fold_enrichment",
-      size_lab = "Fold enrichment")
+      df=fedupPlot,
+      xVar="log10qvalue",
+      yVar="pathway",
+      xLab="-log10(Qvalue)",
+      fillVar="status",
+      fillLab="Enrichment\nstatus",
+      sizeVar="fold_enrichment",
+      sizeLab="Fold enrichment")
     p <- p + # facet by status to separate enriched and depleted pathways
-      facet_grid("status", scales = "free", space = "free") +
-      theme(strip.text.y = element_blank())
+      facet_grid("status", scales="free", space="free") +
+      theme(strip.text.y=element_blank())
     print(p)
 
 ![](man/figures/FEDUP_dotplot-1.png)
@@ -160,29 +158,29 @@ on your computer. You’ll also need to install the
 
 Then format `FEDUP` results for compatibility with EnrichmentMap:
 
-    results_file <- tempfile("fedup_res", fileext = ".txt")
-    writeFemap(fedup_res, results_file)
-    #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpMMbNpg/fedup_res181796b099542.txt
+    resultsFile <- tempfile("fedupRes", fileext=".txt")
+    writeFemap(fedupRes, resultsFile)
+    #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpMMbNpg/fedupRes181796b099542.txt
 
 Prepare a pathway annotation file (GMT format) from the pathway list you
 passed to `FEDUP` (you don’t need to run this function if your pathway
 annotations are already in GMT format, but it doesn’t hurt to make
 sure):
 
-    gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
-    writePathways(pathwaysGMT, gmt_file)
+    gmtFile <- tempfile("pathwaysGMT", fileext=".gmt")
+    writePathways(pathwaysGMT, gmtFile)
     #> Wrote out GMT file with to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpMMbNpg/pathwaysGMT181796316cf19.gmt
 
 Cytoscape is open right? If so, uncomment these lines and let the magic
 happen:
 
-    #net_file <- tempfile("FEDUP_EM", fileext = ".png")
+    #netFile <- tempfile("FEDUP_EM", fileext=".png")
     #plotFemap(
-    #  gmt_file = gmt_file,
-    #  results_file = results_file,
-    #  qvalue = 0.05,
-    #  net_name = "FEDUP_EM",
-    #  net_file = net_file)
+    #  gmtFile=gmtFile,
+    #  resultsFile=resultsFile,
+    #  qvalue=0.05,
+    #  netName="FEDUP_EM",
+    #  netFile=netFile)
 
 ![](man/figures/FEDUP_EM-1.png)
 

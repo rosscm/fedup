@@ -4,12 +4,12 @@
 \alias{writePathways}
 \title{Writes a set of pathways (list of vectors) to a GMT file.}
 \usage{
-writePathways(pathways, gmt_file)
+writePathways(pathways, gmtFile)
 }
 \arguments{
 \item{pathways}{(list) named list of vectors.}
 
-\item{gmt_file}{(char) name of output GMT file.}
+\item{gmtFile}{(char) name of output GMT file.}
 }
 \value{
 GMT-formatted file. Rows represent pathways. Columns represent:
@@ -24,5 +24,5 @@ Writes a set of pathways (list of vectors) to a GMT file.
 }
 \examples{
 data(pathwaysXLSX)
-writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext = ".gmt"))
+writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext=".gmt"))
 }

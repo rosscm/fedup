@@ -4,13 +4,13 @@
 \alias{writeFemap}
 \title{Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.}
 \usage{
-writeFemap(df, results_file)
+writeFemap(df, resultsFile)
 }
 \arguments{
 \item{df}{(data.frame) table with FEDUP enrichment results.
 (see runFedup() for column descriptions)}
 
-\item{results_file}{(char) name of output results file.}
+\item{resultsFile}{(char) name of output results file.}
 }
 \value{
 table of gene enrichment and depletion results formatted as a
@@ -21,8 +21,7 @@ table of gene enrichment and depletion results formatted as a
     \item description -- pathway name or description;
     \item pvalue -- enrichment pvalue;
     \item qvalue -- BH-corrected pvalue;
-    \item status -- +1 or -1, to identify enrichment in either of the two
-        phenotypes being compared in the two-class analysis
+    \item status -- +1 or -1, to identify enriched or depleted pathways
         (+1 maps to red, -1 maps to blue)
 }
 }
@@ -33,7 +32,7 @@ Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.
 data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
-fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-results_file <- tempfile("fedup_res", fileext = ".txt")
-writeFemap(fedup_res, results_file)
+fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
+resultsFile <- tempfile("fedupRes", fileext=".txt")
+writeFemap(fedupRes, resultsFile)
 }

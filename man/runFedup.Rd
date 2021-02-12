@@ -4,12 +4,12 @@
 \alias{runFedup}
 \title{Runs gene enrichment and depletion analysis for a list of pathways.}
 \usage{
-runFedup(test_gene, background_gene, pathways)
+runFedup(testGene, backgroundGene, pathways)
 }
 \arguments{
-\item{test_gene}{(char) vector of genes to use as test set.}
+\item{testGene}{(char) vector of genes to use as test set.}
 
-\item{background_gene}{(char) vector of genes to use as background set.}
+\item{backgroundGene}{(char) vector of genes to use as background set.}
 
 \item{pathways}{(list) list of vectors with pathway annotations.}
 }
@@ -20,14 +20,14 @@ tested pathways. Columns represent:
     \item pathway -- name of the pathway, corresponds to
         names(\code{pathways});
     \item size -- size of the pathway;
-    \item real_frac -- fraction of \code{test_gene} members in pathway;
-    \item expected_frac -- fraction of \code{background_gene} members in
+    \item real_frac -- fraction of \code{testGene} members in pathway;
+    \item expected_frac -- fraction of \code{backgroundGene} members in
         pathway;
     \item fold_enrichment -- fold enrichment measure,
         evaluates as \code{real_frac} / \code{expected_frac};
     \item status -- indicator that pathway is enriched or depleted for
-        \code{test_gene} members;
-    \item real_gene -- vector of \code{test_gene} gene members annotated
+        \code{testGene} members;
+    \item real_gene -- vector of \code{testGene} gene members annotated
         to \code{pathways};
     \item pvalue -- enrichment p-value calculated via Fisher's exact test;
     \item qvalue -- BH-adjusted p-value

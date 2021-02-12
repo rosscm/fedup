@@ -3,47 +3,47 @@
 \name{readPathways}
 \alias{readPathways}
 \title{Returns a list of pathways from various file formats.
-Currently supports the following file format: GMT, TXT, XLSX.}
+Currently supports the following file format: gmt, txt, xlsx.}
 \usage{
 readPathways(
-  pathway_file,
+  pathwayFile,
   header = FALSE,
-  pathway_col = NULL,
-  gene_col = NULL,
-  MIN_GENE = 1L,
-  MAX_GENE = Inf
+  pathwayCol = NULL,
+  geneCol = NULL,
+  minGene = 1L,
+  maxGene = Inf
 )
 }
 \arguments{
-\item{pathway_file}{(char) path to file with pathway annotations.}
+\item{pathwayFile}{(char) path to file with pathway annotations.}
 
-\item{header}{(logical) whether \code{pathway_file} has a header
+\item{header}{(logical) whether \code{pathwayFile} has a header
 (default FALSE).}
 
-\item{pathway_col}{(char) column name with pathway identifiers.
+\item{pathwayCol}{(char) column name with pathway identifiers.
 For use with non-GMT input files (eg "Pathway.ID"; default NULL).}
 
-\item{gene_col}{(char) column name with gene identifiers.
+\item{geneCol}{(char) column name with gene identifiers.
 For use with non-GMT input files (eg "Gene.ID"; default NULL).}
 
-\item{MIN_GENE}{(integer) minimum number of genes to be considered
-in a pathway (default = 1).}
+\item{minGene}{(integer) minimum number of genes to be considered
+in a pathway (default 1).}
 
-\item{MAX_GENE}{(integer) maximum number of genes to be considered
-in a pathway (default = Inf).}
+\item{maxGene}{(integer) maximum number of genes to be considered
+in a pathway (default Inf).}
 }
 \value{
 a list of vectors with pathway annotations.
 }
 \description{
 Returns a list of pathways from various file formats.
-Currently supports the following file format: GMT, TXT, XLSX.
+Currently supports the following file format: gmt, txt, xlsx.
 }
 \examples{
 pathways <- readPathways(
     system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
-    package = "FEDUP"), MIN_GENE = 10, MAX_GENE = 500)
+    package="FEDUP"), minGene=10, maxGene=500)
 pathways <- readPathways(
-    system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
-    header = TRUE, pathway_col = "Enriched.GO.names", gene_col = "Gene.ID")
+    system.file("extdata", "SAFE_terms.xlsx", package="FEDUP"),
+    header=TRUE, pathwayCol="Enriched.GO.names", geneCol="Gene.ID")
 }

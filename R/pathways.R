@@ -1,83 +1,83 @@
 #' Returns a list of pathways from various file formats.
-#' Currently supports the following file format: GMT, TXT, XLSX.
+#' Currently supports the following file format: gmt, txt, xlsx.
 #'
-#' @param pathway_file (char) path to file with pathway annotations.
-#' @param header (logical) whether \code{pathway_file} has a header
+#' @param pathwayFile (char) path to file with pathway annotations.
+#' @param header (logical) whether \code{pathwayFile} has a header
 #'     (default FALSE).
-#' @param pathway_col (char) column name with pathway identifiers.
+#' @param pathwayCol (char) column name with pathway identifiers.
 #'     For use with non-GMT input files (eg "Pathway.ID"; default NULL).
-#' @param gene_col (char) column name with gene identifiers.
+#' @param geneCol (char) column name with gene identifiers.
 #'     For use with non-GMT input files (eg "Gene.ID"; default NULL).
-#' @param MIN_GENE (integer) minimum number of genes to be considered
-#'     in a pathway (default = 1).
-#' @param MAX_GENE (integer) maximum number of genes to be considered
-#'     in a pathway (default = Inf).
+#' @param minGene (integer) minimum number of genes to be considered
+#'     in a pathway (default 1).
+#' @param maxGene (integer) maximum number of genes to be considered
+#'     in a pathway (default Inf).
 #' @return a list of vectors with pathway annotations.
 #' @examples
 #' pathways <- readPathways(
 #'     system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
-#'     package = "FEDUP"), MIN_GENE = 10, MAX_GENE = 500)
+#'     package="FEDUP"), minGene=10, maxGene=500)
 #' pathways <- readPathways(
-#'     system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
-#'     header = TRUE, pathway_col = "Enriched.GO.names", gene_col = "Gene.ID")
+#'     system.file("extdata", "SAFE_terms.xlsx", package="FEDUP"),
+#'     header=TRUE, pathwayCol="Enriched.GO.names", geneCol="Gene.ID")
 #' @importFrom openxlsx read.xlsx
 #' @importFrom tibble deframe
 #' @importFrom stats aggregate na.omit
 #' @importFrom utils head read.delim tail
 #' @export
-readPathways <- function(pathway_file, header = FALSE,
-                        pathway_col = NULL, gene_col = NULL,
-                        MIN_GENE = 1L, MAX_GENE = Inf) {
+readPathways <- function(pathwayFile, header=FALSE,
+                        pathwayCol=NULL, geneCol=NULL,
+                        minGene=1L, maxGene=Inf) {
 
-    message("Pathway file: ", basename(pathway_file))
-    s <- c("gmt", "txt", "xlsx") # supported file extensions
-    f <- sub(".*\\.", "", pathway_file) # pathway_file extension
+    s <- c("gmt", "txt", "xlsx")
+    f <- sub(".*\\.", "", pathwayFile)
     if (!f %in% s) {
         stop(paste0("Sorry, pathway file type (", f, ") is not supported. ",
             "Supported extensions: ", paste(s, collapse = ", "), "."))
     }
     if (f == "gmt") {
-        pathway_in <- strsplit(readLines(pathway_file), "\t")
+        pathway_in <- strsplit(readLines(pathwayFile), "\t")
         if (header) { pathway_in <- pathway_in[-1] }
         pathways <- lapply(pathway_in, tail, -2)
         names(pathways) <- vapply(pathway_in, head, n = 1, character(1))
     } else {
         if (f == "xlsx") {
-            pathway_in <- read.xlsx(pathway_file)
+            pathway_in <- read.xlsx(pathwayFile)
         } else if (f == "txt") {
-            pathway_in <- read.delim(pathway_file, header = header)
+            pathway_in <- read.delim(pathwayFile, header = header)
         }
-        if (missing(pathway_col)||!pathway_col %in% colnames(pathway_in)) {
-            stop("Pathway ID column (", pathway_col, ") not in file")
-        } else if (missing(gene_col)||!gene_col %in% colnames(pathway_in)) {
-            stop("Gene ID column (", gene_col, ") not in file")
+        if (missing(pathwayCol)||!pathwayCol %in% colnames(pathway_in)) {
+            stop("Pathway ID column (", pathwayCol, ") not in file")
+        } else if (missing(geneCol)||!geneCol %in% colnames(pathway_in)) {
+            stop("Gene ID column (", geneCol, ") not in file")
         } else {
             pathway_df <- data.frame(
-                pathway = pathway_in[,pathway_col],
-                gene = pathway_in[,gene_col])
+                pathway = pathway_in[,pathwayCol],
+                gene = pathway_in[,geneCol])
             pathway_df[which(pathway_df$gene == ""), "gene"] <- NA
-            pathway_df <- na.omit(pathway_df) # ensure no NaNs
+            pathway_df <- na.omit(pathway_df)
             pathway_df <- aggregate(gene ~ pathway, pathway_df, paste)
-            pathways <- deframe(pathway_df) # transform df to list
+            pathways <- deframe(pathway_df)
         }
     }
 
-    size <- lapply(pathways, length) # subset for pathways in [MIN:MAX] range
-    pathways_s <- pathways[which(size >= MIN_GENE & size <= MAX_GENE)]
+    size <- lapply(pathways, length)
+    pathways_s <- pathways[which(size >= minGene & size <= maxGene)]
     pathways_s <- pathways_s[!duplicated(names(pathways_s))]
-    message(" => n total pathways: ", length(pathways))
-    message(" => n pathways (",MIN_GENE,"-",MAX_GENE, "): ", length(pathways_s))
-
     if (!length(pathways_s)) {
         stop("Oops, no pathways left... try different filtering options.")
     }
+    message("Pathway file: ", basename(pathwayFile),
+        "\n => n total pathways: ", length(pathways),
+        "\n => n pathways (",minGene,"-",maxGene, "): ", length(pathways_s))
+
     return(pathways_s)
 }
 
 #' Writes a set of pathways (list of vectors) to a GMT file.
 #'
 #' @param pathways (list) named list of vectors.
-#' @param gmt_file (char) name of output GMT file.
+#' @param gmtFile (char) name of output GMT file.
 #' @return GMT-formatted file. Rows represent pathways. Columns represent:
 #' \itemize{
 #'     \item pathway ID;
@@ -86,15 +86,15 @@ readPathways <- function(pathway_file, header = FALSE,
 #' }
 #' @examples
 #' data(pathwaysXLSX)
-#' writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext = ".gmt"))
+#' writePathways(pathwaysXLSX, tempfile("pathwaysXLSX", fileext=".gmt"))
 #' @importFrom data.table fwrite
 #' @export
-writePathways <- function(pathways, gmt_file) {
+writePathways <- function(pathways, gmtFile) {
     tab <- data.table(
         pathway = names(pathways),
         description = gsub("\\%.*", "", names(pathways)),
         genes = unlist(lapply(pathways, paste, collapse = "\t"))
     )
-    fwrite(tab, file = gmt_file, sep = "\t", col.names = FALSE, quote = FALSE)
-    message("Wrote out GMT file with to ", gmt_file)
+    fwrite(tab, file = gmtFile, sep = "\t", col.names = FALSE, quote = FALSE)
+    message("Wrote out pathway gmt file to ", gmtFile)
 }

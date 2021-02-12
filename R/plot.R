@@ -1,16 +1,16 @@
 #' Visualizes pathway enrichment and depletion using ggplot.
 #'
 #' @param df (data.frame) table with FEDUP enrichment results to plot.
-#' @param x_var (char) x-axis variable (must be a column value in \code{df}).
-#' @param y_var (char) y-axis variable (must be a column value in \code{df}).
-#' @param x_lab (char) x-axis label (default \code{x_var} value).
-#' @param y_lab (char) y-axis label (default NULL).
-#' @param p_title (char) plot title (default NULL).
-#' @param fill_var (char) point fill variable (default NULL).
-#' @param fill_col (char) point fill colours (default NULL).
-#' @param fill_lab (char) point fill label (default \code{fill_var} value).
-#' @param size_var (char) point size variable (default NULL).
-#' @param size_lab (char) point size label (default \code{size_var} value).
+#' @param xVar (char) x-axis variable (must be a column value in \code{df}).
+#' @param yVar (char) y-axis variable (must be a column value in \code{df}).
+#' @param xLab (char) x-axis label (default \code{xVar} value).
+#' @param yLab (char) y-axis label (default NULL).
+#' @param pTitle (char) plot title (default NULL).
+#' @param fillVar (char) point fill variable (default NULL).
+#' @param fillCol (char) point fill colours (default NULL).
+#' @param fillLab (char) point fill label (default \code{fillVar} value).
+#' @param sizeVar (char) point size variable (default NULL).
+#' @param sizeLab (char) point size label (default \code{sizeVar} value).
 #' @return object returned from ggplot with the enrichment dot plot.
 #' @examples
 #' data(testGene)
@@ -21,55 +21,56 @@
 #' fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10)
 #' fedup_plot$pathway <- gsub("\\%.*", "", fedup_plot$pathway)
 #' plotDotPlot(
-#'     df = fedup_plot,
-#'     x_var = "log10qvalue",
-#'     y_var = "pathway",
-#'     x_lab = "-log10(Qvalue)",
-#'     fill_var = "status",
-#'     fill_lab = "Enrichment\nstatus",
-#'     size_var = "fold_enrichment",
-#'     size_lab = "Fold enrichment")
+#'     df=fedup_plot,
+#'     xVar="log10qvalue",
+#'     yVar="pathway",
+#'     xLab="-log10(Qvalue)",
+#'     fillVar="status",
+#'     fillLab="Enrichment\nstatus",
+#'     sizeVar="fold_enrichment",
+#'     sizeLab="Fold enrichment")
 #' @import ggplot2
 #' @importFrom ggthemes theme_clean
 #' @importFrom forcats fct_reorder
 #' @importFrom RColorBrewer brewer.pal
 #' @export
-plotDotPlot <- function(df, x_var, y_var,
-                        x_lab = x_var, y_lab = NULL, p_title = NULL,
-                        fill_var = NULL, fill_col = NULL, fill_lab = fill_var,
-                        size_var = NULL, size_lab = size_var) {
+plotDotPlot <- function(df, xVar, yVar,
+                        xLab=xVar, yLab=NULL, pTitle=NULL,
+                        fillVar=NULL, fillCol=NULL, fillLab=fillVar,
+                        sizeVar=NULL, sizeLab=sizeVar) {
 
-    if (!is.null(fill_var) && is.null(fill_col)) {
-        fill_n <- length(unique(df[[fill_var]]))
+    if (!is.null(fillVar) && is.null(fillCol)) {
+        fill_n <- length(unique(df[[fillVar]]))
         pal_n <- ifelse(fill_n >= 3, fill_n, 3)
-        fill_col <- brewer.pal(pal_n, "Set1")
+        fillCol <- brewer.pal(pal_n, "Set1")
     }
 
-    if (fill_var == "status") {
-        df[[fill_var]] <- factor(
-            df[[fill_var]],
-            levels = c("Enriched", "Depleted"))
+    if (fillVar == "status") {
+        df[[fillVar]] <- factor(
+            df[[fillVar]],
+            levels=c("Enriched", "Depleted"))
     }
 
     p <- ggplot(df, aes_string(
-                x = x_var,
-                y = fct_reorder(df[[y_var]], df[[x_var]]),
-                fill = fill_var,
-                size = size_var)) +
-        geom_point(shape = 21, colour = "black") +
-        labs(x = x_lab, y = y_lab, title = p_title,
-            fill = fill_lab, size = size_lab) +
-        scale_fill_manual(values = fill_col) +
-        theme_clean(base_size = 10) +
-        theme(plot.title = element_text(hjust = 0.5),
-            legend.title = element_text(size = 10),
-            legend.text = element_text(size = 10),
-            legend.key.size = unit(0.1, "line"),
-            plot.background = element_blank())
+                x=xVar,
+                y=fct_reorder(df[[yVar]], df[[xVar]]),
+                fill=fillVar,
+                size=sizeVar)) +
+        geom_point(shape=21, colour="black") +
+        labs(x=xLab, y=yLab, title=pTitle,
+            fill=fillLab, size=sizeLab) +
+        scale_fill_manual(values=fillCol) +
+        theme_clean(base_size=10) +
+        theme(plot.title=element_text(hjust=0.5),
+            legend.title=element_text(size=10),
+            legend.text=element_text(size=10),
+            legend.key.size=unit(0.1, "line"),
+            plot.background=element_blank())
 
-    if (is.numeric(df[[x_var]])) {
-        xmin <- floor(min(df[[x_var]])) # set x-axis limits to avoid points
-        xmax <- ceiling(max(df[[x_var]])) # being cut off from plot window
+    # Increase x-axis limits to keep points in plot window
+    if (is.numeric(df[[xVar]])) {
+        xmin <- floor(min(df[[xVar]]))
+        xmax <- ceiling(max(df[[xVar]]))
         p <- p + xlim(xmin, xmax)
     }
     return(p)

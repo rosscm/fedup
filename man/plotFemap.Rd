@@ -6,18 +6,18 @@
 pathways using EnrichmentMap (EM) in Cytoscape.}
 \usage{
 plotFemap(
-  gmt_file,
-  results_file,
+  gmtFile,
+  resultsFile,
   pvalue = 1,
   qvalue = 1,
-  net_name = "generic",
-  net_file = "png"
+  netName = "generic",
+  netFile = "png"
 )
 }
 \arguments{
-\item{gmt_file}{(char) path to GMT file (must be an absolute path).}
+\item{gmtFile}{(char) path to GMT file (must be an absolute path).}
 
-\item{results_file}{(char) path to file with FEDUP results
+\item{resultsFile}{(char) path to file with FEDUP results
 (must be an absolute path).}
 
 \item{pvalue}{(numeric) pvalue cutoff. Pathways with a higher pvalue
@@ -26,9 +26,9 @@ will not be included in the EM (value between 0 and 1; default 1).}
 \item{qvalue}{(numeric) qvalue cutoff. Pathways with a higher qvalue
 will not be included in the EM (value between 0 and 1; default 1).}
 
-\item{net_name}{(char) name for EM in Cytoscape (default generic).}
+\item{netName}{(char) name for EM in Cytoscape (default generic).}
 
-\item{net_file}{(char) name of output image. Supports png, pdf, svg,
+\item{netFile}{(char) name of output image. Supports png, pdf, svg,
 jpeg image formats.}
 }
 \value{
@@ -45,16 +45,16 @@ pathways using EnrichmentMap (EM) in Cytoscape.
     data(testGene)
     data(backgroundGene)
     data(pathwaysGMT)
-    gmt_file <- tempfile("pathwaysGMT", fileext = ".gmt")
-    fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-    results_file <- tempfile("fedup_res", fileext = ".txt")
-    net_file <- tempfile("FEDUP_EM", fileext = ".png")
-    writePathways(pathwaysGMT, gmt_file)
-    writeFemap(fedup_res, results_file)
+    gmtFile <- tempfile("pathwaysGMT", fileext=".gmt")
+    fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
+    resultsFile <- tempfile("fedupRes", fileext=".txt")
+    netFile <- tempfile("FEDUP_EM", fileext=".png")
+    writePathways(pathwaysGMT, gmtFile)
+    writeFemap(fedupRes, resultsFile)
     plotFemap(
-        gmt_file = gmt_file,
-        results_file = results_file,
-        qvalue = 0.05,
-        net_name = "FEDUP_EM",
-        net_file = net_file)}
+        gmtFile=gmtFile,
+        resultsFile=resultsFile,
+        qvalue=0.05,
+        netName="FEDUP_EM",
+        netFile=netFile)}
 }

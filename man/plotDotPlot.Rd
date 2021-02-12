@@ -6,40 +6,40 @@
 \usage{
 plotDotPlot(
   df,
-  x_var,
-  y_var,
-  x_lab = x_var,
-  y_lab = NULL,
-  p_title = NULL,
-  fill_var = NULL,
-  fill_col = NULL,
-  fill_lab = fill_var,
-  size_var = NULL,
-  size_lab = size_var
+  xVar,
+  yVar,
+  xLab = xVar,
+  yLab = NULL,
+  pTitle = NULL,
+  fillVar = NULL,
+  fillCol = NULL,
+  fillLab = fillVar,
+  sizeVar = NULL,
+  sizeLab = sizeVar
 )
 }
 \arguments{
 \item{df}{(data.frame) table with FEDUP enrichment results to plot.}
 
-\item{x_var}{(char) x-axis variable (must be a column value in \code{df}).}
+\item{xVar}{(char) x-axis variable (must be a column value in \code{df}).}
 
-\item{y_var}{(char) y-axis variable (must be a column value in \code{df}).}
+\item{yVar}{(char) y-axis variable (must be a column value in \code{df}).}
 
-\item{x_lab}{(char) x-axis label (default \code{x_var} value).}
+\item{xLab}{(char) x-axis label (default \code{xVar} value).}
 
-\item{y_lab}{(char) y-axis label (default NULL).}
+\item{yLab}{(char) y-axis label (default NULL).}
 
-\item{p_title}{(char) plot title (default NULL).}
+\item{pTitle}{(char) plot title (default NULL).}
 
-\item{fill_var}{(char) point fill variable (default NULL).}
+\item{fillVar}{(char) point fill variable (default NULL).}
 
-\item{fill_col}{(char) point fill colours (default NULL).}
+\item{fillCol}{(char) point fill colours (default NULL).}
 
-\item{fill_lab}{(char) point fill label (default \code{fill_var} value).}
+\item{fillLab}{(char) point fill label (default \code{fillVar} value).}
 
-\item{size_var}{(char) point size variable (default NULL).}
+\item{sizeVar}{(char) point size variable (default NULL).}
 
-\item{size_lab}{(char) point size label (default \code{size_var} value).}
+\item{sizeLab}{(char) point size label (default \code{sizeVar} value).}
 }
 \value{
 object returned from ggplot with the enrichment dot plot.
@@ -56,12 +56,12 @@ fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05),]
 fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10)
 fedup_plot$pathway <- gsub("\\\\\%.*", "", fedup_plot$pathway)
 plotDotPlot(
-    df = fedup_plot,
-    x_var = "log10qvalue",
-    y_var = "pathway",
-    x_lab = "-log10(Qvalue)",
-    fill_var = "status",
-    fill_lab = "Enrichment\nstatus",
-    size_var = "fold_enrichment",
-    size_lab = "Fold enrichment")
+    df=fedup_plot,
+    xVar="log10qvalue",
+    yVar="pathway",
+    xLab="-log10(Qvalue)",
+    fillVar="status",
+    fillLab="Enrichment\nstatus",
+    sizeVar="fold_enrichment",
+    sizeLab="Fold enrichment")
 }

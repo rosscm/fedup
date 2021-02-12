@@ -12,7 +12,6 @@ FEDUP is also integrated with Cytoscape to provide network-based pathway
 visualization that enhances the interpretability of the results.
 
 ## Getting started
-
 ### System prerequisites
 
 R version >= 4.0  
@@ -29,16 +28,16 @@ Install FEDUP via devtools:
     #devtools::install_github("rosscm/FEDUP")
     devtools::load_all()
 
-## Quick run
+# Running the package
+## Sample input
 
-### Data input
+Load test genes (`testGene`), background genes (`backgroudGene`), and
+pathways (`pathwaysGMT`):
 
-Load example test genes, background genes, and pathways:
-
-To note, the test genes comprise solely of a **muscle contraction**
-pathway (Reactome ID 397014). So we would expect to see strong
-*enrichment* for pathways related to muscle contraction and *depletion*
-for pathways not associated with muscle contraction. Let’s see!
+Note, the sample `testGene` object only consists of genes from the pathway
+`MUSCLE CONTRACTION%REACTOME DATABASE ID RELEASE 74%397014`. So we would expect
+to see strong **enrichment** for pathways related to muscle contraction and,
+**depletion** for pathways *not* associated with muscle contraction. Let's see!
 
     data(testGene)
     data(backgroundGene)
@@ -59,9 +58,7 @@ Take a look at the data structure:
     #>  $ CD28 DEPENDENT PI3K AKT SIGNALING%REACTOME DATABASE ID RELEASE 74%389357         : chr [1:22] "CD28" "THEM4" "AKT1" "TRIB3" ...
     #>  $ UBIQUITIN-DEPENDENT DEGRADATION OF CYCLIN D%REACTOME DATABASE ID RELEASE 74%75815: chr [1:52] "PSMA6" "PSMA3" "PSMA4" "PSMA1" ...
 
-### Pathway analysis
-
-Now run `FEDUP` on sample data:
+Now use `runFedup` on sample data:
 
     fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
     #> Data input:
@@ -117,14 +114,16 @@ View output results table sorted by pvalue:
     #> 5: 0.11926627
     #> 6: 0.17258203
 
-As expected, we see strong enrichment for muscle-related pathways and
-depletion for functions not associated with muscle contraction, such as
-olfactory signalling and amino acid metabolism). Nice!
+Here we see the strongest enrichment for the `MUSCLE CONTRACTION` pathway.
+Since our test set of genes are exclusively from this pathway, this is totally
+expected. We also see significant enrichment for other muscle contraction
+pathways, including `CARDIAC CONDUCTION` and `SMOOTH MUSCLE CONTRACTION`.
+Conversely, we see significant depletion for functions not associated with
+muscle contraction, such as `OLFACTORY SIGNALING PATHWAY` and
+`AMINO ACID AND DERIVATIVE METABOLISM`. Nice!
 
-### Visualization
-
-Plot enriched and depleted pathways (qvalue &lt; 0.05) in the form of a
-dot plot:
+Plot enriched and depleted pathways (qvalue < 0.05) in the form of a dot plot
+via the `plotDotPlot` function:
 
     fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
     fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # log10-transform qvalue for plotting
@@ -145,10 +144,9 @@ dot plot:
 
 ![](man/figures/FEDUP_dotplot-1.png)
 
-Look at all those chick… enrichments! This is a bit overwhelming, no?
-How do we interpret these 76 fairly redundant pathways meaningfully?
-What if we could summarize them in a way that doesn’t hurt our tired
-brains even more? Oh I know, let’s use EnrichmentMap!
+Look at all those chick... enrichments! This is a bit overwhelming, isn't it?
+How do we interpret these 76 seemingly redundant pathways in a way that doesn't
+hurt our tired brains even more? Oh I know, let's use EnrichmentMap!
 
 First, make sure to have
 [Cytoscape](https://cytoscape.org/download.html) downloaded and and open
@@ -162,17 +160,17 @@ Then format `FEDUP` results for compatibility with EnrichmentMap:
     writeFemap(fedupRes, resultsFile)
     #> Wrote Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpMMbNpg/fedupRes181796b099542.txt
 
-Prepare a pathway annotation file (GMT format) from the pathway list you
-passed to `FEDUP` (you don’t need to run this function if your pathway
-annotations are already in GMT format, but it doesn’t hurt to make
-sure):
+Prepare a pathway annotation file (`gmt` format) from the pathway list you
+passed to `runFedup` using the `writePathways` function (you don't need to run
+this function if your pathway annotations are already in `gmt` format, but it
+doesn't hurt to make sure):
 
     gmtFile <- tempfile("pathwaysGMT", fileext=".gmt")
     writePathways(pathwaysGMT, gmtFile)
     #> Wrote out GMT file with to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpMMbNpg/pathwaysGMT181796316cf19.gmt
 
-Cytoscape is open right? If so, uncomment these lines and let the magic
-happen:
+Cytoscape is open right? If so, uncomment these lines and let the `plotFemap`
+magic happen:
 
     #netFile <- tempfile("FEDUP_EM", fileext=".png")
     #plotFemap(
@@ -184,14 +182,13 @@ happen:
 
 ![](man/figures/FEDUP_EM-1.png)
 
-After some manual rearrangement of the annotated pathway clusters, this
-is the resulting Enrichment Map we get from our `FEDUP` results. Much
-better!
+After some manual rearrangement of the annotated pathway clusters, this is the
+resulting EnrichmentMap we get from our `FEDUP` results. Much better!
 
-This has effectively summarized the 76 pathways from our dot plot into
-14 unique biological themes (including 4 unclustered pathways). We can
-now see clear themes in the data pertaining to muscle contraction, such
-as NMDA receptor function, calcium homeostasis, and ATPase transport.
+This has effectively summarized the 76 pathways from our dot plot into 14 unique
+biological themes (including 4 unclustered pathways). We can now see clear
+themes in the data pertaining to muscle contraction, such as `NMDA receptor
+function`, `calcium homeostasis`, and `ATPase transport`.
 
 Try this out yourself! Hopefully it’s the only fedup you achieve
 :grimacing:

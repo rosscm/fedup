@@ -6,3 +6,4 @@
 README.Rmd
 *.html
 run_*.R
+inst/doc

@@ -1,5 +1,5 @@
 ---
-title: "FEDUP User Manual"
+title: "Introduction to FEDUP"
 author: Catherine Ross
 output:
     rmdformats::html_clean:
@@ -8,7 +8,7 @@ output:
         thumbnails: false
         lightbox: true
 vignette: >
-    %\VignetteIndexEntry{FEDUP User Manual}
+    %\VignetteIndexEntry{Introduction to FEDUP}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---

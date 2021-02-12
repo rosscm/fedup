@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/rosscm/FEDUP.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/FEDUP)
 ![R-CMD-check](https://github.com/rosscm/FEDUP/workflows/R-CMD-check/badge.svg)
-[![Codecov test coverage](https://codecov.io/gh/rosscm/FEDUP/branch/main/graph/badge.svg)](https://codecov.io/gh/rosscm/FEDUP?branch=main)
+![test-coverage](https://github.com/rosscm/FEDUP/workflows/test-coverage/badge.svg)
 
 # FEDUP
 
@@ -154,7 +154,7 @@ on your computer. You’ll also need to install the
 [EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
 [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
-Then format `FEDUP` results for compatibility with EnrichmentMap:
+Then format results for compatibility with EnrichmentMap with `writeFemap`:
 
     resultsFile <- tempfile("fedupRes", fileext=".txt")
     writeFemap(fedupRes, resultsFile)

@@ -37,10 +37,7 @@ Suggests:
     rmarkdown,
     devtools,
     covr,
-    rmdformats,
-    BiocStyle,
-    RefManageR,
-    sessioninfo
+    rmdformats
 LazyData: true
 Encoding: UTF-8
 Language: en-US

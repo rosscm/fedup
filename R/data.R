@@ -1,8 +1,7 @@
 #' Named list of human pathway annotations obtained from a GMT file.
 #'
 #' Raw GMT file is available from
-#' \url{http://download.baderlab.org/EM_Genesets/November_17_2020/Human
-#'     /symbol/Pathways/Human_Reactome_November_17_2020_symbol.gmt}
+#' \url{http://download.baderlab.org/EM_Genesets/November_17_2020/Human/symbol}
 #'
 #' Raw data location
 #' system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",

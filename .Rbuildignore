@@ -2,7 +2,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
-^\.html$
+^.*\.html$
 ^FEDUP-Ex.R$
 ^data-raw$
 ^\.travis\.yml$

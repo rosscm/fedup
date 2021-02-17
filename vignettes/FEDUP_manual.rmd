@@ -35,7 +35,8 @@ that enhances the interpretability of the results.
 Install `FEDUP` via devtools:
 
 ```{r, message=FALSE, warning=FALSE}
-devtools::install_github("rosscm/FEDUP")
+#devtools::install_github("rosscm/FEDUP")
+devtools::load_all()
 ```
 
 # Running the package

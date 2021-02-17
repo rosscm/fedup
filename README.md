@@ -26,6 +26,7 @@ R packages:
 
 Install FEDUP via devtools:
 
+    #devtools::install_github("rosscm/FEDUP")
     devtools::load_all()
 
 # Running the package

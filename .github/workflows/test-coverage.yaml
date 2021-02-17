@@ -44,5 +44,5 @@ jobs:
         shell: Rscript {0}
 
       - name: Test coverage
-        run: covr::codecov()
+        run: covr::codecov(token = "fa324b23-d843-4c3c-af8f-169ce9de6a00")
         shell: Rscript {0}

@@ -1,9 +1,9 @@
 .DS_Store
-*.Rproj
+.Rproj
 .Rproj.user
 .git
 .github
+.html
 README.Rmd
-*.html
 run_*.R
 inst/doc

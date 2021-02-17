@@ -1,15 +1,16 @@
 [![Build Status](https://travis-ci.com/rosscm/FEDUP.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/FEDUP)
 ![R-CMD-check](https://github.com/rosscm/FEDUP/workflows/R-CMD-check/badge.svg)
 ![test-coverage](https://github.com/rosscm/FEDUP/workflows/test-coverage/badge.svg)
+[![codecov](https://codecov.io/gh/rosscm/FEDUP/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/FEDUP)
 
 # FEDUP
 
-FEDUP is an R package that tests for enrichment and depletion of
-user-defined pathways using a Fisher’s exact test. This package is
-designed for versatile pathway annotation formats (eg. gmt, txt, xlsx)
-to allow the user to run pathway analysis on custom annotations.
-FEDUP is also integrated with Cytoscape to provide network-based pathway
-visualization that enhances the interpretability of the results.
+An R package that tests for enrichment and depletion of user-defined
+pathways using a Fisher's exact test. The method is designed for versatile
+pathway annotation formats (eg. gmt, txt, xlsx) to allow the user to run
+pathway analysis on custom annotations. This package is also
+integrated with Cytoscape to provide network-based pathway visualization
+that enhances the interpretability of the results.
 
 ## Getting started
 ### System prerequisites
@@ -25,7 +26,6 @@ R packages:
 
 Install FEDUP via devtools:
 
-    #devtools::install_github("rosscm/FEDUP")
     devtools::load_all()
 
 # Running the package
@@ -128,6 +128,7 @@ via the `plotDotPlot` function:
     fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
     fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # log10-transform qvalue for plotting
     fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean pathway names
+
     p <- plotDotPlot(
       df=fedupPlot,
       xVar="log10qvalue",
@@ -137,6 +138,7 @@ via the `plotDotPlot` function:
       fillLab="Enrichment\nstatus",
       sizeVar="fold_enrichment",
       sizeLab="Fold enrichment")
+
     p <- p + # facet by status to separate enriched and depleted pathways
       facet_grid("status", scales="free", space="free") +
       theme(strip.text.y=element_blank())

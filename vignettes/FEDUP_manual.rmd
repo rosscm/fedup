@@ -13,12 +13,12 @@ vignette: >
     %\VignetteEncoding{UTF-8}
 ---
 
-`FEDUP` is an R package that tests for enrichment and depletion
-of user-defined pathways using a Fisher's exact test. This package is
-designed for versatile pathway annotation formats (eg. `gmt`, `txt`, `xlsx`)
-to allow the user to run pathway analysis on custom annotations.
-`FEDUP` is also integrated with Cytoscape to provide network-based pathway
-visualization that enhances the interpretability of the results.
+An R package that tests for enrichment and depletion of user-defined
+pathways using a Fisher's exact test. The method is designed for versatile
+pathway annotation formats (eg. gmt, txt, xlsx) to allow the user to run
+pathway analysis on custom annotations. This package is also
+integrated with Cytoscape to provide network-based pathway visualization
+that enhances the interpretability of the results.
 
 # Getting started
 ## System prerequisites
@@ -35,8 +35,7 @@ visualization that enhances the interpretability of the results.
 Install `FEDUP` via devtools:
 
 ```{r, message=FALSE, warning=FALSE}
-#devtools::install_github("rosscm/FEDUP")
-devtools::load_all()
+devtools::install_github("rosscm/FEDUP")
 ```
 
 # Running the package

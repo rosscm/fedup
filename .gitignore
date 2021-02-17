@@ -4,6 +4,5 @@
 .git
 .github
 .html
-README.Rmd
-run_*.R
+test.R
 inst/doc

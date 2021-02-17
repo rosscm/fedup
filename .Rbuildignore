@@ -3,7 +3,7 @@
 ^\.Rproj\.user$
 ^\.github$
 ^\.html$
-^run_.*.R$
+^test.R$
 ^data-raw$
 ^\.travis\.yml$
 ^README\.Rmd$

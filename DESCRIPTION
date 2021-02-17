@@ -38,6 +38,8 @@ Suggests:
     devtools,
     covr,
     rmdformats
+SystemRequirements:
+    Cytoscape (>= 3.8.2) (optional, but strongly recommended for visualization)
 LazyData: true
 Encoding: UTF-8
 Language: en-US

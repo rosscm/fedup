@@ -8,17 +8,17 @@ test_that("Test that readPathways stops without proper inputs", {
     expect_error(readPathways(
         pathwayFile,
         header = TRUE,
-        pathwayCol = "Enriched.GO.names", geneCol = "oops"
+        pathCol = "Enriched.GO.names", geneCol = "oops"
     ))
     expect_error(readPathways(
         pathwayFile,
         header = TRUE,
-        pathwayCol = "oops", geneCol = "Gene.ID"
+        pathCol = "oops", geneCol = "Gene.ID"
     ))
     expect_error(readPathways(
         pathwayFile,
         header = TRUE, minGene = 500,
-        pathwayCol = "Enriched.GO.names", geneCol = "Gene.ID"
+        pathCol = "Enriched.GO.names", geneCol = "Gene.ID"
     ))
 })
 
@@ -43,7 +43,7 @@ test_that("Test that readPathways works with XLSX input", {
     pathways <- readPathways(
         pathwayFile,
         header = TRUE,
-        pathwayCol = "Enriched.GO.names", geneCol = "Gene.ID"
+        pathCol = "Enriched.GO.names", geneCol = "Gene.ID"
     )
     expect_true(is.list(pathways))
     expect_equal(length(pathways), 30)
@@ -58,7 +58,7 @@ test_that("Test that readPathways works with TXT input", {
     pathways <- readPathways(
         pathwayFile,
         header = TRUE,
-        pathwayCol = "Enriched.GO.names", geneCol = "Gene.ID"
+        pathCol = "Enriched.GO.names", geneCol = "Gene.ID"
     )
     expect_true(is.list(pathways))
     expect_equal(length(pathways), 30)

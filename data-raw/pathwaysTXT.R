@@ -1,12 +1,12 @@
 ## code to prepare `pathwaysXLSX` dataset goes here
 library(tibble)
 
-pathway_file <- system.file("extdata", "SAFE_terms.txt", package = "FEDUP")
+pathwayFile <- system.file("extdata", "SAFE_terms.txt", package = "FEDUP")
 pathwaysTXT <- readPathways(
-    pathway_file,
+    pathwayFile,
     header = TRUE,
-    pathway_col = "Enriched.GO.names",
-    gene_col = "Gene.ID"
+    pathCol = "Enriched.GO.names",
+    geneCol = "Gene.ID"
 )
 
 names(pathwaysTXT) <- stringi::stri_trans_general(names(pathwaysTXT), "latin-ascii")

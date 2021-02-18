@@ -2,12 +2,12 @@
 library(openxlsx)
 library(tibble)
 
-pathway_file <- system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP")
+pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP")
 pathwaysXLSX <- readPathways(
-    pathway_file,
+    pathwayFile,
     header = TRUE,
-    pathway_col = "Enriched.GO.names",
-    gene_col = "Gene.ID"
+    pathCol = "Enriched.GO.names",
+    geneCol = "Gene.ID"
 )
 
 names(pathwaysXLSX) <- stringi::stri_trans_general(names(pathwaysXLSX), "latin-ascii")

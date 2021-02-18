@@ -8,7 +8,7 @@ Currently supports the following file format: gmt, txt, xlsx.}
 readPathways(
   pathwayFile,
   header = FALSE,
-  pathwayCol = NULL,
+  pathCol = NULL,
   geneCol = NULL,
   minGene = 1L,
   maxGene = Inf
@@ -20,11 +20,11 @@ readPathways(
 \item{header}{(logical) whether \code{pathwayFile} has a header
 (default FALSE).}
 
-\item{pathwayCol}{(char) column name with pathway identifiers.
-For use with non-GMT input files (eg "Pathway.ID"; default NULL).}
+\item{pathCol}{(char or int) column name or number with pathway identifiers.
+For use with non-GMT input files (eg "Pathway.ID" or 2; default NULL).}
 
-\item{geneCol}{(char) column name with gene identifiers.
-For use with non-GMT input files (eg "Gene.ID"; default NULL).}
+\item{geneCol}{(char or int) column name or number with gene identifiers.
+For use with non-GMT input files (eg "Gene.ID" or 5; default NULL).}
 
 \item{minGene}{(integer) minimum number of genes to be considered
 in a pathway (default 1).}
@@ -48,6 +48,6 @@ pathways <- readPathways(
 )
 pathways <- readPathways(
     system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
-    header = TRUE, pathwayCol = "Enriched.GO.names", geneCol = "Gene.ID"
+    header = TRUE, pathCol = "Enriched.GO.names", geneCol = "Gene.ID"
 )
 }

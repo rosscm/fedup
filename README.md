@@ -31,8 +31,7 @@ pathway visualization that enhances the interpretability of the results.
 Install `FEDUP` via devtools:
 
 ``` r
-#devtools::install_github("rosscm/FEDUP")
-devtools::load_all()
+devtools::install_github("rosscm/FEDUP")
 ```
 
 # Running the package
@@ -49,6 +48,7 @@ muscle contraction and, **depletion** for pathways *not* associated with
 muscle contraction. Let’s see!
 
 ``` r
+library(FEDUP)
 data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
@@ -145,22 +145,23 @@ dot plot via the `plotDotPlot` function:
 
 ``` r
 fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
-fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # log10-transform qvalue for plotting
-fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean pathway names
+fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # -log10(qvalue)
+fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names
 
 p <- plotDotPlot(
-  df=fedupPlot,
-  xVar="log10qvalue",
-  yVar="pathway",
-  xLab="-log10(Qvalue)",
-  fillVar="status",
-  fillLab="Enrichment\nstatus",
-  sizeVar="fold_enrichment",
-  sizeLab="Fold enrichment")
+  df = fedupPlot,
+  xVar = "log10qvalue",
+  yVar = "pathway",
+  xLab = "-log10(Qvalue)",
+  fillVar = "status",
+  fillLab = "Enrichment\nstatus",
+  sizeVar = "fold_enrichment",
+  sizeLab = "Fold enrichment"
+)
 
 p <- p + # facet by status to separate enriched and depleted pathways
-  facet_grid("status", scales="free", space="free") +
-  theme(strip.text.y=element_blank())
+  ggplot2::facet_grid("status", scales = "free", space = "free") +
+  ggplot2::theme(strip.text.y = ggplot2::element_blank())
 print(p)
 ```
 
@@ -181,9 +182,9 @@ Then format results for compatibility with EnrichmentMap with
 `writeFemap`:
 
 ``` r
-resultsFile <- tempfile("fedupRes", fileext=".txt")
+resultsFile <- tempfile("fedupRes", fileext = ".txt")
 writeFemap(fedupRes, resultsFile)
-#> Wrote out Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//Rtmp2lkFG9/fedupRes940c5b1ad846.txt
+#> Wrote out Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpkrOLGI/fedupResd1fe5a09ae4.txt
 ```
 
 Prepare a pathway annotation file (`gmt` format) from the pathway list
@@ -192,25 +193,34 @@ need to run this function if your pathway annotations are already in
 `gmt` format, but it doesn’t hurt to make sure):
 
 ``` r
-gmtFile <- tempfile("pathwaysGMT", fileext=".gmt")
+gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//Rtmp2lkFG9/pathwaysGMT940cfc54bc4.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpkrOLGI/pathwaysGMTd1fe6a9ef71a.gmt
 ```
 
-Cytoscape is open right? If so, uncomment these lines and let the
-`plotFemap` magic happen:
+Cytoscape is open right? If so, run these lines and let the `plotFemap`
+magic happen:
 
 ``` r
-#netFile <- tempfile("FEDUP_EM", fileext=".png")
-#plotFemap(
-#  gmtFile=gmtFile,
-#  resultsFile=resultsFile,
-#  qvalue=0.05,
-#  netName="FEDUP_EM",
-#  netFile=netFile)
+netFile <- tempfile("FEDUP_EM", fileext = ".png")
+plotFemap(
+  gmtFile = gmtFile,
+  resultsFile = resultsFile,
+  qvalue = 0.05,
+  netName = "FEDUP_EM",
+  netFile = netFile
+)
+#> You are connected to Cytoscape!
+#> Building the network
+#> Setting network chart data
+#> Annotating the network using AutoAnnotate
+#> Applying a force-directed network layout
+#> Drawing out network to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpkrOLGI/FEDUP_EMd1fe2164d53b.png
+#>                                                                                   file
+#> "/var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T/RtmpkrOLGI/FEDUP_EMd1fe2164d53b.png"
 ```
 
-![FEDUP\_EM](man/figures/FEDUP_EM-1.png)
+![](man/figures/FEDUP_EM-1.png)
 
 After some manual rearrangement of the annotated pathway clusters, this
 is the resulting EnrichmentMap we get from our `FEDUP` results. Much

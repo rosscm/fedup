@@ -27,6 +27,8 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
+doc
+Meta
 
 # knitr and R markdown default cache directories
 *_cache/
@@ -38,5 +40,8 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Annoying files
+.DS_Store
 
 # End of https://www.toptal.com/developers/gitignore/api/r

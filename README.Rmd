@@ -29,7 +29,7 @@ that enhances the interpretability of the results.
 # Getting started
 ## System prerequisites
 
-**R version** ≥ 4.0  
+**R version** ≥ 4.1  
 **R packages**:
 
 -   **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes,
@@ -41,7 +41,7 @@ that enhances the interpretability of the results.
 Install `FEDUP` via devtools:
 
 ```{r, message = FALSE}
-devtools::install_github("rosscm/FEDUP")
+devtools::install_github("rosscm/FEDUP", quiet = TRUE)
 ```
 
 # Running the package
@@ -133,9 +133,9 @@ resultsFile <- tempfile("fedupRes", fileext = ".txt")
 writeFemap(fedupRes, resultsFile)
 ````
 
-Prepare a pathway annotation file (`gmt` format) from the pathway list you
+Prepare a pathway annotation file (gmt format) from the pathway list you
 passed to `runFedup` using the `writePathways` function (you don't need to run
-this function if your pathway annotations are already in `gmt` format, but it
+this function if your pathway annotations are already in gmt format, but it
 doesn't hurt to make sure):
 
 ```{r}
@@ -147,14 +147,14 @@ Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
 ```{r, FEDUP_EM}
-#netFile <- tempfile("FEDUP_EM", fileext = ".png")
-#plotFemap(
-#  gmtFile = gmtFile,
-#  resultsFile = resultsFile,
-#  qvalue = 0.05,
-#  netName = "FEDUP_EM",
-#  netFile = netFile
-#)
+netFile <- tempfile("FEDUP_EM", fileext = ".png")
+plotFemap(
+  gmtFile = gmtFile,
+  resultsFile = resultsFile,
+  qvalue = 0.05,
+  netName = "FEDUP_EM",
+  netFile = netFile
+)
 ```
 
 ![](man/figures/FEDUP_EM-1.png)

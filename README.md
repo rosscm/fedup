@@ -19,7 +19,7 @@ pathway visualization that enhances the interpretability of the results.
 
 ## System prerequisites
 
-**R version** ≥ 4.0  
+**R version** ≥ 4.1  
 **R packages**:
 
 -   **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes,
@@ -31,7 +31,7 @@ pathway visualization that enhances the interpretability of the results.
 Install `FEDUP` via devtools:
 
 ``` r
-devtools::install_github("rosscm/FEDUP")
+devtools::install_github("rosscm/FEDUP", quiet = TRUE)
 ```
 
 # Running the package
@@ -184,18 +184,18 @@ Then format results for compatibility with EnrichmentMap with
 ``` r
 resultsFile <- tempfile("fedupRes", fileext = ".txt")
 writeFemap(fedupRes, resultsFile)
-#> Wrote out Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpkrOLGI/fedupResd1fe5a09ae4.txt
+#> Wrote out Cytoscape-formatted FEDUP results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpmEZRQI/fedupRes18391308b962e.txt
 ```
 
-Prepare a pathway annotation file (`gmt` format) from the pathway list
-you passed to `runFedup` using the `writePathways` function (you don’t
-need to run this function if your pathway annotations are already in
-`gmt` format, but it doesn’t hurt to make sure):
+Prepare a pathway annotation file (gmt format) from the pathway list you
+passed to `runFedup` using the `writePathways` function (you don’t need
+to run this function if your pathway annotations are already in gmt
+format, but it doesn’t hurt to make sure):
 
 ``` r
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpkrOLGI/pathwaysGMTd1fe6a9ef71a.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpmEZRQI/pathwaysGMT1839144457fcd.gmt
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
@@ -215,9 +215,9 @@ plotFemap(
 #> Setting network chart data
 #> Annotating the network using AutoAnnotate
 #> Applying a force-directed network layout
-#> Drawing out network to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpkrOLGI/FEDUP_EMd1fe2164d53b.png
-#>                                                                                   file
-#> "/var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T/RtmpkrOLGI/FEDUP_EMd1fe2164d53b.png"
+#> Drawing out network to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpmEZRQI/FEDUP_EM1839132bab598.png
+#>                                                                                    file 
+#> "/var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T/RtmpmEZRQI/FEDUP_EM1839132bab598.png"
 ```
 
 ![](man/figures/FEDUP_EM-1.png)

@@ -6,3 +6,5 @@
 ^data-raw$
 ^\.travis\.yml$
 ^README\.Rmd$
+^doc$
+^Meta$

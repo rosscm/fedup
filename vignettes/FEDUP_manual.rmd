@@ -192,7 +192,7 @@ Now use the `readPathways` function to convert this to list format:
 ```{r}
 pathways <- readPathways(
     pathwayFile = pathwayFile,
-    pathwayCol = "Enriched.GO.names",
+    pathCol = "Enriched.GO.names",
     geneCol = "Gene.ID"
 )
 str(head(pathways))

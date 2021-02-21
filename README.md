@@ -244,7 +244,7 @@ plotFemap(
 #> Annotating the network using AutoAnnotate
 #> Applying a force-directed network layout
 #> Drawing out network to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpslgPTa/fedup_EM13c45205ac474.png
-#>                                                                                    file 
+#>                                                                                    file
 #> "/var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T/RtmpslgPTa/fedup_EM13c45205ac474.png"
 ```
 

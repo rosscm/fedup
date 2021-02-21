@@ -1,6 +1,6 @@
 context("Enrichment analysis")
 
-test_that("Test that FEDUP stops without proper inputs", {
+test_that("Test that fedup stops without proper inputs", {
     data(testGene)
     data(backgroundGene)
     data(pathwaysGMT)
@@ -13,7 +13,7 @@ test_that("Test that FEDUP stops without proper inputs", {
     expect_error(runFedup(backgroundGene, testGene, pathwaysGMT))
 })
 
-test_that("Test that FEDUP analysis works", {
+test_that("Test that fedup analysis works", {
     data(testGene)
     data(backgroundGene)
     data(pathwaysGMT)

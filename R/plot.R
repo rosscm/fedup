@@ -1,6 +1,6 @@
 #' Visualizes pathway enrichment and depletion using ggplot.
 #'
-#' @param df (data.frame) table with FEDUP enrichment results to plot.
+#' @param df (data.frame) table with fedup enrichment results to plot.
 #' @param xVar (char) x-axis variable (must be a column value in \code{df}).
 #' @param yVar (char) y-axis variable (must be a column value in \code{df}).
 #' @param xLab (char) x-axis label (default \code{xVar} value).

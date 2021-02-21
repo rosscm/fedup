@@ -12,10 +12,10 @@ pathwaysXLSX
 }
 \description{
 Raw data location
-system.file("extdata", "SAFE_terms.xlsx", package="FEDUP")
+system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
 }
 \details{
 Script to prepare data
-system.file("data-raw", "pathwaysXLSX.R", package="FEDUP")
+system.file("data-raw", "pathwaysXLSX.R", package = "fedup")
 }
 \keyword{datasets}

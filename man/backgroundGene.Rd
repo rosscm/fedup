@@ -12,6 +12,6 @@ backgroundGene
 }
 \description{
 Script to generate data
-system.file("data-raw", "genes.R", package="FEDUP")
+system.file("data-raw", "genes.R", package = "fedup")
 }
 \keyword{datasets}

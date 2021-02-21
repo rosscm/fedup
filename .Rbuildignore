@@ -2,7 +2,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
-^FEDUP-Ex.R$
+^fedup-Ex.R$
 ^data-raw$
 ^\.travis\.yml$
 ^README\.Rmd$

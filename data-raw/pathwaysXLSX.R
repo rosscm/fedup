@@ -2,7 +2,7 @@
 library(openxlsx)
 library(tibble)
 
-pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP")
+pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
 pathwaysXLSX <- readPathways(
     pathwayFile,
     header = TRUE,

@@ -19,7 +19,7 @@ plotDotPlot(
 )
 }
 \arguments{
-\item{df}{(data.frame) table with FEDUP enrichment results to plot.}
+\item{df}{(data.frame) table with fedup enrichment results to plot.}
 
 \item{xVar}{(char) x-axis variable (must be a column value in \code{df}).}
 

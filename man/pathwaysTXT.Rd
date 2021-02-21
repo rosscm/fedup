@@ -12,10 +12,10 @@ pathwaysTXT
 }
 \description{
 Raw data location
-system.file("extdata", "SAFE_terms.txt", package="FEDUP")
+system.file("extdata", "SAFE_terms.txt", package = "fedup")
 }
 \details{
 Script to prepare data
-system.file("data-raw", "pathwaysTXT.R", package="FEDUP")
+system.file("data-raw", "pathwaysTXT.R", package = "fedup")
 }
 \keyword{datasets}

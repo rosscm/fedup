@@ -1,5 +1,5 @@
 ---
-title: "Introduction to fedup"
+title: "User guide to fedup"
 author: Catherine Ross
 output:
     rmdformats::html_clean:
@@ -8,7 +8,7 @@ output:
         thumbnails: false
         lightbox: true
 vignette: >
-    %\VignetteIndexEntry{Introduction to fedup}
+    %\VignetteIndexEntry{User guide to fedup}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
@@ -50,8 +50,7 @@ devtools::install_github("rosscm/fedup", quiet = TRUE)
 Load package:
 
 ```{r}
-#library(fedup)
-devtools::load_all()
+library(fedup)
 ```
 
 # Running the package
@@ -66,7 +65,6 @@ to see strong **enrichment** for pathways related to muscle contraction and,
 **depletion** for pathways *not* associated with muscle contraction. Let's see!
 
 ```{r, message = FALSE}
-library(fedup)
 data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
@@ -104,7 +102,7 @@ muscle contraction, such as `OLFACTORY SIGNALING PATHWAY` and
 Plot enriched and depleted pathways (qvalue < 0.05) in the form of a dot plot
 via the `plotDotPlot` function:
 
-```{r, fedup_dotplot, fig.width = 9, fig.height = 9.5}
+```{r, fedupDotplot, fig.width = 9, fig.height = 9.5}
 fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
 fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # -log10(qvalue)
 fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names
@@ -155,7 +153,7 @@ writePathways(pathwaysGMT, gmtFile)
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
-```{r}
+```{r, fedupEM}
 #netFile <- tempfile("fedup_EM", fileext = ".png")
 #plotFemap(
 #  gmtFile = gmtFile,
@@ -166,7 +164,7 @@ magic happen:
 #)
 ```
 
-![](figures/fedup_EM-1.png)
+![](figures/fedupEM-1.png)
 
 After some manual rearrangement of the annotated pathway clusters, this is the
 resulting EnrichmentMap we get from our `fedup` results. Much better!
@@ -225,7 +223,7 @@ print(head(fedupRes[which(fedupRes$status == "Depleted"),]))
 
 Run through `plotDotPlot` to visualize:
 
-```{r, fedup_dotplot_manual, fig.width = 5, fig.height = 3.5}
+```{r, fedupDotplot2, fig.width = 5, fig.height = 3.5}
 fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
 fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # log10(qvalue)
 fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names

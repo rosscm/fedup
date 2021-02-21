@@ -11,7 +11,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+<div align="center">
+
 # fedup
+
+**F**isher's Test for **E**nrichment and **D**epletion of **U**ser-Defined **P**ßathways
 
 [![Build Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/fedup)
 ![R-CMD-check](https://github.com/rosscm/fedup/workflows/R-CMD-check/badge.svg)
@@ -19,12 +23,28 @@ knitr::opts_chunk$set(
 ![test-coverage](https://github.com/rosscm/fedup/workflows/test-coverage/badge.svg)
 [![codecov](https://codecov.io/gh/rosscm/fedup/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/fedup)
 
+
 `fedup` is an R package that tests for enrichment and depletion of user-defined
 pathways using a Fisher's exact test. The method is designed for versatile
 pathway annotation formats (eg. gmt, txt, xlsx) to allow the user to run
 pathway analysis on custom annotations. This package is also
 integrated with Cytoscape to provide network-based pathway visualization
 that enhances the interpretability of the results.
+
+
+<div align="left">
+
+# Contents
+
+- [Getting started](#getting-started)
+  * [System prerequisites](#system-prerequisites)
+  * [Installation](#installation)
+- [Running the package](#running-the-package)
+  * [Input](#input)
+  * [Analysis](#analysis)
+  * [Visualization](#visualization)
+- [Versioning](#versioning)
+- [Shoutouts](#shoutouts)
 
 # Getting started
 ## System prerequisites
@@ -47,12 +67,11 @@ devtools::install_github("rosscm/fedup", quiet = TRUE)
 Load package:
 
 ```{r}
-#library(fedup)
-load_all()
+library(fedup)
 ```
 
 # Running the package
-## Sample input
+## Input
 
 Load test genes (`testGene`), background genes (`backgroudGene`), and
 pathways (`pathwaysGMT`):
@@ -76,6 +95,8 @@ str(backgroundGene)
 str(head(pathwaysGMT))
 ```
 
+## Analysis
+
 Now use `runFedup` on sample data:
 
 ```{r}
@@ -97,10 +118,12 @@ Conversely, we see significant depletion for functions not associated with
 muscle contraction, such as `OLFACTORY SIGNALING PATHWAY` and
 `AMINO ACID AND DERIVATIVE METABOLISM`. Nice!
 
+## Visualization
+
 Plot enriched and depleted pathways (qvalue < 0.05) in the form of a dot plot
 via the `plotDotPlot` function:
 
-```{r, fedup_dotplot, fig.width = 9, fig.height = 9.5}
+```{r, fedupDotplot, fig.width = 9, fig.height = 9.5}
 fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
 fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # -log10(qvalue)
 fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names
@@ -152,7 +175,7 @@ writePathways(pathwaysGMT, gmtFile)
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
-```{r, fedup_EM}
+```{r, fedupEM}
 netFile <- tempfile("fedup_EM", fileext = ".png")
 plotFemap(
   gmtFile = gmtFile,
@@ -163,7 +186,7 @@ plotFemap(
 )
 ```
 
-![](man/figures/fedup_EM-1.png)
+![](man/figures/fedupEM-1.png)
 
 After some manual rearrangement of the annotated pathway clusters, this is the
 resulting EnrichmentMap we get from our `fedup` results. Much better!

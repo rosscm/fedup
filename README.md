@@ -1,7 +1,7 @@
 
 <div align="center">
 
-# fedup
+![](man/figures/fedupLogo.svg)
 
 **F**isher’s Test for **E**nrichment and **D**epletion of
 **U**ser-Defined **P**athways

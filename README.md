@@ -1,7 +1,7 @@
 
 <div align="center">
 
-![](man/figures/fedupLogo.svg)
+![](man/figures/fedupLogo.png)
 
 **F**isher’s Test for **E**nrichment and **D**epletion of
 **U**ser-Defined **P**athways

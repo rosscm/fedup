@@ -4,7 +4,7 @@ test_that("Test that readPathways stops without proper inputs", {
     expect_error(readPathways("test.123.xls"))
     expect_error(readPathways("test.gmt.123"))
 
-    pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP")
+    pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
     expect_error(readPathways(
         pathwayFile,
         header = TRUE,
@@ -23,7 +23,7 @@ test_that("Test that readPathways stops without proper inputs", {
 })
 
 test_that("Test that readPathways works with GMT input", {
-    pathwayFile <- system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt", package = "FEDUP")
+    pathwayFile <- system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt", package = "fedup")
     s <- c("gmt", "txt", "xlsx")
     f <- sub(".*\\.", "", pathwayFile)
     expect_true(f %in% s)
@@ -35,7 +35,7 @@ test_that("Test that readPathways works with GMT input", {
 })
 
 test_that("Test that readPathways works with XLSX input", {
-    pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP")
+    pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
     s <- c("gmt", "txt", "xlsx")
     f <- sub(".*\\.", "", pathwayFile)
     expect_true(f %in% s)
@@ -50,7 +50,7 @@ test_that("Test that readPathways works with XLSX input", {
 })
 
 test_that("Test that readPathways works with TXT input", {
-    pathwayFile <- system.file("extdata", "SAFE_terms.txt", package = "FEDUP")
+    pathwayFile <- system.file("extdata", "SAFE_terms.txt", package = "fedup")
     s <- c("gmt", "txt", "xlsx")
     f <- sub(".*\\.", "", pathwayFile)
     expect_true(f %in% s)

@@ -1,4 +1,4 @@
 library(testthat)
-library(FEDUP)
+library(fedup)
 
-test_check("FEDUP")
+test_check("fedup")

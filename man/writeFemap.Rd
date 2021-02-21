@@ -7,7 +7,7 @@
 writeFemap(df, resultsFile)
 }
 \arguments{
-\item{df}{(data.frame) table with FEDUP enrichment results.
+\item{df}{(data.frame) table with fedup enrichment results.
 (see runFedup() for column descriptions)}
 
 \item{resultsFile}{(char) name of output results file.}

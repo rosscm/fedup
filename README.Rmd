@@ -11,20 +11,39 @@ knitr::opts_chunk$set(
 )
 ```
 
-# FEDUP
+<div align="center">
 
-[![Build Status](https://travis-ci.com/rosscm/FEDUP.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/FEDUP)
-![R-CMD-check](https://github.com/rosscm/FEDUP/workflows/R-CMD-check/badge.svg)
-![R-CMD-check-bioc](https://github.com/rosscm/FEDUP/workflows/R-CMD-check-bioc/badge.svg)
-![test-coverage](https://github.com/rosscm/FEDUP/workflows/test-coverage/badge.svg)
-[![codecov](https://codecov.io/gh/rosscm/FEDUP/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/FEDUP)
+# fedup  
 
-`FEDUP` is an R package that tests for enrichment and depletion of user-defined
+**F**isher's Exact Test for **E**nrichment and **D**epletion of **U**ser-Define **P**athways
+
+[![Build Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/fedup)
+![R-CMD-check](https://github.com/rosscm/fedup/workflows/R-CMD-check/badge.svg)
+![R-CMD-check-bioc](https://github.com/rosscm/fedup/workflows/R-CMD-check-bioc/badge.svg)
+![test-coverage](https://github.com/rosscm/fedup/workflows/test-coverage/badge.svg)
+[![codecov](https://codecov.io/gh/rosscm/fedup/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/fedup)
+
+
+<div align="left">
+
+`fedup` is an R package that tests for enrichment and depletion of user-defined
 pathways using a Fisher's exact test. The method is designed for versatile
 pathway annotation formats (eg. gmt, txt, xlsx) to allow the user to run
 pathway analysis on custom annotations. This package is also
 integrated with Cytoscape to provide network-based pathway visualization
 that enhances the interpretability of the results.
+
+# Contents
+
+- [Getting started](#getting-started)
+  * [System prerequisites](#system-prerequisites)
+  * [Installation](#installation)
+- [Running the package](#running-the-package)
+  * [Sample input](#sample-input)
+  * [Analysis](#analysis)
+  * [Visualization](#visualization)
+- [Versioning](#versioning)
+- [Shoutouts](#shoutouts)
 
 # Getting started
 ## System prerequisites
@@ -38,10 +57,16 @@ that enhances the interpretability of the results.
 
 ## Installation
 
-Install `FEDUP` via devtools:
+Install `fedup` via devtools:
 
 ```{r, message = FALSE}
-devtools::install_github("rosscm/FEDUP", quiet = TRUE)
+devtools::install_github("rosscm/fedup", quiet = TRUE)
+```
+
+Load package:
+
+```{r}
+library(fedup)
 ```
 
 # Running the package
@@ -56,7 +81,6 @@ to see strong **enrichment** for pathways related to muscle contraction and,
 **depletion** for pathways *not* associated with muscle contraction. Let's see!
 
 ```{r}
-library(FEDUP)
 data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
@@ -69,6 +93,8 @@ str(testGene)
 str(backgroundGene)
 str(head(pathwaysGMT))
 ```
+
+## Analysis
 
 Now use `runFedup` on sample data:
 
@@ -91,10 +117,12 @@ Conversely, we see significant depletion for functions not associated with
 muscle contraction, such as `OLFACTORY SIGNALING PATHWAY` and
 `AMINO ACID AND DERIVATIVE METABOLISM`. Nice!
 
+## Visualization
+
 Plot enriched and depleted pathways (qvalue < 0.05) in the form of a dot plot
 via the `plotDotPlot` function:
 
-```{r, FEDUP_dotplot, fig.width = 9, fig.height = 9.5}
+```{r, fedup_dotplot, fig.width = 9, fig.height = 9.5}
 fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
 fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # -log10(qvalue)
 fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names
@@ -146,21 +174,21 @@ writePathways(pathwaysGMT, gmtFile)
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
-```{r, FEDUP_EM}
-netFile <- tempfile("FEDUP_EM", fileext = ".png")
+```{r, fedup_EM}
+netFile <- tempfile("fedup_EM", fileext = ".png")
 plotFemap(
   gmtFile = gmtFile,
   resultsFile = resultsFile,
   qvalue = 0.05,
-  netName = "FEDUP_EM",
+  netName = "fedup_EM",
   netFile = netFile
 )
 ```
 
-![](man/figures/FEDUP_EM-1.png)
+![](man/figures/fedup_EM-1.png)
 
 After some manual rearrangement of the annotated pathway clusters, this is the
-resulting EnrichmentMap we get from our `FEDUP` results. Much better!
+resulting EnrichmentMap we get from our `fedup` results. Much better!
 
 This has effectively summarized the 76 pathways from our dot plot into 14 unique
 biological themes (including 4 unclustered pathways). We can now see clear
@@ -173,7 +201,7 @@ Try this out yourself! Hopefully it’s the only fedup you achieve
 # Versioning
 
 For the versions available, see the [tags on this
-repo](https://github.com/rosscm/FEDUP/tags).
+repo](https://github.com/rosscm/fedup/tags).
 
 # Shoutouts
 

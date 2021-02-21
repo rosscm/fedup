@@ -1,7 +1,7 @@
 ## code to prepare `pathwaysXLSX` dataset goes here
 library(tibble)
 
-pathwayFile <- system.file("extdata", "SAFE_terms.txt", package = "FEDUP")
+pathwayFile <- system.file("extdata", "SAFE_terms.txt", package = "fedup")
 pathwaysTXT <- readPathways(
     pathwayFile,
     header = TRUE,

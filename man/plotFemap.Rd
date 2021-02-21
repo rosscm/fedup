@@ -17,7 +17,7 @@ plotFemap(
 \arguments{
 \item{gmtFile}{(char) path to GMT file (must be an absolute path).}
 
-\item{resultsFile}{(char) path to file with FEDUP results
+\item{resultsFile}{(char) path to file with fedup results
 (must be an absolute path).}
 
 \item{pvalue}{(numeric) pvalue cutoff. Pathways with a higher pvalue
@@ -48,14 +48,14 @@ data(pathwaysGMT)
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
 resultsFile <- tempfile("fedupRes", fileext = ".txt")
-netFile <- tempfile("FEDUP_EM", fileext = ".png")
+netFile <- tempfile("fedup_EM", fileext = ".png")
 writePathways(pathwaysGMT, gmtFile)
 writeFemap(fedupRes, resultsFile)
 plotFemap(
     gmtFile = gmtFile,
     resultsFile = resultsFile,
     qvalue = 0.05,
-    netName = "FEDUP_EM",
+    netName = "fedup_EM",
     netFile = netFile
 )
 }

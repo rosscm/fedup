@@ -1,6 +1,6 @@
 #' Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.
 #'
-#' @param df (data.frame) table with FEDUP enrichment results.
+#' @param df (data.frame) table with fedup enrichment results.
 #'  (see runFedup() for column descriptions)
 #' @param resultsFile (char) name of output results file.
 #' @return table of gene enrichment and depletion results formatted as a
@@ -32,14 +32,14 @@ writeFemap <- function(df, resultsFile) {
         select("pathway", "description", "pvalue", "qvalue", "status")
 
     fwrite(df_em, resultsFile, sep = "\t", col.names = TRUE, quote = FALSE)
-    message("Wrote out Cytoscape-formatted FEDUP results file to ", resultsFile)
+    message("Wrote out Cytoscape-formatted fedup results file to ", resultsFile)
 }
 
 #' Draws a network representation of overlaps among enriched and depleted
 #' pathways using EnrichmentMap (EM) in Cytoscape.
 #'
 #' @param gmtFile (char) path to GMT file (must be an absolute path).
-#' @param resultsFile (char) path to file with FEDUP results
+#' @param resultsFile (char) path to file with fedup results
 #'  (must be an absolute path).
 #' @param pvalue (numeric) pvalue cutoff. Pathways with a higher pvalue
 #'  will not be included in the EM (value between 0 and 1; default 1).
@@ -59,14 +59,14 @@ writeFemap <- function(df, resultsFile) {
 #' gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 #' fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
 #' resultsFile <- tempfile("fedupRes", fileext = ".txt")
-#' netFile <- tempfile("FEDUP_EM", fileext = ".png")
+#' netFile <- tempfile("fedup_EM", fileext = ".png")
 #' writePathways(pathwaysGMT, gmtFile)
 #' writeFemap(fedupRes, resultsFile)
 #' plotFemap(
 #'     gmtFile = gmtFile,
 #'     resultsFile = resultsFile,
 #'     qvalue = 0.05,
-#'     netName = "FEDUP_EM",
+#'     netName = "fedup_EM",
 #'     netFile = netFile
 #' )
 #' }

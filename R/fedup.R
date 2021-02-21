@@ -118,6 +118,6 @@ runFedup <- function(testGene, backgroundGene, pathways) {
     res <- res[order(res$pvalue), ]
     res$qvalue <- p.adjust(res$pvalue, method = "BH")
 
-    message("You did it! FEDUP ran successfully, feeling pretty good huh?")
+    message("You did it! fedup ran successfully, feeling pretty good huh?")
     return(res)
 }

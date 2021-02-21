@@ -1,5 +1,5 @@
 ---
-title: "Introduction to FEDUP"
+title: "Introduction to fedup"
 author: Catherine Ross
 output:
     rmdformats::html_clean:
@@ -8,7 +8,7 @@ output:
         thumbnails: false
         lightbox: true
 vignette: >
-    %\VignetteIndexEntry{Introduction to FEDUP}
+    %\VignetteIndexEntry{Introduction to fedup}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-FEDUP is an R package that tests for enrichment and depletion of user-defined
+This is an R package that tests for enrichment and depletion of user-defined
 pathways using a Fisher's exact test. The method is designed for versatile
 pathway annotation formats (eg. gmt, txt, xlsx) to allow the user to run
 pathway analysis on custom annotations. This package is also
@@ -41,10 +41,16 @@ that enhances the interpretability of the results.
 
 ## Installation
 
-Install `FEDUP` via devtools:
+Install `fedup` via devtools:
 
 ```{r}
-devtools::install_github("rosscm/FEDUP", quiet = TRUE)
+devtools::install_github("rosscm/fedup", quiet = TRUE)
+```
+
+Load package:
+
+```{r}
+library(fedup)
 ```
 
 # Running the package
@@ -59,7 +65,7 @@ to see strong **enrichment** for pathways related to muscle contraction and,
 **depletion** for pathways *not* associated with muscle contraction. Let's see!
 
 ```{r, message = FALSE}
-library(FEDUP)
+library(fedup)
 data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
@@ -97,7 +103,7 @@ muscle contraction, such as `OLFACTORY SIGNALING PATHWAY` and
 Plot enriched and depleted pathways (qvalue < 0.05) in the form of a dot plot
 via the `plotDotPlot` function:
 
-```{r, FEDUP_dotplot, fig.width = 9, fig.height = 9.5}
+```{r, fedup_dotplot, fig.width = 9, fig.height = 9.5}
 fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
 fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # -log10(qvalue)
 fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names
@@ -149,20 +155,20 @@ Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
 ```{r}
-#netFile <- tempfile("FEDUP_EM", fileext = ".png")
+#netFile <- tempfile("fedup_EM", fileext = ".png")
 #plotFemap(
 #  gmtFile = gmtFile,
 #  resultsFile = resultsFile,
 #  qvalue = 0.05,
-#  netName = "FEDUP_EM",
+#  netName = "fedup_EM",
 #  netFile = netFile
 #)
 ```
 
-![](figures/FEDUP_EM-1.png)
+![](figures/fedup_EM-1.png)
 
 After some manual rearrangement of the annotated pathway clusters, this is the
-resulting EnrichmentMap we get from our `FEDUP` results. Much better!
+resulting EnrichmentMap we get from our `fedup` results. Much better!
 
 This has effectively summarized the 76 pathways from our dot plot into 14 unique
 biological themes (including 4 unclustered pathways). We can now see clear
@@ -172,10 +178,10 @@ function`, `calcium homeostasis`, and `ATPase transport`.
 
 ## Manual input
 
-Supply `FEDUP` with your own custom pathway annotations, eg. from an excel file:
+Supply `fedup` with your own custom pathway annotations, eg. from an excel file:
 
 ```{r}
-pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP")
+pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
 ```
 
 Take a look at the raw data structure:
@@ -218,7 +224,7 @@ print(head(fedupRes[which(fedupRes$status == "Depleted"),]))
 
 Run through `plotDotPlot` to visualize:
 
-```{r, FEDUP_dotplot_manual, fig.width = 5, fig.height = 3.5}
+```{r, fedup_dotplot_manual, fig.width = 5, fig.height = 3.5}
 fedupPlot <- fedupRes[which(fedupRes$qvalue < 0.05),]
 fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # log10(qvalue)
 fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names
@@ -243,4 +249,4 @@ print(p)
 # Versioning
 
 For the versions available, see the
-[tags on this repo](https://github.com/rosscm/FEDUP/tags).
+[tags on this repo](https://github.com/rosscm/fedup/tags).

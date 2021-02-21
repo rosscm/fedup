@@ -16,12 +16,12 @@
 #' @examples
 #' pathways <- readPathways(
 #'     system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
-#'         package = "FEDUP"
+#'         package = "fedup"
 #'     ),
 #'     minGene = 10, maxGene = 500
 #' )
 #' pathways <- readPathways(
-#'     system.file("extdata", "SAFE_terms.xlsx", package = "FEDUP"),
+#'     system.file("extdata", "SAFE_terms.xlsx", package = "fedup"),
 #'     header = TRUE, pathCol = "Enriched.GO.names", geneCol = "Gene.ID"
 #' )
 #' @importFrom openxlsx read.xlsx

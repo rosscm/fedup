@@ -17,8 +17,8 @@ Raw GMT file is available from
 \details{
 Raw data location
 system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
-    package="FEDUP")
+    package = "fedup")
 Script to prepare data
-system.file("data-raw", "pathwaysGMT.R", package="FEDUP")
+system.file("data-raw", "pathwaysGMT.R", package ="fedup")
 }
 \keyword{datasets}

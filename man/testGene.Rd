@@ -12,6 +12,6 @@ testGene
 }
 \description{
 Script to prepare data
-system.file("data-raw", "genes.R", package="FEDUP")
+system.file("data-raw", "genes.R", package = "fedup")
 }
 \keyword{datasets}

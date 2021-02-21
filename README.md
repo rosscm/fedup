@@ -4,7 +4,7 @@
 # fedup
 
 **F**isher’s Test for **E**nrichment and **D**epletion of
-**U**ser-Defined **P**ßathways
+**U**ser-Defined **P**athways
 
 [![Build
 Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/fedup)

@@ -5,7 +5,6 @@
 ^fedup-Ex.R$
 ^data-raw$
 ^\.travis\.yml$
-^README\.Rmd$
 ^doc$
 ^Meta$
 ^codecov.yml

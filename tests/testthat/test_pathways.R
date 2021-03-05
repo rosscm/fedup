@@ -46,7 +46,7 @@ test_that("Test that readPathways works with XLSX input", {
         pathCol = "Enriched.GO.names", geneCol = "Gene.ID"
     )
     expect_true(is.list(pathways))
-    expect_equal(length(pathways), 30)
+    expect_equal(length(pathways), 317)
 })
 
 test_that("Test that readPathways works with TXT input", {
@@ -61,7 +61,7 @@ test_that("Test that readPathways works with TXT input", {
         pathCol = "Enriched.GO.names", geneCol = "Gene.ID"
     )
     expect_true(is.list(pathways))
-    expect_equal(length(pathways), 30)
+    expect_equal(length(pathways), 317)
 })
 
 test_that("Test that writePathways works", {

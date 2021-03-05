@@ -1,5 +1,5 @@
 ---
-title: "User guide to fedup"
+title: "Introduction to fedup"
 author: Catherine Ross
 output:
     rmdformats::html_clean:
@@ -8,17 +8,17 @@ output:
         thumbnails: false
         lightbox: true
 vignette: >
-    %\VignetteIndexEntry{User guide to fedup}
+    %\VignetteIndexEntry{Introduction to fedup}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "vignettes/figures/",
-  out.width = "100%"
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "vignettes/figures/",
+    out.width = "100%"
 )
 ```
 
@@ -41,7 +41,15 @@ that enhances the interpretability of the results.
 
 ## Installation
 
-Install `fedup` via devtools:
+Install `fedup` from Bioconductor:
+
+```{r, eval = FALSE}
+if(!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("fedup")
+```
+
+Or install the development version from Github:
 
 ```{r}
 devtools::install_github("rosscm/fedup", quiet = TRUE)
@@ -108,19 +116,19 @@ fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # -log10(qvalue)
 fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names
 
 p <- plotDotPlot(
-  df = fedupPlot,
-  xVar = "log10qvalue",
-  yVar = "pathway",
-  xLab = "-log10(Qvalue)",
-  fillVar = "status",
-  fillLab = "Enrichment\nstatus",
-  sizeVar = "fold_enrichment",
-  sizeLab = "Fold enrichment"
+    df = fedupPlot,
+    xVar = "log10qvalue",
+    yVar = "pathway",
+    xLab = "-log10(Qvalue)",
+    fillVar = "status",
+    fillLab = "Enrichment\nstatus",
+    sizeVar = "fold_enrichment",
+    sizeLab = "Fold enrichment"
 )
 
 p <- p + # facet by status to separate enriched and depleted pathways
-  ggplot2::facet_grid("status", scales = "free", space = "free") +
-  ggplot2::theme(strip.text.y = ggplot2::element_blank())
+    ggplot2::facet_grid("status", scales = "free", space = "free") +
+    ggplot2::theme(strip.text.y = ggplot2::element_blank())
 print(p)
 ```
 
@@ -153,15 +161,15 @@ writePathways(pathwaysGMT, gmtFile)
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
-```{r, fedupEM}
-#netFile <- tempfile("fedup_EM", fileext = ".png")
-#plotFemap(
-#  gmtFile = gmtFile,
-#  resultsFile = resultsFile,
-#  qvalue = 0.05,
-#  netName = "fedup_EM",
-#  netFile = netFile
-#)
+```{r, fedupEM, eval = FALSE}
+netFile <- tempfile("fedup_EM", fileext = ".png")
+plotFemap(
+    gmtFile = gmtFile,
+    resultsFile = resultsFile,
+    qvalue = 0.05,
+    netName = "fedup_EM",
+    netFile = netFile
+)
 ```
 
 ![](figures/fedupEM-1.png)
@@ -229,19 +237,19 @@ fedupPlot$log10qvalue <- -log10(fedupPlot$qvalue + 1e-10) # log10(qvalue)
 fedupPlot$pathway <- gsub("\\%.*", "", fedupPlot$pathway) # clean names
 
 p <- plotDotPlot(
-  df = fedupPlot,
-  xVar = "log10qvalue",
-  yVar = "pathway",
-  xLab = "-log10(Qvalue)",
-  fillVar = "status",
-  fillLab = "Enrichment\nstatus",
-  sizeVar = "fold_enrichment",
-  sizeLab = "Fold enrichment"
+    df = fedupPlot,
+    xVar = "log10qvalue",
+    yVar = "pathway",
+    xLab = "-log10(Qvalue)",
+    fillVar = "status",
+    fillLab = "Enrichment\nstatus",
+    sizeVar = "fold_enrichment",
+    sizeLab = "Fold enrichment"
 )
 
 p <- p + # facet by status to separate enriched and depleted pathways
-  ggplot2::facet_grid("status", scales = "free", space = "free") +
-  ggplot2::theme(strip.text.y = ggplot2::element_blank())
+    ggplot2::facet_grid("status", scales = "free", space = "free") +
+    ggplot2::theme(strip.text.y = ggplot2::element_blank())
 print(p)
 ```
 
@@ -249,3 +257,9 @@ print(p)
 
 For the versions available, see the
 [tags on this repo](https://github.com/rosscm/fedup/tags).
+
+# Session information
+
+```{r}
+sessionInfo()
+```

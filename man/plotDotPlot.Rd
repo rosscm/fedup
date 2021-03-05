@@ -5,17 +5,17 @@
 \title{Visualizes pathway enrichment and depletion using ggplot.}
 \usage{
 plotDotPlot(
-  df,
-  xVar,
-  yVar,
-  xLab = xVar,
-  yLab = NULL,
-  pTitle = NULL,
-  fillVar = NULL,
-  fillCol = NULL,
-  fillLab = fillVar,
-  sizeVar = NULL,
-  sizeLab = sizeVar
+    df,
+    xVar,
+    yVar,
+    xLab = xVar,
+    yLab = NULL,
+    pTitle = NULL,
+    fillVar = NULL,
+    fillCol = NULL,
+    fillLab = fillVar,
+    sizeVar = NULL,
+    sizeLab = sizeVar
 )
 }
 \arguments{

@@ -6,14 +6,14 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/",
+  fig.path = "inst/figures/",
   out.width = "100%"
 )
 ```
 
 <div align="center">
 
-![](man/figures/fedupLogo.png)
+![](inst/figures/fedupLogo.png)
 
 **F**isher's Test for **E**nrichment and **D**epletion of **U**ser-Defined **P**athways
 
@@ -58,9 +58,17 @@ that enhances the interpretability of the results.
 
 ## Installation
 
-Install `fedup` via devtools:
+Install `fedup` from Bioconductor:
 
-```{r, message = FALSE}
+```{r, eval = FALSE}
+if(!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("fedup")
+```
+
+Or install the development version from Github:
+
+```{r}
 devtools::install_github("rosscm/fedup", quiet = TRUE)
 ```
 
@@ -175,7 +183,7 @@ writePathways(pathwaysGMT, gmtFile)
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
-```{r, fedupEM}
+```{r, fedupEM, eval = FALSE}
 netFile <- tempfile("fedup_EM", fileext = ".png")
 plotFemap(
   gmtFile = gmtFile,
@@ -186,7 +194,7 @@ plotFemap(
 )
 ```
 
-![](man/figures/fedupEM-1.png)
+![](inst/figures/fedupEM-1.png)
 
 After some manual rearrangement of the annotated pathway clusters, this is the
 resulting EnrichmentMap we get from our `fedup` results. Much better!

@@ -8,7 +8,7 @@
 a named list of 1437 vectors
 }
 \usage{
-pathwaysGMT
+data(pathwaysGMT)
 }
 \description{
 Raw GMT file is available from
@@ -19,6 +19,6 @@ Raw data location
 system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
     package = "fedup")
 Script to prepare data
-system.file("data-raw", "pathwaysGMT.R", package ="fedup")
+system.file("inst", "script", "pathwaysGMT.R", package ="fedup")
 }
 \keyword{datasets}

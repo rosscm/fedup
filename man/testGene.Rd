@@ -8,10 +8,10 @@
 a character vector with 190 elements (gene IDs)
 }
 \usage{
-testGene
+data(testGene)
 }
 \description{
 Script to prepare data
-system.file("data-raw", "genes.R", package = "fedup")
+system.file("inst", "script", "genes.R", package = "fedup")
 }
 \keyword{datasets}

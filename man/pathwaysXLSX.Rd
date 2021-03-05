@@ -3,19 +3,22 @@
 \docType{data}
 \name{pathwaysXLSX}
 \alias{pathwaysXLSX}
-\title{Example list of yeast SAFE terms obtained from a XLSX file.}
+\title{Example list of SAFE terms obtained from a XLSX file.}
 \format{
-a named list of 30 vectors
+a named list of 317 vectors
 }
 \usage{
-pathwaysXLSX
+data(pathwaysXLSX)
 }
 \description{
-Raw data location
-system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
+Raw Excel data file (S5) is available from
+\url{https://boonelab.ccbr.utoronto.ca/supplement/costanzo2016/}
 }
 \details{
+Raw data location
+system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
+
 Script to prepare data
-system.file("data-raw", "pathwaysXLSX.R", package = "fedup")
+system.file("inst", "script", "pathwaysXLSX.R", package = "fedup")
 }
 \keyword{datasets}

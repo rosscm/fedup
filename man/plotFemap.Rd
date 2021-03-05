@@ -33,15 +33,14 @@ jpeg image formats.}
 }
 \value{
 file name of image to which the network is exported and an open
-session of Cytoscape (side effect of plotting EM).
+session of Cytoscape (side effect of plotting EM). NULL if Cytoscape
+is not running locally.
 }
 \description{
 Draws a network representation of overlaps among enriched and depleted
 pathways using EnrichmentMap (EM) in Cytoscape.
 }
 \examples{
-\dontrun{
-# not run because Cytoscape needs to be installed and open
 data(testGene)
 data(backgroundGene)
 data(pathwaysGMT)
@@ -58,5 +57,4 @@ plotFemap(
     netName = "fedup_EM",
     netFile = netFile
 )
-}
 }

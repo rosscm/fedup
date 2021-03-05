@@ -49,10 +49,9 @@ writeFemap <- function(df, resultsFile) {
 #' @param netFile (char) name of output image. Supports png, pdf, svg,
 #'  jpeg image formats.
 #' @return file name of image to which the network is exported and an open
-#' session of Cytoscape (side effect of plotting EM).
+#' session of Cytoscape (side effect of plotting EM). NULL if Cytoscape
+#' is not running locally.
 #' @examples
-#' \dontrun{
-#' # not run because Cytoscape needs to be installed and open
 #' data(testGene)
 #' data(backgroundGene)
 #' data(pathwaysGMT)
@@ -69,7 +68,6 @@ writeFemap <- function(df, resultsFile) {
 #'     netName = "fedup_EM",
 #'     netFile = netFile
 #' )
-#' }
 #' @import RCy3
 #' @export
 #' @usage
@@ -83,51 +81,51 @@ writeFemap <- function(df, resultsFile) {
 #' )
 plotFemap <- function(gmtFile, resultsFile, pvalue = 1, qvalue = 1,
     netName = "generic", netFile = "png") {
-
-    # Confirm that Cytoscape is installed and opened
-    cytoscapePing()
-    if (netName %in% getNetworkList()) {
-        deleteNetwork(netName)
-    }
-
-    message("Building the network")
-    em_command <- paste(
-        'enrichmentmap build analysisType="generic"',
-        "gmtFile=", gmtFile,
-        "enrichmentsDataset1=", resultsFile,
-        "pvalue=", pvalue,
-        "qvalue=", qvalue,
-        "similaritycutoff=", 0.375,
-        "coefficients=", "COMBINED",
-        "combinedConstant=", 0.5
-    )
-    response <- commandsGET(em_command)
-    renameNetwork(netName, getNetworkSuid())
-
-    message("Setting network chart data")
-    ch_command <- paste(
-        'enrichmentmap chart data="NES_VALUE"',
-        "colors=", "RD_BU_9"
-    )
-    response <- commandsGET(ch_command)
-
-    message("Annotating the network using AutoAnnotate")
-    aa_command <- paste(
-        "autoannotate annotate-clusterBoosted",
-        "clusterAlgorithm=MCL",
-        "maxWords=3",
-        "network=", netName
-    )
-    response <- commandsGET(aa_command)
-
-    message("Applying a force-directed network layout")
-    ln_command <- paste(
-        "layout force-directed",
-        "network=", netName
-    )
-    response <- commandsGET(ln_command)
-    fitContent()
-
-    message("Drawing out network to ", netFile)
-    exportImage(netFile)
+    # Return `NULL` if Cytoscape is not running locally
+    out <- tryCatch({
+            cytoscapePing()
+            if (netName %in% getNetworkList()) {
+                deleteNetwork(netName)
+            }
+            message(" => building the network")
+                em_command <- paste(
+                'enrichmentmap build analysisType="generic"',
+                "gmtFile=", gmtFile,
+                "enrichmentsDataset1=", resultsFile,
+                "pvalue=", pvalue,
+                "qvalue=", qvalue,
+                "similaritycutoff=", 0.375,
+                "coefficients=", "COMBINED",
+                "combinedConstant=", 0.5
+            )
+            response <- commandsGET(em_command)
+            renameNetwork(netName, getNetworkSuid())
+            message(" => setting network chart data")
+                ch_command <- paste(
+                'enrichmentmap chart data="NES_VALUE"',
+                "colors=", "RD_BU_9"
+            )
+            response <- commandsGET(ch_command)
+            message(" => annotating the network via AutoAnnotate")
+                aa_command <- paste(
+                "autoannotate annotate-clusterBoosted",
+                "clusterAlgorithm=MCL",
+                "maxWords=3",
+                "network=", netName
+            )
+            response <- commandsGET(aa_command)
+            message(" => applying a force-directed network layout")
+                ln_command <- paste(
+                "layout force-directed",
+                "network=", netName
+            )
+            response <- commandsGET(ln_command)
+            fitContent()
+            message(" => drawing out the network to ", netFile)
+            exportImage(netFile)
+        },
+        error = function(x) {
+            return(NULL)
+        })
+    return(out)
 }

@@ -1,7 +1,7 @@
 
 <div align="center">
 
-![](man/figures/fedupLogo.png)
+![](inst/figures/fedupLogo.png)
 
 **F**isher’s Test for **E**nrichment and **D**epletion of
 **U**ser-Defined **P**athways
@@ -47,7 +47,15 @@ pathway visualization that enhances the interpretability of the results.
 
 ## Installation
 
-Install `fedup` via devtools:
+Install `fedup` from Bioconductor:
+
+``` r
+if(!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("fedup")
+```
+
+Or install the development version from Github:
 
 ``` r
 devtools::install_github("rosscm/fedup", quiet = TRUE)
@@ -193,7 +201,7 @@ p <- p + # facet by status to separate enriched and depleted pathways
 print(p)
 ```
 
-<img src="man/figures/fedupDotplot-1.png" width="100%" />
+<img src="inst/figures/fedupDotplot-1.png" width="100%" />
 
 Look at all those chick… enrichments! This is a bit overwhelming, isn’t
 it? How do we interpret these 76 seemingly redundant pathways in a way
@@ -212,7 +220,7 @@ Then format results for compatibility with EnrichmentMap with
 ``` r
 resultsFile <- tempfile("fedupRes", fileext = ".txt")
 writeFemap(fedupRes, resultsFile)
-#> Wrote out Cytoscape-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpslgPTa/fedupRes13c456096dd4.txt
+#> Wrote out Cytoscape-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpjOLIaQ/fedupRes16a5a6ea2933d.txt
 ```
 
 Prepare a pathway annotation file (gmt format) from the pathway list you
@@ -223,7 +231,7 @@ format, but it doesn’t hurt to make sure):
 ``` r
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpslgPTa/pathwaysGMT13c4561c5b4d9.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpjOLIaQ/pathwaysGMT16a5a6ff3eb94.gmt
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
@@ -238,17 +246,9 @@ plotFemap(
   netName = "fedup_EM",
   netFile = netFile
 )
-#> You are connected to Cytoscape!
-#> Building the network
-#> Setting network chart data
-#> Annotating the network using AutoAnnotate
-#> Applying a force-directed network layout
-#> Drawing out network to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpslgPTa/fedup_EM13c45205ac474.png
-#>                                                                                    file
-#> "/var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T/RtmpslgPTa/fedup_EM13c45205ac474.png"
 ```
 
-![](man/figures/fedupEM-1.png)
+![](inst/figures/fedupEM-1.png)
 
 After some manual rearrangement of the annotated pathway clusters, this
 is the resulting EnrichmentMap we get from our `fedup` results. Much

@@ -32,18 +32,18 @@ Imports:
     utils,
     stats
 Suggests:
+    biomaRt,
     testthat,
     knitr,
     rmarkdown,
     devtools,
     covr,
     rmdformats
-SystemRequirements:
-    Cytoscape (>= 3.8.2) (optional, but strongly recommended for visualization)
-LazyData: true
+LazyData: false
 Encoding: UTF-8
 Language: en-US
 License: MIT + file LICENSE
 VignetteBuilder: knitr
 URL: https://github.com/rosscm/fedup
+BugReports: https://github.com/rosscm/fedup/issues
 RoxygenNote: 7.1.1

@@ -48,8 +48,8 @@ writeFemap <- function(df, resultsFile) {
 #' @param netName (char) name for EM in Cytoscape (default generic).
 #' @param netFile (char) name of output image. Supports png, pdf, svg,
 #'  jpeg image formats.
-#' @return file name of image to which the network is exported. Also side
-#'  effect of plotting the EM in an open session of Cytoscape.
+#' @return file name of image to which the network is exported and an open
+#' session of Cytoscape (side effect of plotting EM).
 #' @examples
 #' \dontrun{
 #' # not run because Cytoscape needs to be installed and open
@@ -72,6 +72,15 @@ writeFemap <- function(df, resultsFile) {
 #' }
 #' @import RCy3
 #' @export
+#' @usage
+#' plotFemap(
+#'     gmtFile,
+#'     resultsFile,
+#'     pvalue = 1,
+#'     qvalue = 1,
+#'     netName = "generic",
+#'     netFile = "png"
+#' )
 plotFemap <- function(gmtFile, resultsFile, pvalue = 1, qvalue = 1,
     netName = "generic", netFile = "png") {
 

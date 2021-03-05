@@ -29,6 +29,15 @@
 #' @importFrom stats aggregate na.omit
 #' @importFrom utils head read.delim tail
 #' @export
+#' @usage
+#' readPathways(
+#'     pathwayFile,
+#'     header = FALSE,
+#'     pathCol = NULL,
+#'     geneCol = NULL,
+#'     minGene = 1L,
+#'     maxGene = Inf
+#' )
 readPathways <- function(pathwayFile, header = FALSE,
     pathCol = NULL, geneCol = NULL, minGene = 1L, maxGene = Inf) {
     s <- c("gmt", "txt", "xlsx")

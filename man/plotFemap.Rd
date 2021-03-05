@@ -6,12 +6,12 @@
 pathways using EnrichmentMap (EM) in Cytoscape.}
 \usage{
 plotFemap(
-  gmtFile,
-  resultsFile,
-  pvalue = 1,
-  qvalue = 1,
-  netName = "generic",
-  netFile = "png"
+    gmtFile,
+    resultsFile,
+    pvalue = 1,
+    qvalue = 1,
+    netName = "generic",
+    netFile = "png"
 )
 }
 \arguments{
@@ -32,8 +32,8 @@ will not be included in the EM (value between 0 and 1; default 1).}
 jpeg image formats.}
 }
 \value{
-file name of image to which the network is exported. Also side
- effect of plotting the EM in an open session of Cytoscape.
+file name of image to which the network is exported and an open
+session of Cytoscape (side effect of plotting EM).
 }
 \description{
 Draws a network representation of overlaps among enriched and depleted

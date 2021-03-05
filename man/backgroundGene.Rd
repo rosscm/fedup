@@ -8,7 +8,7 @@
 a character vector with 10208 elements (gene IDs)
 }
 \usage{
-backgroundGene
+data(backgroundGene)
 }
 \description{
 Script to generate data

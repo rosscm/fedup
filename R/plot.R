@@ -35,6 +35,20 @@
 #' @importFrom forcats fct_reorder
 #' @importFrom RColorBrewer brewer.pal
 #' @export
+#' @usage
+#' plotDotPlot(
+#'     df,
+#'     xVar,
+#'     yVar,
+#'     xLab = xVar,
+#'     yLab = NULL,
+#'     pTitle = NULL,
+#'     fillVar = NULL,
+#'     fillCol = NULL,
+#'     fillLab = fillVar,
+#'     sizeVar = NULL,
+#'     sizeLab = sizeVar
+#' )
 plotDotPlot <- function(df, xVar, yVar,
     xLab = xVar, yLab = NULL, pTitle = NULL,
     fillVar = NULL, fillCol = NULL, fillLab = fillVar,

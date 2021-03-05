@@ -6,12 +6,12 @@
 Currently supports the following file format: gmt, txt, xlsx.}
 \usage{
 readPathways(
-  pathwayFile,
-  header = FALSE,
-  pathCol = NULL,
-  geneCol = NULL,
-  minGene = 1L,
-  maxGene = Inf
+    pathwayFile,
+    header = FALSE,
+    pathCol = NULL,
+    geneCol = NULL,
+    minGene = 1L,
+    maxGene = Inf
 )
 }
 \arguments{

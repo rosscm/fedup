@@ -83,10 +83,10 @@ runFedup <- function(testGene, backgroundGene, pathways) {
     pathways_name <- inputs$pathways_name
     pathways_size <- inputs$pathways_size
     message(
-        "Data input:\n => ",
+        "Running fedup with:\n => ",
         length(test), " test genes\n => ",
         length(background), " background genes\n => ",
-        length(pathways), " pathawys"
+        length(pathways), " pathway annotations"
     )
 
     res <- data.table(pathway = pathways_name, size = pathways_size)
@@ -99,8 +99,8 @@ runFedup <- function(testGene, backgroundGene, pathways) {
         b_len <- length(b)
         a_x <- (a_len / a_n) * 100
         b_x <- (b_len / b_n) * 100
-        f <- a_x / b_x
-        e <- ifelse(f > 1, "Enriched", "Depleted")
+        f <- ifelse(a_x == 0 && b_x == 0, 0, a_x / b_x)
+        e <- ifelse(f >= 1, "Enriched", "Depleted")
         m <- rbind(c(a_len, b_len), c(a_n, b_n))
         p <- fisher.test(m, alternative = "two.sided")$p.value
         return(c(
@@ -117,7 +117,6 @@ runFedup <- function(testGene, backgroundGene, pathways) {
     res[, "pvalue" := as.numeric(unlist(res_stats["pvalue", ]))]
     res <- res[order(res$pvalue), ]
     res$qvalue <- p.adjust(res$pvalue, method = "BH")
-
-    message("You did it! fedup ran successfully, feeling pretty good huh?")
+    message("All done!")
     return(res)
 }

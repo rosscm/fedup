@@ -1,6 +1,6 @@
 #' Named list of human pathway annotations obtained from a GMT file.
 #'
-#' Raw GMT file is available from
+#' GMT file is available from
 #' \url{http://download.baderlab.org/EM_Genesets/November_17_2020/Human/symbol}
 #'
 #' Raw data location
@@ -15,7 +15,7 @@
 
 #' Example list of SAFE terms obtained from a XLSX file.
 #'
-#' Raw Excel data file (S5) is available from
+#' Raw data file (S5) is available from
 #' \url{https://boonelab.ccbr.utoronto.ca/supplement/costanzo2016/}
 #'
 #' Raw data location
@@ -30,7 +30,7 @@
 
 #' Example list of SAFE terms obtained from a TXT file.
 #'
-#' Raw Excel data file (S5) is available from
+#' Raw data file (S5) is available from
 #' \url{https://boonelab.ccbr.utoronto.ca/supplement/costanzo2016/}
 #'
 #' Raw data location
@@ -43,20 +43,44 @@
 #' @usage data(pathwaysTXT)
 "pathwaysTXT"
 
-#' Example vector of human genes to use as test set for enrichment.
+#' Example list of a background set and single set of test genes to use for
+#' enrichment analysis.
+#'
+#' Raw Excel data file (Sup Tab 2) is available from
+#' \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7566881/}
 #'
 #' Script to prepare data
 #' system.file("inst", "script", "genes.R", package = "fedup")
 #'
-#' @format a character vector with 190 elements (gene IDs)
-#' @usage data(testGene)
-"testGene"
+#' @format a named list with two vector elements, one common background
+#' gene vector and one test gene vector.
+#' @usage data(geneSingle)
+"geneSingle"
 
-#' Example vector of human genes to use as background set for enrichment.
+#' Example list of a background set and two sets of test genes to use for
+#' enrichment analysis.
 #'
-#' Script to generate data
-#' system.file("data-raw", "genes.R", package = "fedup")
+#' Raw Excel data file (Sup Tab 2) is available from
+#' \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7566881/}
 #'
-#' @format a character vector with 10208 elements (gene IDs)
-#' @usage data(backgroundGene)
-"backgroundGene"
+#' Script to prepare data
+#' system.file("inst", "script", "genes.R", package = "fedup")
+#'
+#' @format a named list with three vector elements, one common background
+#' gene vector and two test gene vectors.
+#' @usage data(geneDouble)
+"geneDouble"
+
+#' Example list of a background set and multiple sets of test genes
+#' to use for enrichment analysis.
+#'
+#' Raw Excel data file (Sup Tab 2) is available from
+#' \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7566881/}
+#'
+#' Script to prepare data
+#' system.file("inst", "script", "genes.R", package = "fedup")
+#'
+#' @format a named list with thirteen vector elements, one common background
+#' gene vector and twelve test gene vectors.
+#' @usage data(geneMulti)
+"geneMulti"

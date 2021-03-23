@@ -1,18 +1,20 @@
 #' Returns a list of pathways from various file formats.
-#' Currently supports the following file format: gmt, txt, xlsx.
 #'
-#' @param pathwayFile (char) path to file with pathway annotations.
+#' @description This function supports custom pathway annotations to use
+#' for fedup pathway enrichment analysis. Current file formats supported are
+#' gmt, txt, and xlsx.
+#' @param pathwayFile (char) path to file with pathway annotations
 #' @param header (logical) whether \code{pathwayFile} has a header
-#'     (default FALSE).
-#' @param pathCol (char or int) column name or number with pathway identifiers.
-#'     For use with non-GMT input files (eg "Pathway.ID" or 2; default NULL).
-#' @param geneCol (char or int) column name or number with gene identifiers.
-#'     For use with non-GMT input files (eg "Gene.ID" or 5; default NULL).
+#' (default FALSE)
+#' @param pathCol (char or int) column name or number with pathway identifiers
+#' (for use with non-GMT input files (eg "Pathway.ID" or 2; default NULL))
+#' @param geneCol (char or int) column name or number with gene identifiers
+#' (for use with non-GMT input files (eg "Gene.ID" or 5; default NULL))
 #' @param minGene (integer) minimum number of genes to be considered
-#'     in a pathway (default 1).
+#' in a pathway (default 1)
 #' @param maxGene (integer) maximum number of genes to be considered
-#'     in a pathway (default Inf).
-#' @return a list of vectors with pathway annotations.
+#' in a pathway (default Inf)
+#' @return A list of vectors with pathway annotations.
 #' @examples
 #' pathways <- readPathways(
 #'     system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
@@ -91,8 +93,8 @@ readPathways <- function(pathwayFile, header = FALSE,
 
 #' Writes a set of pathways (list of vectors) to a GMT file.
 #'
-#' @param pathways (list) named list of vectors.
-#' @param gmtFile (char) name of output GMT file.
+#' @param pathways (list) named list of vectors
+#' @param gmtFile (char) name of output GMT file
 #' @return GMT-formatted file. Rows represent pathways. Columns represent:
 #' \itemize{
 #'     \item pathway ID;

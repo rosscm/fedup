@@ -2,58 +2,66 @@
 % Please edit documentation in R/femap.R
 \name{plotFemap}
 \alias{plotFemap}
-\title{Draws a network representation of overlaps among enriched and depleted
-pathways using EnrichmentMap (EM) in Cytoscape.}
+\title{Draws a network representation of overlaps among pathway enrichment
+results using EnrichmentMap (EM) in Cytoscape.}
 \usage{
 plotFemap(
     gmtFile,
-    resultsFile,
+    resultsFolder,
     pvalue = 1,
     qvalue = 1,
+    chartData = "NES_VALUE",
+    hideNodeLabels = FALSE,
     netName = "generic",
     netFile = "png"
 )
 }
 \arguments{
-\item{gmtFile}{(char) path to GMT file (must be an absolute path).}
+\item{gmtFile}{(char) absolute path to GMT file (generated via
+\link[fedup]{writePathways})}
 
-\item{resultsFile}{(char) path to file with fedup results
-(must be an absolute path).}
+\item{resultsFolder}{(char) absolute path to folder with fedup results
+(generated via \link[fedup]{writeFemap})}
 
-\item{pvalue}{(numeric) pvalue cutoff. Pathways with a higher pvalue
-will not be included in the EM (value between 0 and 1; default 1).}
+\item{pvalue}{(numeric) pvalue cutoff (value between 0 and 1; default 1)}
 
-\item{qvalue}{(numeric) qvalue cutoff. Pathways with a higher qvalue
-will not be included in the EM (value between 0 and 1; default 1).}
+\item{qvalue}{(numeric) qvalue cutoff (value between 0 and 1; default 1)}
 
-\item{netName}{(char) name for EM in Cytoscape (default generic).}
+\item{chartData}{(char) node chart data (one of NES_VALUE, P_VALUE,
+FDR_VALUE, PHENOTYPES, DATA_SET, EXPRESSION_SET, or NONE;
+default = NES_VALUE)}
 
-\item{netFile}{(char) name of output image. Supports png, pdf, svg,
-jpeg image formats.}
+\item{hideNodeLabels}{(logical) if TRUE hides the node label in the EM;
+cluster labels generated via AutoAnnotate remain visible}
+
+\item{netName}{(char) name for EM in Cytoscape (default generic)}
+
+\item{netFile}{(char) name of output image (supports png, pdf, svg,
+jpeg image formats)}
 }
 \value{
-file name of image to which the network is exported and an open
+File name of image to which the network is exported and an open
 session of Cytoscape (side effect of plotting EM). NULL if Cytoscape
 is not running locally.
 }
 \description{
-Draws a network representation of overlaps among enriched and depleted
-pathways using EnrichmentMap (EM) in Cytoscape.
+Draws a network representation of overlaps among pathway enrichment
+results using EnrichmentMap (EM) in Cytoscape.
 }
 \examples{
-data(testGene)
-data(backgroundGene)
+data(geneDouble)
 data(pathwaysGMT)
+fedupRes <- runFedup(geneDouble, pathwaysGMT)
+resultsFolder <- tempdir()
+writeFemap(fedupRes, resultsFolder)
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
-fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
-resultsFile <- tempfile("fedupRes", fileext = ".txt")
-netFile <- tempfile("fedup_EM", fileext = ".png")
 writePathways(pathwaysGMT, gmtFile)
-writeFemap(fedupRes, resultsFile)
+netFile <- tempfile("fedup_EM", fileext = ".png")
 plotFemap(
     gmtFile = gmtFile,
-    resultsFile = resultsFile,
+    resultsFolder = resultsFolder,
     qvalue = 0.05,
+    hideNodeLabels = TRUE,
     netName = "fedup_EM",
     netFile = netFile
 )

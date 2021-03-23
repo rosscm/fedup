@@ -11,7 +11,7 @@ a named list of 317 vectors
 data(pathwaysTXT)
 }
 \description{
-Raw Excel data file (S5) is available from
+Raw data file (S5) is available from
 \url{https://boonelab.ccbr.utoronto.ca/supplement/costanzo2016/}
 }
 \details{

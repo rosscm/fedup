@@ -2,8 +2,7 @@
 % Please edit documentation in R/pathways.R
 \name{readPathways}
 \alias{readPathways}
-\title{Returns a list of pathways from various file formats.
-Currently supports the following file format: gmt, txt, xlsx.}
+\title{Returns a list of pathways from various file formats.}
 \usage{
 readPathways(
     pathwayFile,
@@ -15,29 +14,30 @@ readPathways(
 )
 }
 \arguments{
-\item{pathwayFile}{(char) path to file with pathway annotations.}
+\item{pathwayFile}{(char) path to file with pathway annotations}
 
 \item{header}{(logical) whether \code{pathwayFile} has a header
-(default FALSE).}
+(default FALSE)}
 
-\item{pathCol}{(char or int) column name or number with pathway identifiers.
-For use with non-GMT input files (eg "Pathway.ID" or 2; default NULL).}
+\item{pathCol}{(char or int) column name or number with pathway identifiers
+(for use with non-GMT input files (eg "Pathway.ID" or 2; default NULL))}
 
-\item{geneCol}{(char or int) column name or number with gene identifiers.
-For use with non-GMT input files (eg "Gene.ID" or 5; default NULL).}
+\item{geneCol}{(char or int) column name or number with gene identifiers
+(for use with non-GMT input files (eg "Gene.ID" or 5; default NULL))}
 
 \item{minGene}{(integer) minimum number of genes to be considered
-in a pathway (default 1).}
+in a pathway (default 1)}
 
 \item{maxGene}{(integer) maximum number of genes to be considered
-in a pathway (default Inf).}
+in a pathway (default Inf)}
 }
 \value{
-a list of vectors with pathway annotations.
+A list of vectors with pathway annotations.
 }
 \description{
-Returns a list of pathways from various file formats.
-Currently supports the following file format: gmt, txt, xlsx.
+This function supports custom pathway annotations to use
+for fedup pathway enrichment analysis. Current file formats supported are
+gmt, txt, and xlsx.
 }
 \examples{
 pathways <- readPathways(

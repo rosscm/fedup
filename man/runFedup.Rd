@@ -2,43 +2,51 @@
 % Please edit documentation in R/fedup.R
 \name{runFedup}
 \alias{runFedup}
-\title{Runs gene enrichment and depletion analysis for a list of pathways.}
+\title{Runs pathway enrichment and depletion analysis using a Fisher's
+exact test.}
 \usage{
-runFedup(testGene, backgroundGene, pathways)
+runFedup(genes, pathways)
 }
 \arguments{
-\item{testGene}{(char) vector of genes to use as test set.}
+\item{genes}{(list) named list of vectors with background genes and \code{n}
+test genes.}
 
-\item{backgroundGene}{(char) vector of genes to use as background set.}
-
-\item{pathways}{(list) list of vectors with pathway annotations.}
+\item{pathways}{(list) named list of vectors with pathway annotations.}
 }
 \value{
-table of pathway enrichment and depletion results. Rows represent
-tested pathways. Columns represent:
+List of length \code{n} with table(s) of pathway enrichment and
+depletion results. Rows represent tested pathways. Columns represent:
 \itemize{
     \item pathway -- name of the pathway, corresponds to
         names(\code{pathways});
     \item size -- size of the pathway;
-    \item real_frac -- fraction of \code{testGene} members in pathway;
-    \item expected_frac -- fraction of \code{backgroundGene} members in
+    \item real_frac -- fraction of test gene members in pathway;
+    \item expected_frac -- fraction of background gene members in
         pathway;
     \item fold_enrichment -- fold enrichment measure,
         evaluates as \code{real_frac} / \code{expected_frac};
     \item status -- indicator that pathway is enriched or depleted for
-        \code{testGene} members;
-    \item real_gene -- vector of \code{testGene} gene members annotated
+        test gene members;
+    \item real_gene -- vector of test gene members annotated
         to \code{pathways};
     \item pvalue -- enrichment p-value calculated via Fisher's exact test;
     \item qvalue -- BH-adjusted p-value
 }
 }
 \description{
-Runs gene enrichment and depletion analysis for a list of pathways.
+This function takes a list of test genes and a common background
+set to calculate enrichment and depletion for a list of pathways. The method
+allows for fast and efficient testing of multiple gene sets of interest.
 }
 \examples{
-data(testGene)
-data(backgroundGene)
 data(pathwaysGMT)
-fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
+# Run analysis with a single test set
+data(geneSingle)
+fedupRes <- runFedup(geneSingle, pathwaysGMT)
+# Run analysis with two test sets
+data(geneDouble)
+fedupRes <- runFedup(geneDouble, pathwaysGMT)
+# Run analysis with multiple test sets
+data(geneMulti)
+fedupRes <- runFedup(geneMulti, pathwaysGMT)
 }

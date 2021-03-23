@@ -2,6 +2,7 @@
 
 export(plotDotPlot)
 export(plotFemap)
+export(prepInput)
 export(readPathways)
 export(runFedup)
 export(writeFemap)

@@ -1,13 +1,12 @@
 #' Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.
 #'
-#' @param df (data.frame) table with fedup enrichment results.
-#'  (see runFedup() for column descriptions)
-#' @param resultsFile (char) name of output results file.
-#' @return table of gene enrichment and depletion results formatted as a
+#' @param results (list) list with ouput results from \link[fedup]{runFedup}
+#' @param resultsFolder (char) name of folder to store result file(s)
+#' @return Table of pathway enrichment and depletion results formatted as a
 #' 'Generic results file'. Rows represent tested pathways. Columns represent:
 #' \itemize{
 #'     \item pathway -- pathway ID (must match pathway IDs in the GMT file
-#'         provided to plotFemap());
+#'         provided to \link[fedup]{plotFemap};
 #'     \item description -- pathway name or description;
 #'     \item pvalue -- enrichment pvalue;
 #'     \item qvalue -- BH-corrected pvalue;
@@ -15,56 +14,65 @@
 #'         (+1 maps to red, -1 maps to blue)
 #' }
 #' @examples
-#' data(testGene)
-#' data(backgroundGene)
+#' data(geneDouble)
 #' data(pathwaysGMT)
-#' fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
-#' resultsFile <- tempfile("fedupRes", fileext = ".txt")
-#' writeFemap(fedupRes, resultsFile)
+#' fedupRes <- runFedup(geneDouble, pathwaysGMT)
+#' resultsFolder <- tempdir()
+#' writeFemap(fedupRes, resultsFolder)
 #' @importFrom data.table fwrite
 #' @importFrom dplyr select mutate %>%
 #' @export
-writeFemap <- function(df, resultsFile) {
-    df_em <- df %>%
-        select("pathway", "pvalue", "qvalue", "status") %>%
-        mutate("description" = gsub("\\%.*", "", df$pathway)) %>%
-        mutate("status" = ifelse(df$status == "Enriched", "1", "-1")) %>%
-        select("pathway", "description", "pvalue", "qvalue", "status")
-
-    fwrite(df_em, resultsFile, sep = "\t", col.names = TRUE, quote = FALSE)
-    message("Wrote out Cytoscape-formatted fedup results file to ", resultsFile)
+writeFemap <- function(results, resultsFolder) {
+    resultsEM <- lapply(seq_along(results), function(i) {
+        x <- results[[i]] %>%
+            select("pathway", "pvalue", "qvalue", "status") %>%
+            mutate("description" = gsub("\\%.*", "", results[[i]]$pathway)) %>%
+            mutate("status" =
+                ifelse(results[[i]]$status == "enriched", "1", "-1")) %>%
+            select("pathway", "description", "pvalue", "qvalue", "status")
+        fname <- file.path(
+            resultsFolder,
+            paste0("femap_", names(results)[[i]], ".txt")
+        )
+        fwrite(x, fname, sep = "\t", col.names = TRUE, quote = FALSE)
+        message("Wrote out EM-formatted fedup results file to ", fname)
+    })
 }
 
-#' Draws a network representation of overlaps among enriched and depleted
-#' pathways using EnrichmentMap (EM) in Cytoscape.
+#' Draws a network representation of overlaps among pathway enrichment
+#' results using EnrichmentMap (EM) in Cytoscape.
 #'
-#' @param gmtFile (char) path to GMT file (must be an absolute path).
-#' @param resultsFile (char) path to file with fedup results
-#'  (must be an absolute path).
-#' @param pvalue (numeric) pvalue cutoff. Pathways with a higher pvalue
-#'  will not be included in the EM (value between 0 and 1; default 1).
-#' @param qvalue (numeric) qvalue cutoff. Pathways with a higher qvalue
-#'  will not be included in the EM (value between 0 and 1; default 1).
-#' @param netName (char) name for EM in Cytoscape (default generic).
-#' @param netFile (char) name of output image. Supports png, pdf, svg,
-#'  jpeg image formats.
-#' @return file name of image to which the network is exported and an open
+#' @param gmtFile (char) absolute path to GMT file (generated via
+#' \link[fedup]{writePathways})
+#' @param resultsFolder (char) absolute path to folder with fedup results
+#' (generated via \link[fedup]{writeFemap})
+#' @param pvalue (numeric) pvalue cutoff (value between 0 and 1; default 1)
+#' @param qvalue (numeric) qvalue cutoff (value between 0 and 1; default 1)
+#' @param chartData (char) node chart data (one of NES_VALUE, P_VALUE,
+#' FDR_VALUE, PHENOTYPES, DATA_SET, EXPRESSION_SET, or NONE;
+#' default = NES_VALUE)
+#' @param hideNodeLabels (logical) if TRUE hides the node label in the EM;
+#' cluster labels generated via AutoAnnotate remain visible
+#' @param netName (char) name for EM in Cytoscape (default generic)
+#' @param netFile (char) name of output image (supports png, pdf, svg,
+#' jpeg image formats)
+#' @return File name of image to which the network is exported and an open
 #' session of Cytoscape (side effect of plotting EM). NULL if Cytoscape
 #' is not running locally.
 #' @examples
-#' data(testGene)
-#' data(backgroundGene)
+#' data(geneDouble)
 #' data(pathwaysGMT)
+#' fedupRes <- runFedup(geneDouble, pathwaysGMT)
+#' resultsFolder <- tempdir()
+#' writeFemap(fedupRes, resultsFolder)
 #' gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
-#' fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
-#' resultsFile <- tempfile("fedupRes", fileext = ".txt")
-#' netFile <- tempfile("fedup_EM", fileext = ".png")
 #' writePathways(pathwaysGMT, gmtFile)
-#' writeFemap(fedupRes, resultsFile)
+#' netFile <- tempfile("fedup_EM", fileext = ".png")
 #' plotFemap(
 #'     gmtFile = gmtFile,
-#'     resultsFile = resultsFile,
+#'     resultsFolder = resultsFolder,
 #'     qvalue = 0.05,
+#'     hideNodeLabels = TRUE,
 #'     netName = "fedup_EM",
 #'     netFile = netFile
 #' )
@@ -73,25 +81,27 @@ writeFemap <- function(df, resultsFile) {
 #' @usage
 #' plotFemap(
 #'     gmtFile,
-#'     resultsFile,
+#'     resultsFolder,
 #'     pvalue = 1,
 #'     qvalue = 1,
+#'     chartData = "NES_VALUE",
+#'     hideNodeLabels = FALSE,
 #'     netName = "generic",
 #'     netFile = "png"
 #' )
-plotFemap <- function(gmtFile, resultsFile, pvalue = 1, qvalue = 1,
+plotFemap <- function(gmtFile, resultsFolder, pvalue = 1, qvalue = 1,
+    chartData = "NES_VALUE", hideNodeLabels = FALSE,
     netName = "generic", netFile = "png") {
-    # Return `NULL` if Cytoscape is not running locally
-    out <- tryCatch({
+    emap <- tryCatch({
             cytoscapePing()
             if (netName %in% getNetworkList()) {
                 deleteNetwork(netName)
             }
             message(" => building the network")
-                em_command <- paste(
-                'enrichmentmap build analysisType="generic"',
-                "gmtFile=", gmtFile,
-                "enrichmentsDataset1=", resultsFile,
+            em_command <- paste(
+                "enrichmentmap mastermap rootFolder=", resultsFolder,
+                "networkName=", netName,
+                "commonGMTFile=", gmtFile,
                 "pvalue=", pvalue,
                 "qvalue=", qvalue,
                 "similaritycutoff=", 0.375,
@@ -99,15 +109,11 @@ plotFemap <- function(gmtFile, resultsFile, pvalue = 1, qvalue = 1,
                 "combinedConstant=", 0.5
             )
             response <- commandsGET(em_command)
-            renameNetwork(netName, getNetworkSuid())
             message(" => setting network chart data")
-                ch_command <- paste(
-                'enrichmentmap chart data="NES_VALUE"',
-                "colors=", "RD_BU_9"
-            )
+            ch_command <- paste0("enrichmentmap chart data=", chartData)
             response <- commandsGET(ch_command)
             message(" => annotating the network via AutoAnnotate")
-                aa_command <- paste(
+            aa_command <- paste(
                 "autoannotate annotate-clusterBoosted",
                 "clusterAlgorithm=MCL",
                 "maxWords=3",
@@ -115,17 +121,21 @@ plotFemap <- function(gmtFile, resultsFile, pvalue = 1, qvalue = 1,
             )
             response <- commandsGET(aa_command)
             message(" => applying a force-directed network layout")
-                ln_command <- paste(
+            ln_command <- paste(
                 "layout force-directed",
                 "network=", netName
             )
             response <- commandsGET(ln_command)
+            if (hideNodeLabels) {
+                setNodeFontSizeDefault(0, "EM1_Visual_Style")
+            }
             fitContent()
             message(" => drawing out the network to ", netFile)
             exportImage(netFile)
         },
         error = function(x) {
             return(NULL)
-        })
-    return(out)
+        }
+    )
+    return(emap)
 }

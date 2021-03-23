@@ -33,6 +33,7 @@ Imports:
     stats
 Suggests:
     biomaRt,
+    tidyr,
     testthat,
     knitr,
     rmarkdown,

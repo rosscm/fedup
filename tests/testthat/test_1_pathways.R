@@ -1,4 +1,4 @@
-context("Pathways")
+context("(1) Pathways")
 
 test_that("Test that readPathways stops without proper inputs", {
     expect_error(readPathways("test.123.xls"))

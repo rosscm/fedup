@@ -261,20 +261,22 @@ it? How do we interpret these 156 fairly redundant pathways in a way
 that doesn’t hurt our tired brains even more? Oh I know, let’s use an
 enrichment map!
 
+## Enrichment map
+
 First, make sure to have
 [Cytoscape](https://cytoscape.org/download.html) downloaded and and open
 on your computer. You’ll also need to install the
-[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
-[AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
+[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) (≥ v3.3.0)
+and [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
-Then format results for compatibility with EnrichmentMap with
+Then format results for compatibility with EnrichmentMap using
 `writeFemap`:
 
 ``` r
 resultsFolder <- tempdir()
 writeFemap(fedupRes, resultsFolder)
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpICrurb/femap_FASN_negative.txt
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpICrurb/femap_FASN_positive.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpOUnZkK/femap_FASN_negative.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpOUnZkK/femap_FASN_positive.txt
 ```
 
 Prepare a pathway annotation file (gmt format) from the pathway list you
@@ -285,7 +287,7 @@ format, but it doesn’t hurt to make sure):
 ``` r
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpICrurb/pathwaysGMT76786610bbca.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpOUnZkK/pathwaysGMT8f54123ef041.gmt
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`

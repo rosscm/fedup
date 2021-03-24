@@ -166,13 +166,15 @@ Look at all those chick... enrichments! This is a bit overwhelming, isn't it?
 How do we interpret these 156 fairly redundant pathways in a way that doesn't
 hurt our tired brains even more? Oh I know, let's use an enrichment map!
 
+## Enrichment map
+
 First, make sure to have
 [Cytoscape](https://cytoscape.org/download.html) downloaded and and open
 on your computer. You’ll also need to install the
-[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
+[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) (≥ v3.3.0) and
 [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
-Then format results for compatibility with EnrichmentMap with `writeFemap`:
+Then format results for compatibility with EnrichmentMap using `writeFemap`:
 
 ```{r}
 resultsFolder <- tempdir()

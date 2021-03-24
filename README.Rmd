@@ -194,15 +194,15 @@ writePathways(pathwaysGMT, gmtFile)
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
-```{r, fedupEM_geneDouble, eval = FALSE}
-netFile <- tempfile("fedupEM_geneDouble", fileext = ".png")
+```{r, fedupEM, eval = FALSE}
+netFile <- tempfile("fedupEM", fileext = ".png")
 plotFemap(
     gmtFile = gmtFile,
     resultsFolder = resultsFolder,
     qvalue = 0.05,
     chartData = "DATA_SET",
     hideNodeLabels = TRUE,
-    netName = "fedupEM_geneDouble",
+    netName = "fedupEM",
     netFile = netFile
 )
 ```
@@ -213,7 +213,7 @@ A feature for automated dataset colouring is set to be released in
 [version 3.3.2](https://github.com/BaderLab/EnrichmentMapApp/issues/455)
 of EnrichmentMap.
 
-![](inst/figures/fedupEM_geneDouble.png)
+![](inst/figures/fedupEM.png)
 
 This has effectively summarized the 156 pathways from our dot plot into 21
 unique biological themes (including 4 unclustered pathways). We can now see

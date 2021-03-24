@@ -11,11 +11,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-<img align="right" width="300" height="345" src="inst/figures/fedup.png">
-
 <div align="center">
 
 **F**isher's Test for **E**nrichment and **D**epletion of **U**ser-Defined **P**athways
+
+<img align="right" width="300" height="345" src="inst/figures/fedup.png">
 
 [![Build Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/fedup)
 ![R-CMD-check](https://github.com/rosscm/fedup/workflows/R-CMD-check/badge.svg)
@@ -74,7 +74,7 @@ Or install the development version from Github:
 devtools::install_github("rosscm/fedup", quiet = TRUE)
 ```
 
-```{r, echo = FALSE}
+```{r, message = FALSE, echo = FALSE}
 devtools::load_all()
 ```
 
@@ -150,7 +150,7 @@ fedupPlot <- fedupRes %>%
 Plot significant results (qvalue < 0.05) in the form of a dot plot via
 `plotDotPlot`. Colour and facet the points by the `sign` column:
 
-```{r, fedupDotPlot, fig.width = 11, fig.height = 15.5}
+```{r, fedupDotplot, fig.width = 11, fig.height = 15.5}
 p <- plotDotPlot(
         df = fedupPlot,
         xVar = "log10qvalue",

@@ -1,10 +1,10 @@
 
-<img align="right" width="300" height="345" src="inst/figures/fedup.png">
-
 <div align="center">
 
 **F**isher’s Test for **E**nrichment and **D**epletion of
 **U**ser-Defined **P**athways
+
+<img align="right" width="300" height="345" src="inst/figures/fedup.png">
 
 [![Build
 Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/fedup)
@@ -62,8 +62,6 @@ Or install the development version from Github:
 ``` r
 devtools::install_github("rosscm/fedup", quiet = TRUE)
 ```
-
-    #> ℹ Loading fedup
 
 Load necessary packages:
 
@@ -256,7 +254,7 @@ p <- plotDotPlot(
 print(p)
 ```
 
-<img src="inst/figures/fedupDotPlot-1.png" width="100%" />
+<img src="inst/figures/fedupDotplot-1.png" width="100%" />
 
 Look at all those chick… enrichments! This is a bit overwhelming, isn’t
 it? How do we interpret these 156 fairly redundant pathways in a way
@@ -275,8 +273,8 @@ Then format results for compatibility with EnrichmentMap with
 ``` r
 resultsFolder <- tempdir()
 writeFemap(fedupRes, resultsFolder)
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpcURhrJ/femap_FASN_negative.txt
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpcURhrJ/femap_FASN_positive.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpAf2BGG/femap_FASN_negative.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpAf2BGG/femap_FASN_positive.txt
 ```
 
 Prepare a pathway annotation file (gmt format) from the pathway list you
@@ -287,7 +285,7 @@ format, but it doesn’t hurt to make sure):
 ``` r
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpcURhrJ/pathwaysGMT53578afa76d.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpAf2BGG/pathwaysGMT71ec2744960.gmt
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`

@@ -66,7 +66,7 @@ devtools::install_github("rosscm/fedup", quiet = TRUE)
 Load necessary packages:
 
 ``` r
-#library(fedup)
+library(fedup)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -273,8 +273,8 @@ Then format results for compatibility with EnrichmentMap with
 ``` r
 resultsFolder <- tempdir()
 writeFemap(fedupRes, resultsFolder)
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpAf2BGG/femap_FASN_negative.txt
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpAf2BGG/femap_FASN_positive.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpICrurb/femap_FASN_negative.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpICrurb/femap_FASN_positive.txt
 ```
 
 Prepare a pathway annotation file (gmt format) from the pathway list you
@@ -285,7 +285,7 @@ format, but it doesn’t hurt to make sure):
 ``` r
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpAf2BGG/pathwaysGMT71ec2744960.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpICrurb/pathwaysGMT76786610bbca.gmt
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`

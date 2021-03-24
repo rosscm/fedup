@@ -288,6 +288,7 @@ format, but it doesn’t hurt to make sure):
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
 #> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpyZpDcO/pathwaysGMT922d3a223769.gmt
+
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`

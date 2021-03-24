@@ -1,6 +1,11 @@
 \name{NEWS}
 \title{News for Package 'fedup'}
 \encoding{UTF-8}
+\section{Changes in fedup version 0.99.5 (2021-02-24)}{
+  \itemize{
+    \item Trimmed external data size
+  }
+}
 \section{Changes in fedup version 0.99.4 (2021-03-24)}{
   \itemize{
     \item updated package datasets (geneSingle, geneDouble, geneMulti)

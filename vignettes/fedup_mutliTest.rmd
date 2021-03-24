@@ -294,8 +294,6 @@ the EM panel. A feature for automated dataset colouring is set to be released in
 [version 3.3.2](https://github.com/BaderLab/EnrichmentMapApp/issues/455)
 of EnrichmentMap.
 
-![](figures/EMpanel_geneMulti.png)
-
 This has effectively summarized the 244 pathways from our dot plot into 27
 unique biological themes (including 7 unclustered pathways). We can now see
 clear themes in the data pertaining to negative and positive genetic

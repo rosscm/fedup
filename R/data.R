@@ -7,7 +7,7 @@
 #' system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
 #'     package = "fedup")
 #' Script to prepare data
-#' system.file("inst", "script", "pathwaysGMT.R", package ="fedup")
+#' system.file("script", "pathwaysGMT.R", package = "fedup")
 #'
 #' @format a named list of 1437 vectors
 #' @usage data(pathwaysGMT)
@@ -22,7 +22,7 @@
 #' system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
 #'
 #' Script to prepare data
-#' system.file("inst", "script", "pathwaysXLSX.R", package = "fedup")
+#' system.file("script", "pathwaysXLSX.R", package = "fedup")
 #'
 #' @format a named list of 317 vectors
 #' @usage data(pathwaysXLSX)
@@ -37,7 +37,7 @@
 #' system.file("extdata", "SAFE_terms.txt", package = "fedup")
 #'
 #' Script to prepare data
-#' system.file("inst", "script", "pathwaysTXT.R", package = "fedup")
+#' system.file("script", "pathwaysTXT.R", package = "fedup")
 #'
 #' @format a named list of 317 vectors
 #' @usage data(pathwaysTXT)
@@ -50,7 +50,7 @@
 #' \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7566881/}
 #'
 #' Script to prepare data
-#' system.file("inst", "script", "genes.R", package = "fedup")
+#' system.file("script", "genes.R", package = "fedup")
 #'
 #' @format a named list with two vector elements, one common background
 #' gene vector and one test gene vector.
@@ -64,7 +64,7 @@
 #' \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7566881/}
 #'
 #' Script to prepare data
-#' system.file("inst", "script", "genes.R", package = "fedup")
+#' system.file("script", "genes.R", package = "fedup")
 #'
 #' @format a named list with three vector elements, one common background
 #' gene vector and two test gene vectors.
@@ -78,7 +78,7 @@
 #' \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7566881/}
 #'
 #' Script to prepare data
-#' system.file("inst", "script", "genes.R", package = "fedup")
+#' system.file("script", "genes.R", package = "fedup")
 #'
 #' @format a named list with thirteen vector elements, one common background
 #' gene vector and twelve test gene vectors.

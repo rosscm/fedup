@@ -1,62 +1,40 @@
 ---
-output: github_document
+title: "Running fedup with two test sets"
+author: Catherine Ross
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Running fedup with two test sets}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "inst/figures/",
-  out.width = "100%"
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "vignettes/figures/",
+    out.width = "100%"
 )
 ```
 
-<div align="center">
-
-**F**isher's Test for **E**nrichment and **D**epletion of **U**ser-Defined **P**athways
-
-<img align="right" width="300" height="345" src="inst/figures/fedup.png">
-
-[![Build Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/fedup)
-![R-CMD-check](https://github.com/rosscm/fedup/workflows/R-CMD-check/badge.svg)
-![R-CMD-check-bioc](https://github.com/rosscm/fedup/workflows/R-CMD-check-bioc/badge.svg)
-![test-coverage](https://github.com/rosscm/fedup/workflows/test-coverage/badge.svg)
-[![codecov](https://codecov.io/gh/rosscm/fedup/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/fedup)
-
-<div align="left">
-
-`fedup` is an R package that tests for enrichment and depletion of user-defined
+This is an R package that tests for enrichment and depletion of user-defined
 pathways using a Fisher's exact test. The method is designed for versatile
 pathway annotation formats (eg. gmt, txt, xlsx) to allow the user to run
 pathway analysis on custom annotations. This package is also
 integrated with Cytoscape to provide network-based pathway visualization
 that enhances the interpretability of the results.
 
-This README will quickly demonstrate how to use `fedup` when testing two sets
-of genes. Refer to vignettes for additional information and implementations
-(e.g., using single or multiple test sets).
-
-
-# Contents
-
-- [System prerequisites](#system-prerequisites)
-- [Installation](#installation)
-- [Running the package](#running-the-package)
-  * [Input data](#input-data)
-  * [Pathway analysis](#pathway-analysis)
-  * [Dot plot](#dot-plot)
-  * [Enrichment map](#enrichment-map)
-- [Versioning](#versioning)
-- [Shoutouts](#shoutouts)
+This vignette will explain how to use `fedup` when testing two sets of genes
+for pathway enrichment and depletion.
 
 # System prerequisites
 
-**R version** ≥ 4.1  
+**R version** ≥ 4.1    
 **R packages**:
 
--   **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes,
-    forcats, RColorBrewer  
--   **Bioconductor**: RCy3
+* **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes, forcats,
+RColorBrewer
+* **Bioconductor**: RCy3
 
 # Installation
 
@@ -71,7 +49,7 @@ BiocManager::install("fedup")
 Or install the development version from Github:
 
 ```{r, message = FALSE}
-devtools::install_github("rosscm/fedup", quiet = TRUE)
+devtools::install_github("rosscm/fedup")
 ```
 
 Load necessary packages:
@@ -100,6 +78,25 @@ str(geneDouble)
 str(head(pathwaysGMT))
 ```
 
+The sample `geneDouble` list object contains three vector elements: `background`
+, `FASN_negative`, and `FASN_positive`. The `background` consists of all genes
+that the test sets (in this case `FASN_negative` and `FASN_positive`) will be
+compared against. `FASN_negative` consists of genes that form
+**negative genetic interactions** with the FASN gene after CRISPR-Cas9 knockout.
+`FASN_positive` consists of genes that form **positve genetic interactions**
+with *FASN*. If you're interested in seeing how this data set was
+constructed, check out the
+[code](https://github.com/rosscm/fedup/blob/main/inst/script/genes.R).
+Also, the paper the data was taken from is found
+[here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7566881/).
+
+Given that [*FASN*](https://www.genecards.org/cgi-bin/carddisp.pl?gene=FASN) is
+a fatty acid synthase, we would expect to see **enrichment** of the negative
+interactions for pathways associated with *sensitization* of fatty acid
+synthesis, as well as **enrichment** of the positive interactions for pathways
+associated with *suppression* of the function. Conversely, we expect to find
+**depletion** for pathways not at all involved with *FASN* biology. Let's see!
+
 ## Pathway analysis
 
 Now use `runFedup` on the sample data:
@@ -120,6 +117,15 @@ print(head(fedupRes[[set]][which(fedupRes[[set]]$status == "enriched"),]))
 print(head(fedupRes[[set]][which(fedupRes[[set]]$status == "depleted"),]))
 ```
 
+Here we see the strongest enrichment for the `ASPARAGINE N-LINKED GLYCOSYLATION`
+pathway. Given that *FASN* mutant cells show a strong dependence on lipid
+uptake, this enrichment for negative interactions with genes involved in
+glycosylation is expected. We also see significant enrichment for other related
+pathways, including `DISEASES ASSOCIATED WITH N-GLYCOSYLATION OF PROTEINS` and
+`DISEASES OF GLYCOSYLATION`. Conversely, we see significant depletion for
+functions not associated with these processes, such as `OLFACTORY SIGNALING
+PATHWAY`, `GPCR LIGAND BINDING` and `KERATINIZATION`. Nice!
+
 Let's also view `fedup` results for `FASN_positive`, sorted by pvalue:
 
 ```{r}
@@ -139,14 +145,19 @@ fedupPlot <- fedupRes %>%
     subset(qvalue < 0.05) %>%
     mutate(log10qvalue = -log10(qvalue)) %>%
     mutate(pathway = gsub("\\%.*", "", pathway)) %>%
-    mutate(status = factor(status, levels = c("enriched", "depleted"))) %>%
     as.data.frame()
 ```
+
+Since we're dealing with two test sets here, it's important we create the
+`sign` column in `fedupPlot` to distinguish between them. Take a look at
+`?dplyr::bind_rows` for details on how the output `fedup` results list
+(`fedupRes`) was bound into a single dataframe and `?tidyr::separate` for how
+the `sign` column was created.
 
 Plot significant results (qvalue < 0.05) in the form of a dot plot via
 `plotDotPlot`. Colour and facet the points by the `sign` column:
 
-```{r, fedupDotplot, fig.width = 11, fig.height = 15.5}
+```{r, fedupDotPlot, fig.width = 11, fig.height = 15.5}
 p <- plotDotPlot(
         df = fedupPlot,
         xVar = "log10qvalue",
@@ -166,11 +177,12 @@ Look at all those chick... enrichments! This is a bit overwhelming, isn't it?
 How do we interpret these 156 fairly redundant pathways in a way that doesn't
 hurt our tired brains even more? Oh I know, let's use an enrichment map!
 
-First, make sure to have
-[Cytoscape](https://cytoscape.org/download.html) downloaded and and open
-on your computer. You’ll also need to install the
-[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
-[AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
+## Enrichment map
+
+First, make sure to have [Cytoscape](https://cytoscape.org/download.html)
+downloaded and and open on your computer. You'll also need to install the
+[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) (≥ v3.3.0)
+and [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
 Then format results for compatibility with EnrichmentMap with `writeFemap`:
 
@@ -205,13 +217,15 @@ plotFemap(
 )
 ```
 
+![](figures/fedupEM_geneDouble.png)
+
 To note here, the EM nodes were coloured manually (by the same colours passed to
 `plotDotPlot`) in Cytoscape via the *Change Colors* option in the EM panel.
 A feature for automated dataset colouring is set to be released in
 [version 3.3.2](https://github.com/BaderLab/EnrichmentMapApp/issues/455)
 of EnrichmentMap.
 
-![](inst/figures/fedupEM_geneDouble.png)
+![](figures/EMpanel_geneDouble.png)
 
 This has effectively summarized the 156 pathways from our dot plot into 21
 unique biological themes (including 4 unclustered pathways). We can now see
@@ -220,14 +234,8 @@ such as `diseases glycosylation, proteins`, `golgi transport`, and
 `rab regulation trafficking`. These can be compared and constrasted with the
 enrichment seen for *FASN* positive interactions.
 
-Try this out yourself! Hopefully it’s the only fedup you achieve
-:grimacing:
+# Session information
 
-# Versioning
-
-For the versions available, see the [tags on this
-repo](https://github.com/rosscm/fedup/tags).
-
-# Shoutouts
-
-:sparkles:[**2020**](https://media.giphy.com/media/z9AUvhAEiXOqA/giphy.gif):sparkles:
+```{r}
+sessionInfo()
+```

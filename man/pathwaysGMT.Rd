@@ -11,7 +11,7 @@ a named list of 1437 vectors
 data(pathwaysGMT)
 }
 \description{
-Raw GMT file is available from
+GMT file is available from
 \url{http://download.baderlab.org/EM_Genesets/November_17_2020/Human/symbol}
 }
 \details{

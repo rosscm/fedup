@@ -1,4 +1,4 @@
-context("Pathways")
+context("(1) Pathways")
 
 test_that("Test that readPathways stops without proper inputs", {
     expect_error(readPathways("test.123.xls"))
@@ -50,7 +50,11 @@ test_that("Test that readPathways works with XLSX input", {
 })
 
 test_that("Test that readPathways works with TXT input", {
-    pathwayFile <- system.file("extdata", "SAFE_terms.txt", package = "fedup")
+    library(openxlsx)
+    pathwayFile <- system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
+    pathway <- read.xlsx(pathwayFile)
+    pathwayFile <- tempfile("SAFE_terms", fileext = ".txt")
+    write.table(pathway, pathwayFile, col = TRUE, sep = "\t")
     s <- c("gmt", "txt", "xlsx")
     f <- sub(".*\\.", "", pathwayFile)
     expect_true(f %in% s)

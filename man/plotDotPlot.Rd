@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plotDotPlot}
 \alias{plotDotPlot}
-\title{Visualizes pathway enrichment and depletion using ggplot.}
+\title{Visualizes fedup enrichment and depletion results using ggplot.}
 \usage{
 plotDotPlot(
     df,
@@ -19,49 +19,61 @@ plotDotPlot(
 )
 }
 \arguments{
-\item{df}{(data.frame) table with fedup enrichment results to plot.}
+\item{df}{(data.frame) table with fedup results generated via
+\link[fedup]{runFedup}}
 
-\item{xVar}{(char) x-axis variable (must be a column value in \code{df}).}
+\item{xVar}{(char) x-axis variable (must be a column value in \code{df})}
 
-\item{yVar}{(char) y-axis variable (must be a column value in \code{df}).}
+\item{yVar}{(char) y-axis variable (must be a column value in \code{df})}
 
-\item{xLab}{(char) x-axis label (default \code{xVar} value).}
+\item{xLab}{(char) x-axis label (default \code{xVar} value)}
 
-\item{yLab}{(char) y-axis label (default NULL).}
+\item{yLab}{(char) y-axis label (default NULL)}
 
-\item{pTitle}{(char) plot title (default NULL).}
+\item{pTitle}{(char) plot title (default NULL)}
 
-\item{fillVar}{(char) point fill variable (default NULL).}
+\item{fillVar}{(char) point fill variable (default NULL)}
 
-\item{fillCol}{(char) point fill colours (default NULL).}
+\item{fillCol}{(char) point fill colours (default NULL)}
 
-\item{fillLab}{(char) point fill label (default \code{fillVar} value).}
+\item{fillLab}{(char) point fill label (default \code{fillVar} value)}
 
-\item{sizeVar}{(char) point size variable (default NULL).}
+\item{sizeVar}{(char) point size variable (default NULL)}
 
-\item{sizeLab}{(char) point size label (default \code{sizeVar} value).}
+\item{sizeLab}{(char) point size label (default \code{sizeVar} value)}
 }
 \value{
-object returned from ggplot with the enrichment dot plot.
+Object returned from ggplot with the enrichment dot plot.
 }
 \description{
-Visualizes pathway enrichment and depletion using ggplot.
+This function supports any combination of numeric x-y variables
+to plot from fedup results. The list outputted by \link[fedup]{runFedup}
+must first be converted to a data.frame before plotting (see examples for
+sample use).
 }
 \examples{
-data(testGene)
-data(backgroundGene)
+data(geneDouble)
 data(pathwaysGMT)
-fedup_res <- runFedup(testGene, backgroundGene, pathwaysGMT)
-fedup_plot <- fedup_res[which(fedup_res$qvalue < 0.05), ]
-fedup_plot$log10qvalue <- -log10(fedup_plot$qvalue + 1e-10)
-fedup_plot$pathway <- gsub("\\\\\%.*", "", fedup_plot$pathway)
-plotDotPlot(
-    df = fedup_plot,
+suppressMessages(library(dplyr))
+suppressMessages(library(tidyr))
+fedupRes <- runFedup(geneDouble, pathwaysGMT)
+# Prepare dataframe from fedup results
+fedupPlot <- fedupRes \%>\%
+    bind_rows(.id = "set") \%>\%
+    separate(col = "set", into = c("set", "sign"), sep = "_") \%>\%
+    subset(qvalue < 0.01) \%>\%
+    mutate(log10qvalue = -log10(qvalue)) \%>\%
+    mutate(pathway = gsub("\\\\\%.*", "", pathway)) \%>\%
+    as.data.frame()
+# Plot
+p <- plotDotPlot(
+    df = fedupPlot,
     xVar = "log10qvalue",
     yVar = "pathway",
-    xLab = "-log10(Qvalue)",
-    fillVar = "status",
-    fillLab = "Enrichment\nstatus",
+    xLab = "-log10(qvalue)",
+    fillVar = "sign",
+    fillLab = "Genetic interaction",
+    fillCol = c("#0077f1", "#fcde24"),
     sizeVar = "fold_enrichment",
     sizeLab = "Fold enrichment"
 )

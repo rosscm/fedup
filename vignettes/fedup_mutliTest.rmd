@@ -1,0 +1,308 @@
+---
+title: "Running fedup with multiple test sets"
+author: Catherine Ross
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Running fedup with multiple test sets}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "vignettes/figures/",
+    out.width = "100%"
+)
+```
+
+This is an R package that tests for enrichment and depletion of user-defined
+pathways using a Fisher's exact test. The method is designed for versatile
+pathway annotation formats (eg. gmt, txt, xlsx) to allow the user to run
+pathway analysis on custom annotations. This package is also
+integrated with Cytoscape to provide network-based pathway visualization
+that enhances the interpretability of the results.
+
+This vignette will explain how to use `fedup` when testing multiple sets of
+genes for pathway enrichment and depletion.
+
+# System prerequisites
+
+**R version** ≥ 4.1    
+**R packages**:
+
+* **CRAN**: openxlsx, tibble, dplyr, data.table, ggplot2, ggthemes, forcats,
+RColorBrewer
+* **Bioconductor**: RCy3
+
+# Installation
+
+Install `fedup` from Bioconductor:
+
+```{r, eval = FALSE, message = FALSE}
+if(!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("fedup")
+```
+
+Or install the development version from Github:
+
+```{r, message = FALSE}
+devtools::install_github("rosscm/fedup")
+```
+
+Load necessary packages:
+
+```{r, message = FALSE}
+library(fedup)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+# Running the package
+## Input data
+
+Load test genes (`geneMulti`) and pathways annotations (`pathwaysGMT`):
+
+```{r}
+data(geneMulti)
+data(pathwaysGMT)
+```
+
+Take a look at the data structure:
+
+```{r}
+str(geneMulti)
+str(head(pathwaysGMT))
+```
+
+The sample `geneMulti` list object contains thirteen vector elements:
+`background`, `FASN_negative`, `FASN_positive`, `ACACA_negative`,
+`ACACA_positive`, `LDLR_negative`, `LDLR_positive`, `SREBF1_negative`,
+`SREBF1_positive`, `SREBF2_negative`, `SREBF2_positive`, `C12orf49_negative`,
+and `C12orf49_positive`. The `background` consists of all genes that the test
+sets (in this case all sets besides `background`) will be compared against.
+`FASN_negative` consists of genes that form **negative genetic interactions**
+with the FASN gene after CRISPR-Cas9 knockout. `FASN_positive` consists of genes
+that form **positve genetic interactions** with *FASN*. The remaining elements
+contain genes forming genetic interactions with their respective genes
+(*ACACA*, *LDLR*, *SREBF1*, *SREBF2*, *C12orf49*). If you're interested in
+seeing how this data set was constructed, check out the
+[code](https://github.com/rosscm/fedup/blob/main/inst/script/genes.R).
+Also, the paper the data was taken from is found
+[here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7566881/).
+
+As an example, [*FASN*](https://www.genecards.org/cgi-bin/carddisp.pl?gene=FASN)
+is a fatty acid synthase, so we would expect to see **enrichment** of the
+negative interactions for pathways associated with *sensitization* of fatty acid
+synthesis, as well as **enrichment** of the positive interactions for pathways
+associated with *suppression* of the function. Conversely, we expect to find
+**depletion** for pathways not at all involved with *FASN* biology. Let's see!
+
+## Pathway analysis
+
+Now use `runFedup` on the sample data:
+
+```{r}
+fedupRes <- runFedup(geneMulti, pathwaysGMT)
+```
+
+The `fedupRes` output is a list of length `length(which(names(geneMulti) !=
+"background"))`, corresponding to the number of test sets in `geneMulti`
+(i.e., 12).
+
+View `fedup` results for `FASN_negative` sorted by pvalue:
+
+```{r}
+set <- "FASN_negative"
+print(head(fedupRes[[set]][which(fedupRes[[set]]$status == "enriched"),]))
+print(head(fedupRes[[set]][which(fedupRes[[set]]$status == "depleted"),]))
+```
+
+Here we see the strongest enrichment for the `ASPARAGINE N-LINKED GLYCOSYLATION`
+pathway. Given that *FASN* mutant cells show a strong dependence on lipid
+uptake, this enrichment for negative interactions with genes involved in
+glycosylation is expected. We also see significant enrichment for other related
+pathways, including `DISEASES ASSOCIATED WITH N-GLYCOSYLATION OF PROTEINS` and
+`DISEASES OF GLYCOSYLATION`. Conversely, we see significant depletion for
+functions not associated with these processes, such as `OLFACTORY SIGNALING
+PATHWAY`, `GPCR LIGAND BINDING` and `KERATINIZATION`. Nice!
+
+Let's also view `fedup` results for `FASN_positive`, sorted by pvalue:
+
+```{r}
+set <- "FASN_positive"
+print(head(fedupRes[[set]][which(fedupRes[[set]]$status == "enriched"),]))
+print(head(fedupRes[[set]][which(fedupRes[[set]]$status == "depleted"),]))
+```
+
+Results for any test set can be indexed by its name:
+
+```{r}
+names(fedupRes)
+```
+
+## Dot plot
+
+Prepare data for plotting via `dplyr` and `tidyr`:
+
+```{r}
+fedupPlot <- fedupRes %>%
+    bind_rows(.id = "set") %>%
+    separate(col = "set", into = c("set", "sign"), sep = "_") %>%
+    subset(qvalue < 0.05) %>%
+    mutate(log10qvalue = -log10(qvalue)) %>%
+    mutate(pathway = gsub("\\%.*", "", pathway)) %>%
+    as.data.frame()
+```
+
+Since we're dealing with multiple test sets here, it's important we create the
+`set` and `sign` columns in `fedupPlot` to distinguish between them. Take a
+look at `?dplyr::bind_rows` for details on how the output `fedup` results list
+(`fedupRes`) was bound into a single dataframe and `?tidyr::separate` for how
+the `set` and `sign` columns were created.
+
+Plot significant results (qvalue < 0.05) in the form of a dot plot via
+`plotDotPlot`. Facet the points by the `set` and `sign` columns and colour by
+`sign`:
+
+```{r, fedupDotPlot, fig.width = 18, fig.height = 15.5}
+p <- plotDotPlot(
+        df = fedupPlot,
+        xVar = "log10qvalue",
+        yVar = "pathway",
+        xLab = "-log10(qvalue)",
+        fillVar = "sign",
+        fillLab = "Genetic interaction",
+        fillCol = c("#6D90CA", "#F6EB13"),
+        sizeVar = "fold_enrichment",
+        sizeLab = "Fold enrichment") +
+    facet_grid("sign ~ set", scales = "free_y", space = "free") +
+    theme(strip.text.y = element_blank())
+print(p)
+```
+
+Look at all those chick... enrichments! This is a bit overwhelming, isn't it?
+How do we interpret these 244 fairly redundant pathways in a way that doesn't
+hurt our tired brains even more? Oh I know, let's first try another
+ggplot-based plot.
+
+We can instead plot the degree of fold enrichment for a subset of pathways
+across our test sets. First, select the top 20 results to plot from `fedupRes`:
+
+```{r}
+topPath <- fedupRes %>%
+    bind_rows(.id = "set") %>%
+    arrange(desc(fold_enrichment)) %>%
+    slice(1:20) %>%
+    select(pathway) %>%
+    unlist() %>%
+    as.character()
+```
+
+View the selected pathways:
+
+```{r}
+print(topPath)
+```
+
+Now subset `fedupRes` across all test sets for the pathways stored in `topPath`:
+
+```{r}
+fedupPlot <- fedupRes %>%
+    bind_rows(.id = "set") %>%
+    separate(col = "set", into = c("set", "sign"), sep = "_") %>%
+    subset(pathway %in% topPath) %>%
+    mutate(pathway = gsub("\\%.*", "", pathway)) %>%
+    mutate(sign = ifelse(status == "depleted", "none", sign)) %>%
+    mutate(sign = factor(sign, levels = c("negative", "positive", "none"))) %>%
+    group_by(set, pathway) %>%
+    top_n(1, wt = fold_enrichment) %>%
+    as.data.frame()
+```
+
+Plot via `plotDotPlot`, this time using `set` as our x-axis variable:
+
+```{r, fedupDotPlot_sum, fig.width = 9.5, fig.height = 5}
+p <- plotDotPlot(
+        df = fedupPlot,
+        xVar = "set",
+        yVar = "pathway",
+        xLab = NULL,
+        fillVar = "sign",
+        fillLab = "Genetic interaction",
+        fillCol = c("#6D90CA", "#F6EB13", "grey80"),
+        sizeVar = "fold_enrichment",
+        sizeLab = "Fold enrichment") +
+    theme(
+        panel.grid.major.y = element_blank(),
+        axis.text.x = element_text(face = "italic", angle = 90,
+        vjust = 0.5, hjust = 1))
+print(p)
+```
+
+Ok cool, that's easier to look at than the plot before. Now let's summarize
+these pathways even more efficiently using EnrichmentMap!
+
+## Enrichment map
+
+First, make sure to have [Cytoscape](https://cytoscape.org/download.html)
+downloaded and and open on your computer. You'll also need to install the
+[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) (≥ v3.3.0)
+and [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
+
+Then format results for compatibility with EnrichmentMap with `writeFemap`:
+
+```{r}
+resultsFolder <- tempdir()
+writeFemap(fedupRes, resultsFolder)
+```
+
+Prepare a pathway annotation file (gmt format) from the pathway list you
+passed to `runFedup` using the `writePathways` function (you don't need to run
+this function if your pathway annotations are already in gmt format, but it
+doesn't hurt to make sure):
+
+```{r}
+gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
+writePathways(pathwaysGMT, gmtFile)
+```
+
+Cytoscape is open right? If so, run these lines and let the `plotFemap`
+magic happen:
+
+```{r, fedupEM_geneMulti, eval = FALSE}
+netFile <- tempfile("fedupEM_geneMulti", fileext = ".png")
+plotFemap(
+    gmtFile = gmtFile,
+    resultsFolder = resultsFolder,
+    qvalue = 0.05,
+    chartData = "DATA_SET",
+    hideNodeLabels = TRUE,
+    netName = "fedupEM_geneMulti",
+    netFile = netFile
+)
+```
+
+![](figures/fedupEM_geneMulti.png)
+
+To note here, the EM nodes were coloured manually (by a similar palette of
+colours passed to `plotDotPlot`) in Cytoscape via the *Change Colors* option in
+the EM panel. A feature for automated dataset colouring is set to be released in
+[version 3.3.2](https://github.com/BaderLab/EnrichmentMapApp/issues/455)
+of EnrichmentMap.
+
+![](figures/EMpanel_geneMulti.png)
+
+This has effectively summarized the 244 pathways from our dot plot into 27
+unique biological themes (including 7 unclustered pathways). We can now see
+clear themes in the data pertaining to negative and positive genetic
+interactions related to our genes of interest.
+
+# Session information
+
+```{r}
+sessionInfo()
+```

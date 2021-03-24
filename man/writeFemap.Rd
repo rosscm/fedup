@@ -4,20 +4,19 @@
 \alias{writeFemap}
 \title{Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.}
 \usage{
-writeFemap(df, resultsFile)
+writeFemap(results, resultsFolder)
 }
 \arguments{
-\item{df}{(data.frame) table with fedup enrichment results.
-(see runFedup() for column descriptions)}
+\item{results}{(list) list with ouput results from \link[fedup]{runFedup}}
 
-\item{resultsFile}{(char) name of output results file.}
+\item{resultsFolder}{(char) name of folder to store result file(s)}
 }
 \value{
-table of gene enrichment and depletion results formatted as a
+Table of pathway enrichment and depletion results formatted as a
 'Generic results file'. Rows represent tested pathways. Columns represent:
 \itemize{
     \item pathway -- pathway ID (must match pathway IDs in the GMT file
-        provided to plotFemap());
+        provided to \link[fedup]{plotFemap};
     \item description -- pathway name or description;
     \item pvalue -- enrichment pvalue;
     \item qvalue -- BH-corrected pvalue;
@@ -29,10 +28,9 @@ table of gene enrichment and depletion results formatted as a
 Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.
 }
 \examples{
-data(testGene)
-data(backgroundGene)
+data(geneDouble)
 data(pathwaysGMT)
-fedupRes <- runFedup(testGene, backgroundGene, pathwaysGMT)
-resultsFile <- tempfile("fedupRes", fileext = ".txt")
-writeFemap(fedupRes, resultsFile)
+fedupRes <- runFedup(geneDouble, pathwaysGMT)
+resultsFolder <- tempdir()
+writeFemap(fedupRes, resultsFolder)
 }

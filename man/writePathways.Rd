@@ -7,9 +7,9 @@
 writePathways(pathways, gmtFile)
 }
 \arguments{
-\item{pathways}{(list) named list of vectors.}
+\item{pathways}{(list) named list of vectors}
 
-\item{gmtFile}{(char) name of output GMT file.}
+\item{gmtFile}{(char) name of output GMT file}
 }
 \value{
 GMT-formatted file. Rows represent pathways. Columns represent:

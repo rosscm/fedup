@@ -49,7 +49,7 @@ BiocManager::install("fedup")
 Or install the development version from Github:
 
 ```{r, message = FALSE}
-devtools::install_github("rosscm/fedup")
+devtools::install_github("rosscm/fedup", quiet = TRUE)
 ```
 
 Load necessary packages:
@@ -253,7 +253,7 @@ downloaded and and open on your computer. You'll also need to install the
 [EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) (≥ v3.3.0)
 and [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
-Then format results for compatibility with EnrichmentMap with `writeFemap`:
+Then format results for compatibility with EnrichmentMap using `writeFemap`:
 
 ```{r}
 resultsFolder <- tempdir()

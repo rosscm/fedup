@@ -48,18 +48,14 @@ BiocManager::install("fedup")
 
 Or install the development version from Github:
 
-```{r, eval = FALSE, message = FALSE}
+```{r, message = FALSE}
 devtools::install_github("rosscm/fedup")
-```
-
-```{r, echo = FALSE}
-devtools::load_all()
 ```
 
 Load necessary packages:
 
 ```{r, message = FALSE}
-#library(fedup)
+library(fedup)
 library(dplyr)
 library(tidyr)
 library(ggplot2)

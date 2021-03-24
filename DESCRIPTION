@@ -1,6 +1,6 @@
 Package: fedup
 Title: Fisher's Test for Enrichment and Depletion of User-Defined Pathways
-Version: 0.99.5
+Version: 0.99.6
 Date: 2021-02-17
 Depends: R (>= 4.1)
 Authors@R:

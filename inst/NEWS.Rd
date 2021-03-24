@@ -1,6 +1,11 @@
 \name{NEWS}
 \title{News for Package 'fedup'}
 \encoding{UTF-8}
+\section{Changes in fedup version 0.99.6 (2021-02-24)}{
+  \itemize{
+    \item Updated package data script paths
+  }
+}
 \section{Changes in fedup version 0.99.5 (2021-02-24)}{
   \itemize{
     \item Trimmed external data size

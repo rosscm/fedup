@@ -1,15 +1,15 @@
 Changes in version 0.99.4 (2021-03-24):
 * updated package datasets (geneSingle, geneDouble, geneMulti)
 * created 3 vignettes to describe package implementation using each dataset
-* runFedup()
+* `runFedup()`
     + runs analysis on an input list rather than single test vector
     + fold enrichment calculation evaluates 0 for 0/0 instances
     + enriched pathways defined as fold enrichment ≥ 1 (instead of > 1)
-* writeFemap()
+* `writeFemap()`
     + writes EM-formatted tables for list of fedup results
-* plotFemap()
-    + implements tryCatch() to return NULL if Cytoscape is not running locally
-* prepInput()
+* `plotFemap()`
+    + implements `tryCatch()` to return NULL if Cytoscape is not running locally
+* `prepInput()`
     + new function to prepare input gene list
 
 Changes in version 0.99.3 (2021-02-24):

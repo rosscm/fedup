@@ -1,9 +1,8 @@
 context("(3) Analysis")
 
+data(pathwaysGMT)
 test_that("Test that fedup only works with proper inputs", {
     data(geneSingle)
-    data(pathwaysGMT)
-
     expect_true(is.list(pathwaysGMT))
     expect_error(runFedup(NULL, pathwaysGMT))
     expect_error(runFedup(geneSingle, NULL))
@@ -12,10 +11,14 @@ test_that("Test that fedup only works with proper inputs", {
     geneSingle_noBgrd[["background"]] <- NULL
     expect_error(runFedup(geneSingle_noBgrd, pathwaysGMT))
 
+    geneSingle_onlyBgrd <- geneSingle
+    geneSingle_onlyBgrd[["FASN_negative"]] <- NULL
+    expect_error(runFedup(geneSingle_onlyBgrd, pathwaysGMT))
+
     geneSingle_twoBgrd <- geneSingle
-    geneSingle_twoBgrd[["test"]] <- geneSingle[["background"]]
-    names(geneSingle_twoBgrd) <- "background"
-    expect_error(runFedup(geneSingle_noBgrd, pathwaysGMT))
+    geneSingle_twoBgrd[["background2"]] <- geneSingle[["background"]]
+    names(geneSingle_twoBgrd)[3] <- "background"
+    expect_error(runFedup(geneSingle_twoBgrd, pathwaysGMT))
 
     geneSingle_switch <- geneSingle
     names(geneSingle_switch)[1] <- "negative"
@@ -29,8 +32,6 @@ test_that("Test that fedup only works with proper inputs", {
 
 test_that("Test that fedup analysis works with single test set", {
     data(geneSingle)
-    data(pathwaysGMT)
-
     fedupRes <- runFedup(geneSingle, pathwaysGMT)
     expect_equal(length(which(names(geneSingle) != "background")), length(fedupRes))
     expect_equal(fedupRes[[1]][1, status], "enriched")
@@ -43,8 +44,6 @@ test_that("Test that fedup analysis works with single test set", {
 
 test_that("Test that fedup analysis works with two test sets", {
     data(geneDouble)
-    data(pathwaysGMT)
-
     fedupRes <- runFedup(geneDouble, pathwaysGMT)
     expect_equal(length(which(names(geneDouble) != "background")), length(fedupRes))
     expect_equal(fedupRes[[1]][1, status], "enriched")
@@ -53,7 +52,6 @@ test_that("Test that fedup analysis works with two test sets", {
     expect_equal(fedupRes[[1]][1437, status], "depleted")
     expect_equal(fedupRes[[1]][1437, qvalue], 1.000000e+00)
     expect_false("MOGS" %in% fedupRes[[1]][, real_gene][[1437]])
-
     expect_equal(fedupRes[[2]][1, status], "enriched")
     expect_equal(fedupRes[[2]][1, qvalue], 8.562503e-15)
     expect_true("EIF3A" %in% fedupRes[[2]][, real_gene][[1]])
@@ -64,8 +62,6 @@ test_that("Test that fedup analysis works with two test sets", {
 
 test_that("Test that fedup analysis works with multiple test sets", {
     data(geneMulti)
-    data(pathwaysGMT)
-
     expect_warning(fedupRes <- runFedup(geneMulti, pathwaysGMT))
     expect_equal(length(which(names(geneMulti) != "background")), length(fedupRes))
     expect_true("MOGS" %in% fedupRes[[1]][, real_gene][[1]])

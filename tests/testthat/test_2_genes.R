@@ -12,5 +12,6 @@ test_that("Test that prepInput works", {
     expect_error(prepInput(NULL, b, set1))
     expect_error(prepInput(c("negative", "negative"), set1, set2))
     expect_error(prepInput(c("negative", "positive"), set1, set2))
+    expect_error(prepInput(c("background", "negative"), b, as.data.frame(set1)))
     expect_true(is.list(prepInput(c("background", "negative", "positive"), b, set1, set2)))
 })

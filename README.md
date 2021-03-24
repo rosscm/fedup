@@ -261,20 +261,22 @@ it? How do we interpret these 156 fairly redundant pathways in a way
 that doesn’t hurt our tired brains even more? Oh I know, let’s use an
 enrichment map!
 
+## Enrichment map
+
 First, make sure to have
 [Cytoscape](https://cytoscape.org/download.html) downloaded and and open
 on your computer. You’ll also need to install the
-[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) and
-[AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
+[EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) (≥ v3.3.0)
+and [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
 
-Then format results for compatibility with EnrichmentMap with
+Then format results for compatibility with EnrichmentMap using
 `writeFemap`:
 
 ``` r
 resultsFolder <- tempdir()
 writeFemap(fedupRes, resultsFolder)
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpMnaqRQ/femap_FASN_negative.txt
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpMnaqRQ/femap_FASN_positive.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpyZpDcO/femap_FASN_negative.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpyZpDcO/femap_FASN_positive.txt
 ```
 
 Prepare a pathway annotation file (gmt format) from the pathway list you
@@ -285,21 +287,22 @@ format, but it doesn’t hurt to make sure):
 ``` r
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpMnaqRQ/pathwaysGMT794b1b96b151.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpyZpDcO/pathwaysGMT922d3a223769.gmt
+
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`
 magic happen:
 
 ``` r
-netFile <- tempfile("fedupEM_geneDouble", fileext = ".png")
+netFile <- tempfile("fedupEM", fileext = ".png")
 plotFemap(
     gmtFile = gmtFile,
     resultsFolder = resultsFolder,
     qvalue = 0.05,
     chartData = "DATA_SET",
     hideNodeLabels = TRUE,
-    netName = "fedupEM_geneDouble",
+    netName = "fedupEM",
     netFile = netFile
 )
 ```
@@ -311,7 +314,7 @@ released in [version
 3.3.2](https://github.com/BaderLab/EnrichmentMapApp/issues/455) of
 EnrichmentMap.
 
-![](inst/figures/fedupEM_geneDouble.png)
+![](inst/figures/fedupEM.png)
 
 This has effectively summarized the 156 pathways from our dot plot into
 21 unique biological themes (including 4 unclustered pathways). We can

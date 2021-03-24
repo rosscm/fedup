@@ -17,11 +17,11 @@ inputObject <- function(genes, pathways) {
     test_genes <- genes
     test_genes_all <- as.character(unlist(test_genes))
 
-    if (is.null(back_genes)) {
+    if (!length(back_genes)) {
         stop("Oops, no background genes provided in 'genes' argument! Check
         data(geneSingle) for an example of input structure.")
     }
-    if (is.null(test_genes)) {
+    if (!length(test_genes)) {
         stop("Oops, no test genes provided in 'genes' argument! Check
         data(geneSingle) for an example of input structure.")
     }

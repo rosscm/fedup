@@ -1,14 +1,9 @@
 ---
-title: "Running fedup package with a single test set"
+title: "Running fedup with a single test set"
 author: Catherine Ross
-output:
-    rmdformats::html_clean:
-        code_folding: show
-        self_contained: true
-        thumbnails: false
-        lightbox: true
+output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{Running fedup package with a single test set}
+    %\VignetteIndexEntry{Running fedup with a single test set}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---

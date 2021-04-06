@@ -1,10 +1,8 @@
 
 <div align="center">
 
-**F**isher’s Test for **E**nrichment and **D**epletion of
-**U**ser-Defined **P**athways
-
-<img align="right" width="300" height="345" src="inst/figures/fedup.png">
+# fedup
+**F**isher’s Test for **E**nrichment and **D**epletion of **U**ser-Defined **P**athways
 
 [![Build
 Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/fedup)
@@ -12,6 +10,8 @@ Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch
 ![R-CMD-check-bioc](https://github.com/rosscm/fedup/workflows/R-CMD-check-bioc/badge.svg)
 ![test-coverage](https://github.com/rosscm/fedup/workflows/test-coverage/badge.svg)
 [![codecov](https://codecov.io/gh/rosscm/fedup/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/fedup)
+
+<img align="right" height=250 src="inst/figures/fedup.png">
 
 <div align="left">
 
@@ -264,7 +264,7 @@ enrichment map!
 ## Enrichment map
 
 First, make sure to have
-[Cytoscape](https://cytoscape.org/download.html) downloaded and and open
+[Cytoscape](https://cytoscape.org/download.html) downloaded and open
 on your computer. You’ll also need to install the
 [EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) (≥ v3.3.0)
 and [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.

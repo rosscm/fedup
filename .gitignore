@@ -29,8 +29,8 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-doc
-Meta
+/doc/
+/Meta/
 
 # knitr and R markdown default cache directories
 *_cache/

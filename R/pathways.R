@@ -16,12 +16,14 @@
 #' in a pathway (default Inf)
 #' @return A list of vectors with pathway annotations.
 #' @examples
+#' # Generate pathway list from GMT annotation file
 #' pathways <- readPathways(
 #'     system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
 #'         package = "fedup"
 #'     ),
 #'     minGene = 10, maxGene = 500
 #' )
+#' # Generate pathway list from XLSX annotation file
 #' pathways <- readPathways(
 #'     system.file("extdata", "SAFE_terms.xlsx", package = "fedup"),
 #'     header = TRUE, pathCol = "Enriched.GO.names", geneCol = "Gene.ID"

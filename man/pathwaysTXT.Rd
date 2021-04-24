@@ -19,6 +19,6 @@ Raw data location
 system.file("extdata", "SAFE_terms.txt", package = "fedup")
 
 Script to prepare data
-system.file("inst", "script", "pathwaysTXT.R", package = "fedup")
+system.file("script", "pathwaysTXT.R", package = "fedup")
 }
 \keyword{datasets}

@@ -76,14 +76,15 @@ inputObject <- function(genes, pathways) {
 #'     \item qvalue -- BH-adjusted p-value
 #' }
 #' @examples
+#' # Load pathway annotations
 #' data(pathwaysGMT)
-#' # Run analysis with a single test set
+#' # Run fedup with a single test set
 #' data(geneSingle)
 #' fedupRes <- runFedup(geneSingle, pathwaysGMT)
-#' # Run analysis with two test sets
+#' # Run fedup with two test sets
 #' data(geneDouble)
 #' fedupRes <- runFedup(geneDouble, pathwaysGMT)
-#' # Run analysis with multiple test sets
+#' # Run fedup with multiple test sets
 #' data(geneMulti)
 #' fedupRes <- runFedup(geneMulti, pathwaysGMT)
 #' @importFrom data.table data.table :=

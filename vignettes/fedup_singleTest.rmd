@@ -78,6 +78,13 @@ str(geneSingle)
 str(head(pathwaysGMT))
 ```
 
+To see more info on this data, run `?geneDouble` or `?pathwaysGMT`. You
+could also run `example("prepInput", package = "fedup")` or
+`example("readPathways", package = "fedup")` to see exactly how the data
+was generated using the `prepInput()` and `readPathways()` functions.
+`?` and `example()` can be used on any other functions mentioned here to
+see their documentation and run examples.
+
 The sample `geneSingle` list object contains two vector elements: `background`
 and `FASN_negative`. The `background` consists of all genes that the test
 sets (in this case `FASN_negative`) will be compared against. `FASN_negative`

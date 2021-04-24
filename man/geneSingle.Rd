@@ -18,6 +18,6 @@ Raw Excel data file (Sup Tab 2) is available from
 }
 \details{
 Script to prepare data
-system.file("inst", "script", "genes.R", package = "fedup")
+system.file("script", "genes.R", package = "fedup")
 }
 \keyword{datasets}

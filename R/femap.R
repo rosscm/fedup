@@ -14,9 +14,12 @@
 #'         (+1 maps to red, -1 maps to blue)
 #' }
 #' @examples
+#' # Load example data
 #' data(geneDouble)
 #' data(pathwaysGMT)
+#' # Run fedup
 #' fedupRes <- runFedup(geneDouble, pathwaysGMT)
+#' # Write out results to temp folder
 #' resultsFolder <- tempdir()
 #' writeFemap(fedupRes, resultsFolder)
 #' @importFrom data.table fwrite
@@ -48,9 +51,21 @@ writeFemap <- function(results, resultsFolder) {
 #' (generated via \link[fedup]{writeFemap})
 #' @param pvalue (numeric) pvalue cutoff (value between 0 and 1; default 1)
 #' @param qvalue (numeric) qvalue cutoff (value between 0 and 1; default 1)
+#' @param formSim (character) formula to calculate similarity score
+#' (one of OVERLAP, JACCARD, COMBINED; default COMBINED)
+#' @param edgeSim (numeric) edge similarity score cutoff
+#' (value between 0 and 1; default 0.375)
+#' @param combSim (numeric) when coefficients=COMBINED this parameter is used
+#' to determine what percentage to use for JACCARD and OVERLAP when combining
+#' their value (value between 0 to 1; default 0.5)
 #' @param chartData (char) node chart data (one of NES_VALUE, P_VALUE,
 #' FDR_VALUE, PHENOTYPES, DATA_SET, EXPRESSION_SET, or NONE;
-#' default = NES_VALUE)
+#' default NES_VALUE)
+#' @param clustAlg (character) clusterMaker algorith
+#' (one of AFFINITY_PROPAGATION, CLUSTER_FIZZIFIER, GLAY, CONNECTED_COMPONENTS,
+#' MCL, SCPS; default MCL)
+#' @param clustWords (integer) maximum words to include in autoAnnotate
+#' cluster label (default 3)
 #' @param hideNodeLabels (logical) if TRUE hides the node label in the EM;
 #' cluster labels generated via AutoAnnotate remain visible
 #' @param netName (char) name for EM in Cytoscape (default generic)
@@ -60,13 +75,18 @@ writeFemap <- function(results, resultsFolder) {
 #' session of Cytoscape (side effect of plotting EM). NULL if Cytoscape
 #' is not running locally.
 #' @examples
+#' # Load example data
 #' data(geneDouble)
 #' data(pathwaysGMT)
+#' # Run fedup
 #' fedupRes <- runFedup(geneDouble, pathwaysGMT)
+#' # Write out results to temp folder
 #' resultsFolder <- tempdir()
 #' writeFemap(fedupRes, resultsFolder)
+#' # Write out gmt formatted pathawy annotations to temp file
 #' gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 #' writePathways(pathwaysGMT, gmtFile)
+#' # Plot enrichment map
 #' netFile <- tempfile("fedup_EM", fileext = ".png")
 #' plotFemap(
 #'     gmtFile = gmtFile,
@@ -84,14 +104,20 @@ writeFemap <- function(results, resultsFolder) {
 #'     resultsFolder,
 #'     pvalue = 1,
 #'     qvalue = 1,
+#'     formSim = "COMBINED",
+#'     edgeSim = 0.375,
+#'     combSim = 0.5,
 #'     chartData = "NES_VALUE",
+#'     clustAlg = "MCL",
+#'     clustWords = 3,
 #'     hideNodeLabels = FALSE,
 #'     netName = "generic",
 #'     netFile = "png"
 #' )
 plotFemap <- function(gmtFile, resultsFolder, pvalue = 1, qvalue = 1,
-    chartData = "NES_VALUE", hideNodeLabels = FALSE,
-    netName = "generic", netFile = "png") {
+    formSim = "COMBINED", edgeSim = 0.375, combSim = 0.5,
+    chartData = "NES_VALUE", clustAlg = "MCL", clustWords = 3,
+    hideNodeLabels = FALSE, netName = "generic", netFile = "png") {
     emap <- tryCatch({
             cytoscapePing()
             if (netName %in% getNetworkList()) {
@@ -104,9 +130,9 @@ plotFemap <- function(gmtFile, resultsFolder, pvalue = 1, qvalue = 1,
                 "commonGMTFile=", gmtFile,
                 "pvalue=", pvalue,
                 "qvalue=", qvalue,
-                "similaritycutoff=", 0.375,
-                "coefficients=", "COMBINED",
-                "combinedConstant=", 0.5
+                "coefficients=", formSim,
+                "similaritycutoff=", edgeSim,
+                "combinedConstant=", combSim
             )
             response <- commandsGET(em_command)
             message(" => setting network chart data")
@@ -115,8 +141,8 @@ plotFemap <- function(gmtFile, resultsFolder, pvalue = 1, qvalue = 1,
             message(" => annotating the network via AutoAnnotate")
             aa_command <- paste(
                 "autoannotate annotate-clusterBoosted",
-                "clusterAlgorithm=MCL",
-                "maxWords=3",
+                "clusterAlgorithm=", clustAlg,
+                "maxWords=", clustWords,
                 "network=", netName
             )
             response <- commandsGET(aa_command)
@@ -135,7 +161,6 @@ plotFemap <- function(gmtFile, resultsFolder, pvalue = 1, qvalue = 1,
         },
         error = function(x) {
             return(NULL)
-        }
-    )
+        })
     return(emap)
 }

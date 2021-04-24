@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package 'fedup'}
 \encoding{UTF-8}
+\section{Changes in fedup version 0.99.7 (2021-04-24)}{
+  \itemize{
+    \item added info to explain example data in README and vignettes
+    \item made minor changes to exported function example comments
+    \item \code{plotFemap}
+      + parameterized several hard-coded variables
+  }
+}
 \section{Changes in fedup version 0.99.6 (2021-02-24)}{
   \itemize{
     \item Updated package data script paths

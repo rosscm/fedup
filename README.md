@@ -1,8 +1,10 @@
 
 <div align="center">
 
-# fedup
-**F**isher’s Test for **E**nrichment and **D**epletion of **U**ser-Defined **P**athways
+**F**isher’s Test for **E**nrichment and **D**epletion of
+**U**ser-Defined **P**athways
+
+<img align="right" width="300" height="345" src="inst/figures/fedup.png">
 
 [![Build
 Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch=main)](https://travis-ci.com/rosscm/fedup)
@@ -10,8 +12,6 @@ Status](https://travis-ci.com/rosscm/fedup.svg?token=GNK3AGqE8dtKVRC56zpJ&branch
 ![R-CMD-check-bioc](https://github.com/rosscm/fedup/workflows/R-CMD-check-bioc/badge.svg)
 ![test-coverage](https://github.com/rosscm/fedup/workflows/test-coverage/badge.svg)
 [![codecov](https://codecov.io/gh/rosscm/fedup/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/fedup)
-
-<img align="right" height=250 src="inst/figures/fedup.png">
 
 <div align="left">
 
@@ -23,8 +23,10 @@ package is also integrated with Cytoscape to provide network-based
 pathway visualization that enhances the interpretability of the results.
 
 This README will quickly demonstrate how to use `fedup` when testing two
-sets of genes. Refer to vignettes for additional information and
-implementations (e.g., using single or multiple test sets).
+sets of genes. Refer to full
+[vignettes](https://www.bioconductor.org/packages/devel/bioc/html/fedup.html)
+for additional information and implementations (e.g., using single or
+multiple test sets).
 
 # Contents
 
@@ -76,7 +78,7 @@ library(ggplot2)
 
 ## Input data
 
-Load test genes (`geneDouble`) and pathways annotations (`pathwaysGMT`):
+Load test genes (`geneDouble`) and pathway annotations (`pathwaysGMT`):
 
 ``` r
 data(geneDouble)
@@ -100,6 +102,13 @@ str(head(pathwaysGMT))
 #>  $ CD28 DEPENDENT PI3K AKT SIGNALING%REACTOME DATABASE ID RELEASE 74%389357         : chr [1:22] "CD28" "THEM4" "AKT1" "TRIB3" ...
 #>  $ UBIQUITIN-DEPENDENT DEGRADATION OF CYCLIN D%REACTOME DATABASE ID RELEASE 74%75815: chr [1:52] "PSMA6" "PSMA3" "PSMA4" "PSMA1" ...
 ```
+
+To see more info on this data, run `?geneDouble` or `?pathwaysGMT`. You
+could also run `example("prepInput", package = "fedup")` or
+`example("readPathways", package = "fedup")` to see exactly how the data
+was generated using the `prepInput()` and `readPathways()` functions.
+`?` and `example()` can be used on any other functions mentioned here to
+see their documentation and run examples.
 
 ## Pathway analysis
 
@@ -264,7 +273,7 @@ enrichment map!
 ## Enrichment map
 
 First, make sure to have
-[Cytoscape](https://cytoscape.org/download.html) downloaded and open
+[Cytoscape](https://cytoscape.org/download.html) downloaded and and open
 on your computer. You’ll also need to install the
 [EnrichmentMap](http://apps.cytoscape.org/apps/enrichmentmap) (≥ v3.3.0)
 and [AutoAnnotate](http://apps.cytoscape.org/apps/autoannotate) apps.
@@ -275,8 +284,8 @@ Then format results for compatibility with EnrichmentMap using
 ``` r
 resultsFolder <- tempdir()
 writeFemap(fedupRes, resultsFolder)
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpyZpDcO/femap_FASN_negative.txt
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpyZpDcO/femap_FASN_positive.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//Rtmptw9UQj/femap_FASN_negative.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//Rtmptw9UQj/femap_FASN_positive.txt
 ```
 
 Prepare a pathway annotation file (gmt format) from the pathway list you
@@ -287,7 +296,7 @@ format, but it doesn’t hurt to make sure):
 ``` r
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmpyZpDcO/pathwaysGMT922d3a223769.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//Rtmptw9UQj/pathwaysGMTb4977d4811d.gmt
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`

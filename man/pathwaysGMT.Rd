@@ -19,6 +19,6 @@ Raw data location
 system.file("extdata", "Human_Reactome_November_17_2020_symbol.gmt",
     package = "fedup")
 Script to prepare data
-system.file("inst", "script", "pathwaysGMT.R", package ="fedup")
+system.file("script", "pathwaysGMT.R", package = "fedup")
 }
 \keyword{datasets}

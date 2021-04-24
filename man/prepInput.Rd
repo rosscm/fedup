@@ -32,5 +32,6 @@ b <- unique(genes[, "gene"])
 set1 <- unique(genes[which(genes$FASN_merge < -0.4), "gene"])
 set2 <- unique(genes[which(genes$FASN_merge > 0.4), "gene"])
 setName <- c("background", "negative", "positive")
+# Generate input list with background genes and two test set of genes
 geneDouble <- prepInput(setName, b, set1, set2)
 }

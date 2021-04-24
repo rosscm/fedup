@@ -32,10 +32,11 @@ pathway analysis on custom annotations. This package is also
 integrated with Cytoscape to provide network-based pathway visualization
 that enhances the interpretability of the results.
 
-This README will quickly demonstrate how to use `fedup` when testing two sets
-of genes. Refer to vignettes for additional information and implementations
-(e.g., using single or multiple test sets).
-
+This README will quickly demonstrate how to use `fedup` when testing two
+sets of genes. Refer to full
+[vignettes](https://www.bioconductor.org/packages/devel/bioc/html/fedup.html)
+for additional information and implementations (e.g., using single or
+multiple test sets).
 
 # Contents
 
@@ -86,7 +87,7 @@ library(ggplot2)
 # Running the package
 ## Input data
 
-Load test genes (`geneDouble`) and pathways annotations (`pathwaysGMT`):
+Load test genes (`geneDouble`) and pathway annotations (`pathwaysGMT`):
 
 ```{r}
 data(geneDouble)
@@ -99,6 +100,13 @@ Take a look at the data structure:
 str(geneDouble)
 str(head(pathwaysGMT))
 ```
+
+To see more info on this data, run `?geneDouble` or `?pathwaysGMT`.
+You could also run `example("prepInput", package = "fedup")` or
+`example("readPathways", package = "fedup")` to see exactly how the
+data was generated using the `prepInput()` and `readPathways()` functions.
+`?` and `example()` can be used on any other functions mentioned here to
+see their documentation and run examples.
 
 ## Pathway analysis
 

@@ -78,6 +78,13 @@ str(geneMulti)
 str(head(pathwaysGMT))
 ```
 
+To see more info on this data, run `?geneDouble` or `?pathwaysGMT`. You
+could also run `example("prepInput", package = "fedup")` or
+`example("readPathways", package = "fedup")` to see exactly how the data
+was generated using the `prepInput()` and `readPathways()` functions.
+`?` and `example()` can be used on any other functions mentioned here to
+see their documentation and run examples.
+
 The sample `geneMulti` list object contains thirteen vector elements:
 `background`, `FASN_negative`, `FASN_positive`, `ACACA_negative`,
 `ACACA_positive`, `LDLR_negative`, `LDLR_positive`, `SREBF1_negative`,

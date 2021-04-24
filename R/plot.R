@@ -18,10 +18,13 @@
 #' @param sizeLab (char) point size label (default \code{sizeVar} value)
 #' @return Object returned from ggplot with the enrichment dot plot.
 #' @examples
+#' # Load example data
 #' data(geneDouble)
 #' data(pathwaysGMT)
+#' # Load external libraries
 #' suppressMessages(library(dplyr))
 #' suppressMessages(library(tidyr))
+#' # Run fedup
 #' fedupRes <- runFedup(geneDouble, pathwaysGMT)
 #' # Prepare dataframe from fedup results
 #' fedupPlot <- fedupRes %>%

@@ -10,7 +10,12 @@ plotFemap(
     resultsFolder,
     pvalue = 1,
     qvalue = 1,
+    formSim = "COMBINED",
+    edgeSim = 0.375,
+    combSim = 0.5,
     chartData = "NES_VALUE",
+    clustAlg = "MCL",
+    clustWords = 3,
     hideNodeLabels = FALSE,
     netName = "generic",
     netFile = "png"
@@ -27,9 +32,26 @@ plotFemap(
 
 \item{qvalue}{(numeric) qvalue cutoff (value between 0 and 1; default 1)}
 
+\item{formSim}{(character) formula to calculate similarity score
+(one of OVERLAP, JACCARD, COMBINED; default COMBINED)}
+
+\item{edgeSim}{(numeric) edge similarity score cutoff
+(value between 0 and 1; default 0.375)}
+
+\item{combSim}{(numeric) when coefficients=COMBINED this parameter is used
+to determine what percentage to use for JACCARD and OVERLAP when combining
+their value (value between 0 to 1; default 0.5)}
+
 \item{chartData}{(char) node chart data (one of NES_VALUE, P_VALUE,
 FDR_VALUE, PHENOTYPES, DATA_SET, EXPRESSION_SET, or NONE;
-default = NES_VALUE)}
+default NES_VALUE)}
+
+\item{clustAlg}{(character) clusterMaker algorith
+(one of AFFINITY_PROPAGATION, CLUSTER_FIZZIFIER, GLAY, CONNECTED_COMPONENTS,
+MCL, SCPS; default MCL)}
+
+\item{clustWords}{(integer) maximum words to include in autoAnnotate
+cluster label (default 3)}
 
 \item{hideNodeLabels}{(logical) if TRUE hides the node label in the EM;
 cluster labels generated via AutoAnnotate remain visible}
@@ -49,13 +71,18 @@ Draws a network representation of overlaps among pathway enrichment
 results using EnrichmentMap (EM) in Cytoscape.
 }
 \examples{
+# Load example data
 data(geneDouble)
 data(pathwaysGMT)
+# Run fedup
 fedupRes <- runFedup(geneDouble, pathwaysGMT)
+# Write out results to temp folder
 resultsFolder <- tempdir()
 writeFemap(fedupRes, resultsFolder)
+# Write out gmt formatted pathawy annotations to temp file
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
+# Plot enrichment map
 netFile <- tempfile("fedup_EM", fileext = ".png")
 plotFemap(
     gmtFile = gmtFile,

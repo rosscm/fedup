@@ -28,9 +28,12 @@ Table of pathway enrichment and depletion results formatted as a
 Writes an enrichment dataset file for use in Cytoscape EnrichmentMap.
 }
 \examples{
+# Load example data
 data(geneDouble)
 data(pathwaysGMT)
+# Run fedup
 fedupRes <- runFedup(geneDouble, pathwaysGMT)
+# Write out results to temp folder
 resultsFolder <- tempdir()
 writeFemap(fedupRes, resultsFolder)
 }

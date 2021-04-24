@@ -19,6 +19,6 @@ Raw data location
 system.file("extdata", "SAFE_terms.xlsx", package = "fedup")
 
 Script to prepare data
-system.file("inst", "script", "pathwaysXLSX.R", package = "fedup")
+system.file("script", "pathwaysXLSX.R", package = "fedup")
 }
 \keyword{datasets}

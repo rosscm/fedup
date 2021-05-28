@@ -22,10 +22,6 @@ knitr::opts_chunk$set(
 ![R-CMD-check-bioc](https://github.com/rosscm/fedup/workflows/R-CMD-check-bioc/badge.svg)
 ![test-coverage](https://github.com/rosscm/fedup/workflows/test-coverage/badge.svg)
 [![codecov](https://codecov.io/gh/rosscm/fedup/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/fedup)
-![](https://img.shields.io/github/commit-activity/m/rosscm/fedup)
-![](https://img.shields.io/github/v/release/rosscm/fedup)
-![](https://img.shields.io/github/release-date/rosscm/fedup)
-![](https://img.shields.io/github/license/rosscm/fedup)
 
 <div align="left">
 
@@ -38,7 +34,7 @@ that enhances the interpretability of the results.
 
 This README will quickly demonstrate how to use `fedup` when testing two
 sets of genes. Refer to full
-[vignettes](https://www.bioconductor.org/packages/devel/bioc/html/fedup.html)
+[vignettes](https://www.bioconductor.org/packages/release/bioc/html/fedup.html)
 for additional information and implementations (e.g., using single or
 multiple test sets).
 

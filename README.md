@@ -12,10 +12,6 @@ status](https://ci.appveyor.com/api/projects/status/qc664qr0kavg99xq?svg=true)](
 ![R-CMD-check-bioc](https://github.com/rosscm/fedup/workflows/R-CMD-check-bioc/badge.svg)
 ![test-coverage](https://github.com/rosscm/fedup/workflows/test-coverage/badge.svg)
 [![codecov](https://codecov.io/gh/rosscm/fedup/branch/main/graph/badge.svg?token=AVOAV1ILVL)](https://codecov.io/gh/rosscm/fedup)
-![](https://img.shields.io/github/commit-activity/m/rosscm/fedup)
-![](https://img.shields.io/github/v/release/rosscm/fedup)
-![](https://img.shields.io/github/release-date/rosscm/fedup)
-![](https://img.shields.io/github/license/rosscm/fedup)
 
 <div align="left">
 
@@ -28,7 +24,7 @@ pathway visualization that enhances the interpretability of the results.
 
 This README will quickly demonstrate how to use `fedup` when testing two
 sets of genes. Refer to full
-[vignettes](https://www.bioconductor.org/packages/devel/bioc/html/fedup.html)
+[vignettes](https://www.bioconductor.org/packages/release/bioc/html/fedup.html)
 for additional information and implementations (e.g., using single or
 multiple test sets).
 
@@ -288,8 +284,8 @@ Then format results for compatibility with EnrichmentMap using
 ``` r
 resultsFolder <- tempdir()
 writeFemap(fedupRes, resultsFolder)
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprGCnsc/femap_FASN_negative.txt
-#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprGCnsc/femap_FASN_positive.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//Rtmp2Cxw8t/femap_FASN_negative.txt
+#> Wrote out EM-formatted fedup results file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//Rtmp2Cxw8t/femap_FASN_positive.txt
 ```
 
 Prepare a pathway annotation file (gmt format) from the pathway list you
@@ -300,7 +296,7 @@ format, but it doesn’t hurt to make sure):
 ``` r
 gmtFile <- tempfile("pathwaysGMT", fileext = ".gmt")
 writePathways(pathwaysGMT, gmtFile)
-#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//RtmprGCnsc/pathwaysGMT43fc3812c42c.gmt
+#> Wrote out pathway gmt file to /var/folders/mh/_0z2r5zj3k75yhtgm6l7xy3m0000gn/T//Rtmp2Cxw8t/pathwaysGMTd1a71bfa6116.gmt
 ```
 
 Cytoscape is open right? If so, run these lines and let the `plotFemap`

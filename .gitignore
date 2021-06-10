@@ -46,6 +46,9 @@ vignettes/*.pdf
 # Codecov
 codecov.yml
 
+# Extra files
+/inst/extra
+
 # Annoying files
 *.DS_Store
 

@@ -2,10 +2,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
-^fedup-Ex.R$
-^data-raw$
-^\.travis\.yml$
 ^doc$
 ^Meta$
-^codecov.yml
 README.Rmd
+^inst/extra$
+^.*\.yml$

@@ -7,3 +7,6 @@
 README.Rmd
 ^inst/extra$
 ^.*\.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

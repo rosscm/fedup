@@ -92,6 +92,7 @@ writeFemap <- function(results, resultsFolder) {
 #'     gmtFile = gmtFile,
 #'     resultsFolder = resultsFolder,
 #'     qvalue = 0.05,
+#'     chartData = "DATA_SET",
 #'     hideNodeLabels = TRUE,
 #'     netName = "fedup_EM",
 #'     netFile = netFile
@@ -112,7 +113,7 @@ writeFemap <- function(results, resultsFolder) {
 #'     clustWords = 3,
 #'     hideNodeLabels = FALSE,
 #'     netName = "generic",
-#'     netFile = "png"
+#'     netFile = "generic.png"
 #' )
 plotFemap <- function(gmtFile, resultsFolder, pvalue = 1, qvalue = 1,
     formSim = "COMBINED", edgeSim = 0.375, combSim = 0.5,
